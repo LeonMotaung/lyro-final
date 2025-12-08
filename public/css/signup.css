@@ -1,0 +1,223 @@
+/* Cleaned Figma-inspired Sign Up styles */
+:root{
+  --bg-900: #071026;
+  --bg-800: #081627;
+  --card-bg: rgba(255,255,255,0.03);
+  --glass-border: rgba(255,255,255,0.06);
+  --accent-teal: #1abc9c;
+  --accent-deep: #0f766e;
+  --muted: rgba(255,255,255,0.72);
+  --text: #eaf6ff;
+  --danger: #ff6b6b;
+  --radius-lg: 18px;
+  --radius-md: 12px;
+  --shadow-lg: 0 18px 50px rgba(2,6,23,0.6);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: linear-gradient(180deg,var(--bg-900) 0%, var(--bg-800) 60%);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+/* Preloader (animated like login) */
+#preloader{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at top right, #071026, #04101a);z-index:9999;transition:opacity .45s ease,visibility .45s ease}
+#preloader .preloader-logo{width:72px;height:72px;object-fit:contain;filter:drop-shadow(0 6px 20px rgba(26,188,156,0.28));animation:pulse 1.5s ease-in-out infinite}
+#preloader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+
+@keyframes pulse{
+  0%,100%{transform:scale(1);opacity:1;filter:drop-shadow(0 0 6px rgba(26,188,156,0.25))}
+  50%{transform:scale(1.08);opacity:0.8;filter:drop-shadow(0 0 18px rgba(26,188,156,0.48))}
+}
+
+.signup-container{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;position:relative}
+.bg-mesh{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 10% 10%, rgba(26,188,156,0.06), transparent 10%), radial-gradient(ellipse at 90% 80%, rgba(58,123,213,0.03), transparent 12%)}
+
+/* Card: two-column on wide screens, single column on small */
+.signup-card{width:100%;max-width:980px;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--glass-border);box-shadow:var(--shadow-lg);background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));display:grid;grid-template-columns:1fr 420px}
+@media (max-width:920px){.signup-card{grid-template-columns:1fr;max-width:720px}}
+
+/* Left column (brand/hero) */
+.brand-header{padding:48px 44px;display:flex;flex-direction:column;gap:10px;justify-content:center}
+.brand-header .logo-img{width:76px;height:76px;border-radius:12px;object-fit:contain}
+.brand-title{font-size:26px;margin:6px 0 0 0;font-weight:700;color:var(--text)}
+.brand-subtitle{margin:0;color:var(--muted);font-size:15px}
+
+/* Right column: form area */
+.signup-form{padding:40px 48px;display:flex;flex-direction:column;gap:14px;background:transparent}
+@media (max-width:520px){.signup-form{padding:28px}}
+
+.form-group{display:flex;flex-direction:column;gap:8px}
+.form-label{color:var(--muted);font-size:13px;display:flex;align-items:center;gap:8px}
+.form-label i{opacity:0.95}
+
+.form-input,.form-select{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);padding:12px 14px;border-radius:var(--radius-md);color:var(--text);font-size:15px;transition:box-shadow .16s ease,transform .12s ease}
+.form-input::placeholder{color:rgba(255,255,255,0.36)}
+.form-input:focus,.form-select:focus{box-shadow:0 10px 28px rgba(15,119,110,0.06);border-color:rgba(26,188,156,0.9);transform:translateY(-1px)}
+
+.password-wrapper{position:relative}
+.password-wrapper .toggle-password,.password-wrapper .toggle-password-confirm{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:transparent;border:none;color:var(--muted);padding:6px;border-radius:8px;cursor:pointer}
+.password-wrapper .toggle-password:focus{outline:2px solid rgba(26,188,156,0.12)}
+
+.error-message{color:var(--danger);font-size:12px;min-height:18px}
+
+/* Checkbox: hidden native input with visible custom box */
+.checkbox-label{
+  display:flex;align-items:center;gap:12px;user-select:none;width:100%;
+  /* render like a single control/button */
+  padding:12px 14px;border-radius:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);
+  transition:background .16s ease,border-color .16s ease,box-shadow .16s ease;cursor:pointer
+}
+/* visually hide native checkbox but keep it accessible */
+.checkbox-label input[type=checkbox]{position:absolute;opacity:0;width:0;height:0;margin:0;padding:0}
+.checkbox-custom{width:22px;height:22px;flex:0 0 22px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);display:inline-flex;align-items:center;justify-content:center;transition:background .16s ease,border-color .16s ease}
+.checkbox-label input[type=checkbox]:checked + .checkbox-custom{background:linear-gradient(90deg,var(--accent-teal),var(--accent-deep));border-color:transparent}
+.checkbox-label input[type=checkbox]:checked + .checkbox-custom::after{content:'\2713';color:white;font-size:13px;line-height:1}
+.checkbox-text{font-size:14px;color:var(--muted);line-height:1.25;flex:1}
+
+/* hover/focus state for the whole control */
+.checkbox-label:hover{background:rgba(255,255,255,0.035)}
+.checkbox-label:focus-within{box-shadow:0 6px 18px rgba(15,119,110,0.06);border-color:rgba(26,188,156,0.9)}
+
+/* Make it visually prominent on small screens */
+@media (max-width:520px){
+  .checkbox-label{padding:14px 16px}
+  .checkbox-text{font-size:15px}
+  .checkbox-custom{width:24px;height:24px}
+}
+.terms-link{color:var(--accent-teal);text-decoration:none}
+.terms-link:hover{text-decoration:underline}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:12px 16px;border-radius:12px;font-weight:700;border:none;cursor:pointer}
+.btn-primary{background:linear-gradient(90deg,var(--accent-teal),var(--accent-deep));color:#062029;box-shadow:0 10px 30px rgba(15,119,110,0.12)}
+.btn-primary:active{transform:translateY(0)}
+.btn-primary.loading .btn-loader{display:inline-block}
+.btn-secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+.btn .btn-loader{width:18px;height:18px;border-radius:50%;border:2px solid rgba(255,255,255,0.12);border-top-color:rgba(255,255,255,0.6);animation:spin 1s linear infinite;display:none}
+
+.divider{display:flex;align-items:center;gap:12px;margin-top:6px}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.04),transparent)}
+.divider span{font-size:13px;color:var(--muted)}
+
+.login-section{display:flex;align-items:center;gap:12px}
+.signup-footer{margin-top:20px;color:rgba(255,255,255,0.45);font-size:13px;text-align:center}
+
+/* States */
+.form-input.error,.form-select.error{border-color:var(--danger);box-shadow:0 6px 18px rgba(255,107,107,0.06)}
+.btn:focus,.form-input:focus{outline:none;box-shadow:0 0 0 4px rgba(26,188,156,0.08)}
+
+/* Animations */
+@keyframes spin{to{transform:rotate(360deg)}}
+.signup-card, .signup-form, .brand-header{transform-origin:center;animation:fadeInUp .42s cubic-bezier(.2,.9,.3,1) both}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(10px) scale(.996)}to{opacity:1;transform:none}}
+
+/* Responsive adjustments */
+@media (max-width:520px){
+  .brand-header{align-items:center;text-align:center;padding:28px}
+  .brand-header .logo-img{width:64px;height:64px}
+  .brand-title{font-size:20px}
+}
+
+@media (max-width:380px){
+  .signup-form{padding:20px}
+  .form-input{font-size:14px}
+  .btn{font-size:14px;padding:10px}
+}
+
+/* end of consolidated signup.css */
+
+/* === Mobile-first optimizations (additional) === */
+/* Larger touch targets, reduced padding, stacked layout, and improved legibility */
+@media (max-width:720px) {
+  .signup-card{grid-template-columns:1fr;max-width:680px;padding:18px;margin:18px}
+  .brand-header{padding:22px 16px}
+  .brand-header .logo-img{width:60px;height:60px}
+  .brand-title{font-size:22px}
+  .brand-subtitle{font-size:14px}
+
+  .signup-form{padding:20px 16px;gap:12px}
+  .form-label{font-size:14px}
+  .form-input,.form-select{padding:14px 16px;font-size:16px;min-height:48px;border-radius:12px}
+  .password-wrapper .toggle-password,.password-wrapper .toggle-password-confirm{right:10px}
+
+  .btn{padding:14px 16px;font-size:16px;border-radius:12px;width:100%}
+  .btn-secondary{padding:12px}
+
+  .checkbox-text{font-size:15px}
+  .divider{margin:10px 0}
+}
+
+@media (max-width:420px){
+  body{padding-bottom:28px}
+  .signup-card{border-radius:14px;padding:14px}
+  .brand-header{padding:16px 12px}
+  .brand-header .logo-img{width:56px;height:56px}
+  .brand-title{font-size:18px}
+
+  .signup-form{padding:16px 12px;gap:10px}
+  .form-input,.form-select{padding:12px 14px;font-size:15px;min-height:46px}
+  .form-label{font-size:13px}
+
+  .toggle-password,.toggle-password-confirm{right:8px;padding:8px}
+
+  .btn{font-size:15px;padding:12px}
+  .btn .btn-loader{width:18px;height:18px}
+
+  .signup-footer{font-size:12px;padding:0 12px}
+}
+
+/* Ensure inputs are comfortably tappable on very small devices */
+.form-input,.form-select{touch-action:manipulation}
+
+/* Reduce visual clutter on tiny screens */
+@media (max-width:360px){
+  .brand-subtitle{display:block;font-size:13px}
+  .bg-mesh{opacity:0.4}
+}
+
+/* mark mobile task finished styling adjustments */
+
+/* --- Imported global utilities & components from styles.css (signup-specific subset) --- */
+/* Theme variables (light/dark switch helpers) */
+
+/* App container utility (useful if page wraps content) */
+.app-screen{min-height:100vh;width:100vw;display:flex;flex-direction:column;justify-content:space-around;align-items:center;padding:2rem 1rem;box-sizing:border-box;position:relative}
+
+/* Pull-to-refresh placeholder (small utility) */
+#ptr-container{position:fixed;top:20px;left:0;right:0;height:40px;display:flex;justify-content:center;align-items:center;z-index:999;opacity:0;transform:translateY(-40px)}
+.ptr-arrow{width:30px;height:30px;border:3px solid var(--accent-teal);border-radius:50%;border-top-color:transparent}
+.ptr-arrow.spinning{animation:ptr-spin 1s linear infinite}
+@keyframes ptr-spin{to{transform:rotate(360deg)}}
+
+/* Offline indicator */
+#offline-indicator{position:fixed;top:0;left:0;right:0;background-color:#444;color:#fff;padding:10px;text-align:center;font-size:0.85rem;z-index:9998;transform:translateY(-100%);transition:transform .4s}
+#offline-indicator.show{transform:translateY(0)}
+
+/* Logo utilities */
+.logo-container{margin-bottom:32px;text-align:center}
+.logo-img.small{height:32px;width:auto;display:inline-block}
+
+/* Simple CTA classes for pages that expect .primary-btn/.secondary-btn */
+.primary-btn{display:block;width:100%;padding:12px;border-radius:30px;text-align:center;font-weight:700;font-size:1rem;background:linear-gradient(90deg,var(--accent-teal),var(--accent-deep));color:var(--text);border:none}
+.primary-btn:hover{opacity:.95}
+.secondary-btn{display:block;width:100%;padding:12px;border-radius:30px;text-align:center;font-weight:700;font-size:1rem;background:transparent;border:2px solid var(--accent-teal);color:var(--accent-teal)}
+.cta-container{width:100%;margin-top:20px;text-align:center}
+
+/* Toggle + modal utilities (kept small) */
+.toggle-wrap{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.switch-toggle{width:56px;height:28px;border-radius:14px;border:1px solid rgba(255,255,255,.18);position:relative;cursor:pointer}
+.switch-toggle .toggle-thumb{position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:var(--bg-900);transition:left .25s}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:10000;display:flex;justify-content:center;align-items:flex-end;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
+.modal-overlay.active{opacity:1;visibility:visible}
+.modal-content{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));width:100%;max-width:400px;border-radius:16px 16px 0 0;padding:16px}
+
+/* small accessibility helper: visually-hidden */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* End imported subset */

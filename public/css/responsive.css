@@ -1,0 +1,68 @@
+/* Responsive Improvements */
+
+/* Tablet and larger screens */
+@media (min-width: 768px) {
+    .hero-title {
+        font-size: 36px;
+    }
+
+    .paper-cards {
+        gap: 24px;
+        padding: 0 48px;
+    }
+
+    .utilities {
+        padding: 0 48px;
+        gap: 24px;
+    }
+
+    .bottom-nav {
+        max-width: 500px;
+        height: 72px;
+    }
+
+    .nav-item {
+        padding: 10px 20px;
+    }
+
+    .nav-item i {
+        font-size: 22px;
+    }
+}
+
+/* Small mobile devices */
+@media (max-width: 375px) {
+    .hero-title {
+        font-size: 26px;
+        letter-spacing: 1px;
+    }
+
+    .paper-cards {
+        gap: 12px;
+        padding: 0 16px;
+    }
+
+    .card {
+        min-height: 140px;
+        padding: 20px;
+    }
+
+    .utilities {
+        padding: 0 16px;
+        gap: 12px;
+    }
+
+    .bottom-nav {
+        width: calc(100% - 32px);
+        height: 60px;
+    }
+
+    .nav-item {
+        padding: 6px 12px;
+        font-size: 10px;
+    }
+
+    .nav-item i {
+        font-size: 18px;
+    }
+}

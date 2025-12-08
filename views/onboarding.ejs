@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lyro Maths | Onboarding</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/onboarding.css">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body class="dark-theme">
+    <!-- Preloader -->
+    <div id="preloader">
+        <img src="/images/logo.png" alt="Lyro Maths Logo" class="preloader-logo">
+    </div>
+
+
+    <div class="canvas">
+        <!-- Dynamic Background Elements -->
+        <div class="bg-mesh"></div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-fill"></div>
+        </div>
+
+        <!-- Shared Brand Header -->
+        <div class="brand">
+            <img src="/images/logo.png" alt="Lyro Maths Logo" class="logo-img small" />
+            <div class="app-name">Lyro Maths</div>
+        </div>
+
+        <div class="glass-card-container">
+            <div class="slide active" aria-label="Slide 1: Core Concepts">
+                <div class="slide-content">
+                    <div class="step-badge">STEP 1</div>
+                    <div class="illustration-container">
+                        <img src="/images/first.png" alt="Core Concepts Illustration" class="onboarding-img">
+                    </div>
+                    <h2 class="headline">Master Every <span class="text-teal">Section</span>.</h2>
+                    <p class="body">Seamlessly navigate Grade 12 Paper 1 (Algebra) and Paper 2 (Geometry) topics with
+                        interactive lessons.</p>
+                </div>
+                <div class="cta-row">
+                    <a href="/learn" class="btn link-skip">Skip</a>
+                    <a href="#" class="btn next">Next <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <div class="slide" aria-label="Slide 2: Detailed Solutions">
+                <div class="slide-content">
+                    <div class="step-badge">STEP 2</div>
+                    <div class="illustration-container">
+                        <img src="/images/second.png" alt="Detailed Solutions Illustration" class="onboarding-img">
+                    </div>
+                    <h2 class="headline">Understand the <span class="text-orange">'How' & 'Why'</span>.</h2>
+                    <p class="body">Access step-by-step solutions for all examples, ensuring you grasp the underlying
+                        mathematical logic.</p>
+                </div>
+                <div class="cta-row">
+                    <a href="#" class="btn back">Back</a>
+                    <a href="/learn" class="btn link-skip">Skip</a>
+                    <a href="#" class="btn next">Next <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <div class="slide" aria-label="Slide 3: Exam Success">
+                <div class="slide-content">
+                    <div class="step-badge">STEP 3</div>
+                    <div class="illustration-container">
+                        <img src="/images/third.png" alt="Exam Success Illustration" class="onboarding-img">
+                    </div>
+                    <h2 class="headline">Track Progress & <span class="text-teal">Ace Exams</span>.</h2>
+                    <p class="body">Simulate past papers under exam conditions and use detailed progress reports to
+                        focus on your weak areas.</p>
+                </div>
+                <div class="cta-row">
+                    <a href="#" class="btn back">Back</a>
+                    <a href="/learn" class="btn primary">Get Started</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Dots -->
+        <div class="dots">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+        </div>
+    </div>
+
+    <script src="/js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const slides = document.querySelectorAll('.slide');
+            const progressBarFill = document.querySelector('.progress-fill');
+            const dots = document.querySelectorAll('.dots .dot');
+            const backButtons = document.querySelectorAll('.btn.back');
+            const nextButtons = document.querySelectorAll('.btn.next');
+            let currentSlideIndex = 0;
+
+            const updateUI = () => {
+                // 1. Update Progress Bar
+                const progressPercentage = ((currentSlideIndex + 1) / slides.length) * 100;
+                progressBarFill.style.width = `${progressPercentage}%`;
+
+                // 2. Update slides
+                slides.forEach((slide, index) => {
+                    slide.classList.toggle('active', index === currentSlideIndex);
+                });
+
+                // 3. Update dots
+                dots.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === currentSlideIndex);
+                    // Optional: Change dot color based on slide
+                    dot.classList.toggle('teal', index === 0 || index === 2);
+                    dot.classList.toggle('orange', index === 1);
+                });
+            };
+
+            // --- Event Listeners ---
+            nextButtons.forEach(button => button.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (currentSlideIndex < slides.length - 1) {
+                    currentSlideIndex++;
+                    updateUI();
+                }
+            }));
+
+            backButtons.forEach(button => button.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (currentSlideIndex > 0) {
+                    currentSlideIndex--;
+                    updateUI();
+                }
+            }));
+
+            dots.forEach((dot, index) => dot.addEventListener('click', () => {
+                currentSlideIndex = index;
+                updateUI();
+            }));
+
+            // --- Onboarding Completion Logic ---
+            const completeButtons = document.querySelectorAll('.btn.link-skip, .btn.primary');
+
+            const markOnboardingAsComplete = () => {
+                localStorage.setItem('onboardingComplete', 'true');
+            };
+
+            completeButtons.forEach(button => button.addEventListener('click', markOnboardingAsComplete));
+
+
+            // Initial UI setup
+            updateUI();
+        });
+    </script>
+</body>
+
+</html>

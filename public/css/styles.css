@@ -1,0 +1,345 @@
+/* --- 1. Root Variables (Colors from the Image) --- */
+:root {
+    /* Base Colors - Matching the Lyro Maths Ad */
+    --color-primary-dark: #323d54; /* Main Screen Background */
+    --color-body-dark: #222a3a;    /* Body Background (Outer Frame) */
+    --color-text-light: #ecf0f1;   /* White/Light Text */
+    --color-accent-teal: #1abc9c;  /* Teal/Aqua Accent */
+    --color-accent-orange: #f36b41; /* Orange Accent */
+    
+    /* Day Mode (Light Theme Variables) */
+    --bg-main: var(--color-primary-dark);
+    --bg-body: var(--color-body-dark);
+    --text: var(--color-text-light);
+    --button-primary: var(--color-accent-teal);
+    --button-secondary-border: var(--color-accent-teal);
+    --icon-circle-bg: #fff; /* Icons circles are white/light in the original dark theme */
+}
+
+/* --- Dark Theme Definitions (for the toggle) --- */
+.dark-theme {
+    /* We'll use the original colors as the default "Dark Theme" */
+    --bg-main: var(--color-primary-dark);
+    --bg-body: var(--color-body-dark);
+    --text: var(--color-text-light);
+    --button-primary: var(--color-accent-teal);
+    --button-secondary-border: var(--color-accent-teal);
+    --icon-circle-bg: #fff;
+}
+
+/* Light Theme (Swapped Colors for 'Day Mode') */
+.light-theme {
+    --bg-main: #f0f0f0;            /* Light Grey Main */
+    --bg-body: #ffffff;            /* White Body */
+    --text: #333333;               /* Dark Text */
+    --button-primary: #17a080;     /* Slightly darker Teal for contrast */
+    --button-secondary-border: #17a080;
+    --icon-circle-bg: #eee;
+}
+
+/* --- 2. Global Styling and App Frame --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: sans-serif;
+    background-color: var(--bg-body); /* Outer frame color */
+    color: var(--text);
+    transition: background-color 0.4s, color 0.4s;
+}
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden; /* Prevents horizontal scrollbar */
+}
+.app-screen {
+    /* Make the container fill the viewport */
+    min-height: 100vh; /* Minimum height of the viewport */
+    width: 100vw;      /* Width of the viewport */
+
+    /* Use flexbox to arrange and center content vertically */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around; /* Evenly distribute content vertically */
+    align-items: center;           /* Center content horizontally */
+    
+    /* Add some padding and ensure it's included in the total size */
+    padding: 2rem 1rem;
+    box-sizing: border-box;
+    position: relative; /* Establish positioning context for the theme toggle */
+}
+
+/* --- Pull to Refresh Indicator --- */
+#ptr-container {
+    position: fixed;
+    top: 20px;
+    left: 0;
+    right: 0;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    opacity: 0;
+    transform: translateY(-40px);
+}
+.ptr-arrow {
+    width: 30px;
+    height: 30px;
+    border: 3px solid var(--color-accent-teal);
+    border-radius: 50%;
+    border-top-color: transparent;
+    transition: transform 0.1s;
+}
+.ptr-arrow.spinning {
+    animation: ptr-spin 1s linear infinite;
+}
+@keyframes ptr-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* --- Preloader --- */
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at top right, #1e293b, #0f172a);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+    visibility: visible;
+    opacity: 1;
+}
+
+.preloader-logo {
+    width: 80px;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+.preloader.hidden,
+/* Ensure the ID-based preloader is also hidden when the `hidden` class is applied */
+#preloader.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+        filter: drop-shadow(0 0 5px rgba(26, 188, 156, 0.3));
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.7;
+        filter: drop-shadow(0 0 15px rgba(26, 188, 156, 0.6));
+    }
+}
+
+/* --- Offline Status Indicator --- */
+#offline-indicator {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #444;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    font-size: 0.85rem;
+    z-index: 9998; /* Below preloader, above everything else */
+    transform: translateY(-100%);
+    transition: transform 0.4s ease-in-out;
+}
+#offline-indicator.show { transform: translateY(0); }
+
+/* --- 3. Logo and Tagline --- */
+.logo-container {
+    margin-bottom: 50px;
+    text-align: center; /* Center the h1 and tagline text */
+}
+
+.logo-img {
+    width: 80px;
+    height: auto;
+    display: block;
+    margin: 0 auto 10px auto;
+}
+.logo-img.small {
+    height: 32px; /* Set a fixed height for better alignment */
+    width: auto;  /* Allow width to scale proportionally */
+    display: inline-block;
+    margin: 0;
+}
+
+h1 {
+    font-size: 2.2rem;
+    font-weight: 600;
+    margin-top: 5px;
+}
+
+.tagline {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+/* --- 4. Feature Grid --- */
+.feature-grid {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 80px;
+}
+
+.feature-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 25%;
+    font-size: 0.75rem;
+    text-align: center; /* Ensures wrapped text is centered */
+}
+
+.icon-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--icon-circle-bg);
+    border: 3px solid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5px;
+    font-size: 1.5rem;
+}
+
+.icon-green {
+    border-color: var(--color-accent-teal);
+}
+.icon-green i {
+    color: var(--color-accent-teal);
+}
+
+.icon-orange {
+    border-color: var(--color-accent-orange);
+}
+.icon-orange i {
+    color: var(--color-accent-orange);
+}
+
+
+/* --- 5. CTA Buttons --- */
+.cta-container {
+    width: 100%;
+    margin-top: 40px; /* Adjust this value to control the space above the buttons */
+    text-align: center; /* Center the buttons and footer note */
+}
+
+.button {
+    display: block;
+    width: 100%;
+    padding: 15px 0;
+    margin-bottom: 15px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1rem;
+    text-align: center; /* Ensure text inside the button is centered */
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.primary-btn {
+    background-color: var(--button-primary);
+    color: var(--text); /* Use the text color variable for contrast */
+    border: none;
+}
+.primary-btn:hover {
+    opacity: 0.9;
+}
+
+.secondary-btn {
+    background-color: transparent;
+    border: 2px solid var(--button-secondary-border);
+    color: var(--button-secondary-border);
+}
+
+.footer-note {
+    font-size: 0.75rem;
+    opacity: 0.6;
+    margin-top: 20px;
+}
+
+/* Shared toggle styles */
+.toggle-wrap { display:flex; flex-direction:column; align-items:flex-end; gap:6px; }
+.toggle-wrap.fixed { position: fixed; top: 20px; right: 20px; z-index: 1000; }
+.switch-toggle { width:56px; height:28px; border-radius:14px; border:1px solid rgba(255,255,255,.3); background: linear-gradient(90deg, var(--color-accent-orange), #ffffff); position:relative; cursor:pointer; }
+.switch-toggle .toggle-thumb { position:absolute; top:3px; left:3px; width:22px; height:22px; border-radius:50%; background: var(--bg-main); transition:left .25s ease; }
+.dark-theme .switch-toggle .toggle-thumb { left:31px; }
+.toggle-label { font-size:12px; color: var(--text); opacity:.8; }
+.mode-state { font-size:11px; color: var(--text); opacity:.6; }
+
+/* --- Settings Modal --- */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 10000;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.modal-overlay.active { opacity: 1; visibility: visible; }
+.modal-content {
+    background: var(--bg-main);
+    width: 100%;
+    max-width: 400px;
+    border-radius: 16px 16px 0 0;
+    padding: 16px;
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.modal-overlay.active .modal-content { transform: translateY(0); }
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.modal-header h2 { font-size: 1.2rem; }
+.close-btn { background: none; border: none; color: var(--text); font-size: 1.8rem; cursor: pointer; opacity: 0.7; }
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+}
+.light-theme .setting-item { border-bottom-color: rgba(0, 0, 0, 0.1); }
+.setting-item:hover { background: rgba(255, 255, 255, 0.05); }
+.light-theme .setting-item:hover { background: rgba(0, 0, 0, 0.05); }
+.setting-text { display: flex; flex-direction: column; }
+.setting-text strong { font-size: 0.9rem; }
+.setting-text span { font-size: 0.75rem; opacity: 0.6; margin-top: 2px; }
+.modal-footer {
+    text-align: center;
+    font-size: 0.7rem;
+    opacity: 0.5;
+    margin-top: 20px;
+    line-height: 1.4;
+}
+setting-item #cached-size-display {
+    opacity: 0.8;
+}

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lyro Maths | Sign Up</title>
+
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="Sign up for Lyro Maths - Master Grade 12 Mathematics">
+    <meta name="theme-color" content="#1abc9c">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+
+    <!-- Icons -->
+    <link rel="icon" type="image/png" href="/images/lyro.png">
+    <link rel="apple-touch-icon" href="/images/lyro.png">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/css/signup.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+    <!-- Preloader -->
+    <div id="preloader">
+        <img src="/images/logo.png" alt="Lyro Maths Logo" class="preloader-logo">
+    </div>
+
+    <div class="signup-container">
+        <!-- Background Elements -->
+        <div class="bg-mesh"></div>
+
+        <!-- Signup Card -->
+        <div class="signup-card">
+            <!-- Logo & Brand -->
+            <div class="brand-header">
+                <a href="/" aria-label="Home">
+                    <img src="/images/logo.png" alt="Lyro Maths Logo" class="logo-img">
+                </a>
+                <h1 class="brand-title">Create an Account</h1>
+                <p class="brand-subtitle">Join Lyro Maths to start your journey.</p>
+            </div>
+
+            <!-- Signup Form -->
+            <form id="signup-form" class="signup-form">
+                <!-- Name -->
+                <div class="form-group">
+                    <label for="name" class="form-label">
+                        <i class="fas fa-user"></i> First Name
+                    </label>
+                    <input type="text" id="name" name="name" class="form-input" placeholder="Enter your first name"
+                        required autocomplete="given-name">
+                    <span class="error-message" aria-live="polite"></span>
+                </div>
+
+                <!-- Surname -->
+                <div class="form-group">
+                    <label for="surname" class="form-label">
+                        <i class="fas fa-user"></i> Surname
+                    </label>
+                    <input type="text" id="surname" name="surname" class="form-input" placeholder="Enter your surname"
+                        required autocomplete="family-name">
+                    <span class="error-message" aria-live="polite"></span>
+                </div>
+
+                <!-- Age -->
+                <div class="form-group">
+                    <label for="age" class="form-label">
+                        <i class="fas fa-calendar"></i> Age
+                    </label>
+                    <input type="number" id="age" name="age" class="form-input" placeholder="Enter your age" min="13"
+                        max="25" required>
+                    <span class="error-message" aria-live="polite"></span>
+                </div>
+
+                <!-- High School -->
+                <div class="form-group">
+                    <label for="school" class="form-label">
+                        <i class="fas fa-school"></i> High School
+                    </label>
+                    <select id="school" name="school" class="form-select" required>
+                        <option value="" disabled selected>Select your high school</option>
+                        <option value="Falesizwe Secondary School">Falesizwe Secondary School</option>
+                        <option value="Tsebo-Ulwazi Secondary School">Tsebo-Ulwazi Secondary School</option>
+                        <option value="Mfundo-Thuto Secondary School">Mfundo-Thuto Secondary School</option>
+                        <option value="Qalabotjha Secondary School">Qalabotjha Secondary School</option>
+                        <option value="Retsidisitswe Secondary School">Retsidisitswe Secondary School</option>
+                        <option value="Wilge Hoër (Wilgerivier High School)">Wilge Hoër (Wilgerivier High School)
+                        </option>
+                        <option value="Tweeling Hoër School (Tweeling High School)">Tweeling Hoër School (Tweeling High
+                            School)</option>
+                        <option value="Refeng Thabo Secondary School">Refeng Thabo Secondary School</option>
+                        <option value="Bongani-Lebohang Secondary School">Bongani-Lebohang Secondary School</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <span class="error-message" aria-live="polite"></span>
+                </div>
+
+                <!-- Town -->
+                <div class="form-group">
+                    <label for="town" class="form-label">
+                        <i class="fas fa-map-marker-alt"></i> Town/City
+                    </label>
+                    <input type="text" id="town" name="town" class="form-input" placeholder="Enter your town or city"
+                        required autocomplete="address-level2">
+                    <span class="error-message" aria-live="polite"></span>
+                </div>
+
+                <!-- Postal Code -->
+                <div class="form-group">
+                    <label for="postal-code" class="form-label">
+                        <i class="fas fa-envelope"></i> Postal Code
+                    </label>
+                    <input type="text" id="postal-code" name="postal-code" class="form-input"
+                        placeholder="Enter your postal code" required pattern="[0-9]{4}" maxlength="4"
+                        autocomplete="postal-code">
+                    <span class="error-message" aria-live="polite"></span>
+                </div>
+
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="email" class="form-label">
+                        <i class="fas fa-at"></i> Email Address
+                    </label>
+                    <input type="email" id="email" name="email" class="form-input" placeholder="Enter your email"
+                        required autocomplete="email">
+                    <span class="error-message" aria-live="polite"></span>
+                </div>
+
+                <!-- Password -->
+                <div class="form-group">
+                    <label for="password" class="form-label">
+                        <i class="fas fa-lock"></i> Password
+                    </label>
+                    <div class="password-wrapper">
+                        <input type="password" id="password" name="password" class="form-input"
+                            placeholder="Create a password (min. 6 characters)" required autocomplete="new-password">
+                        <button type="button" class="toggle-password" aria-label="Toggle password visibility">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <span class="error-message" aria-live="polite"></span>
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="form-group">
+                    <label for="confirm-password" class="form-label">
+                        <i class="fas fa-lock"></i> Confirm Password
+                    </label>
+                    <div class="password-wrapper">
+                        <input type="password" id="confirm-password" name="confirm-password" class="form-input"
+                            placeholder="Re-enter your password" required autocomplete="new-password">
+                        <button type="button" class="toggle-password-confirm" aria-label="Toggle password visibility">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <span class="error-message" aria-live="polite"></span>
+                </div>
+
+                <!-- Terms & Conditions -->
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="terms" name="terms" required>
+                        <span class="checkbox-custom" aria-hidden="true"></span>
+                        <span class="checkbox-text">I agree to the <a href="#" class="terms-link">Terms &
+                                Conditions</a></span>
+                    </label>
+                    <span class="error-message" aria-live="polite"></span>
+                </div>
+
+                <!-- Sign Up Button -->
+                <button type="submit" class="btn btn-primary">
+                    <span class="btn-text">Create Account</span>
+                    <span class="btn-loader"></span>
+                </button>
+
+                <!-- Divider -->
+                <div class="divider">
+                    <span>or</span>
+                </div>
+
+                <!-- Login Link -->
+                <div class="login-section">
+                    <p class="login-text">Already have an account?</p>
+                    <a href="/login" class="btn btn-secondary">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Footer -->
+        <div class="signup-footer">
+            <p>&copy; 2025 Lyro Maths. All rights reserved.</p>
+        </div>
+    </div>
+
+    <script src="/js/script.js"></script>
+    <script src="/js/signup.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lyro Maths | Login</title>
+
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="Login to Lyro Maths - Master Grade 12 Mathematics">
+    <meta name="theme-color" content="#1abc9c">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+
+    <!-- Icons -->
+    <link rel="icon" type="image/png" href="/images/lyro.png">
+    <link rel="apple-touch-icon" href="/images/lyro.png">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+    <!-- Preloader -->
+    <div id="preloader">
+        <img src="/images/logo.png" alt="Lyro Maths Logo" class="preloader-logo">
+    </div>
+
+    <div class="login-container">
+        <!-- Background Elements -->
+        <div class="bg-mesh"></div>
+
+        <!-- Login Card -->
+        <div class="login-card">
+            <!-- Logo & Brand -->
+            <div class="brand-header">
+                <img src="/images/logo.png" alt="Lyro Maths Logo" class="logo-img">
+                <h1 class="brand-title">Lyro Maths</h1>
+                <p class="brand-subtitle">Welcome Back!</p>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" class="login-form">
+                <!-- Email Input -->
+                <div class="form-group">
+                    <label for="email" class="form-label">
+                        <i class="fas fa-envelope"></i> Email
+                    </label>
+                    <input type="email" id="email" name="email" class="form-input" placeholder="Enter your email"
+                        required autocomplete="email">
+                    <span class="error-message"></span>
+                </div>
+
+                <!-- Password Input -->
+                <div class="form-group">
+                    <label for="password" class="form-label">
+                        <i class="fas fa-lock"></i> Password
+                    </label>
+                    <div class="password-wrapper">
+                        <input type="password" id="password" name="password" class="form-input"
+                            placeholder="Enter your password" required autocomplete="current-password">
+                        <button type="button" class="toggle-password" aria-label="Toggle password visibility">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <span class="error-message"></span>
+                </div>
+
+                <!-- Remember Me & Forgot Password -->
+                <div class="form-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="remember-me" name="remember">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-text">Remember me</span>
+                    </label>
+                    <a href="#" id="forgot-password" class="forgot-link">Forgot Password?</a>
+                </div>
+
+                <!-- Login Button -->
+                <button type="submit" class="btn btn-primary">
+                    <span class="btn-text">Login</span>
+                    <span class="btn-loader"></span>
+                </button>
+
+                <!-- Divider -->
+                <div class="divider">
+                    <span>or</span>
+                </div>
+
+                <!-- Sign Up Link -->
+                <div class="signup-section">
+                    <p class="signup-text">Don't have an account?</p>
+                    <a href="/signup" class="btn btn-secondary">
+                        <i class="fas fa-user-plus"></i> Sign Up
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Footer -->
+        <div class="login-footer">
+            <p>&copy; 2025 Lyro Maths. All rights reserved.</p>
+        </div>
+    </div>
+
+    <script src="/js/script.js"></script>
+    <script src="/js/login.js"></script>
+</body>
+
+</html>

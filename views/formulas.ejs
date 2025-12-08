@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lyro Maths | Formula Sheet</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/formulas.css">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- MathJax for LaTeX rendering -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
+</head>
+
+<body>
+    <div class="formulas-screen">
+        <div class="header">
+            <a href="/learn" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <h1 class="page-title">Formula Sheet</h1>
+            <div class="header-spacer"></div>
+        </div>
+
+        <main class="content-wrapper">
+            <div class="formulas-container">
+
+                <!-- Quadratic -->
+                <div class="formula-section">
+                    <h2 class="section-title">Quadratic Formula</h2>
+                    <div class="formula-card">
+                        $$x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$$
+                    </div>
+                </div>
+
+                <!-- Finance -->
+                <div class="formula-section">
+                    <h2 class="section-title">Finance (Simple/Compound Interest)</h2>
+                    <div class="formula-card">
+                        $$A = P(1+ni)$$
+                        $$A = P(1-ni)$$
+                        $$A = P(1-i)^n$$
+                        $$A = P(1+i)^n$$
+                    </div>
+                </div>
+
+                <!-- Arithmetic Series -->
+                <div class="formula-section">
+                    <h2 class="section-title">Arithmetic Series</h2>
+                    <div class="formula-card">
+                        $$T_n = a + (n-1)d$$
+                        $$S_n = \frac{n}{2}[2a + (n-1)d]$$
+                    </div>
+                </div>
+
+                <!-- Geometric Series -->
+                <div class="formula-section">
+                    <h2 class="section-title">Geometric Series</h2>
+                    <div class="formula-card">
+                        $$T_n = ar^{n-1}$$
+                        $$S_n = \frac{a(r^n - 1)}{r-1} \quad ; \quad r \neq 1$$
+                        $$S_\infty = \frac{a}{1-r} \quad ; \quad -1 < r < 1$$ </div>
+                    </div>
+
+                    <!-- Finance Annuities -->
+                    <div class="formula-section">
+                        <h2 class="section-title">Finance (Annuities)</h2>
+                        <div class="formula-card">
+                            $$F = \frac{x[(1+i)^n - 1]}{i}$$
+                            $$P = \frac{x[1 - (1+i)^{-n}]}{i}$$
+                        </div>
+                    </div>
+
+                    <!-- Calculus -->
+                    <div class="formula-section">
+                        <h2 class="section-title">Calculus</h2>
+                        <div class="formula-card">
+                            $$f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}$$
+                        </div>
+                    </div>
+
+                    <!-- Analytical Geometry -->
+                    <div class="formula-section">
+                        <h2 class="section-title">Analytical Geometry</h2>
+                        <div class="formula-card">
+                            $$d = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}$$
+                            $$\text{M}\left( \frac{x_1 + x_2}{2} ; \frac{y_1 + y_2}{2} \right)$$
+                            $$y = mx + c$$
+                            $$y - y_1 = m(x - x_1)$$
+                            $$m = \frac{y_2 - y_1}{x_2 - x_1}$$
+                            $$m = \tan \theta$$
+                            $$(x-a)^2 + (y-b)^2 = r^2$$
+                        </div>
+                    </div>
+
+                    <!-- Trigonometry Rules -->
+                    <div class="formula-section">
+                        <h2 class="section-title">Trigonometry Rules</h2>
+                        <div class="formula-card">
+                            $$\frac{a}{\sin A} = \frac{b}{\sin B} = \frac{c}{\sin C}$$
+                            $$a^2 = b^2 + c^2 - 2bc \cos A$$
+                            $$\text{area } \Delta ABC = \frac{1}{2} ab \sin C$$
+                        </div>
+                    </div>
+
+                    <!-- Trig Identities -->
+                    <div class="formula-section">
+                        <h2 class="section-title">Trigonometric Identities</h2>
+                        <div class="formula-card">
+                            $$\sin(\alpha + \beta) = \sin \alpha \cos \beta + \cos \alpha \sin \beta$$
+                            $$\sin(\alpha - \beta) = \sin \alpha \cos \beta - \cos \alpha \sin \beta$$
+                            $$\cos(\alpha + \beta) = \cos \alpha \cos \beta - \sin \alpha \sin \beta$$
+                            $$\cos(\alpha - \beta) = \cos \alpha \cos \beta + \sin \alpha \sin \beta$$
+                            $$\cos 2\alpha = \begin{cases} \cos^2 \alpha - \sin^2 \alpha \\ 1 - 2\sin^2 \alpha \\
+                            2\cos^2 \alpha - 1 \end{cases}$$
+                            $$\sin 2\alpha = 2 \sin \alpha \cos \alpha$$
+                        </div>
+                    </div>
+
+                    <!-- Statistics -->
+                    <div class="formula-section">
+                        <h2 class="section-title">Statistics</h2>
+                        <div class="formula-card">
+                            $$\bar{x} = \frac{\sum x}{n}$$
+                            $$\sigma^2 = \frac{\sum_{i=1}^{n} (x_i - \bar{x})^2}{n}$$
+                            $$P(A) = \frac{n(A)}{n(S)}$$
+                            $$P(A \text{ or } B) = P(A) + P(B) - P(A \text{ and } B)$$
+                            $$\hat{y} = a + bx$$
+                            $$b = \frac{\sum(x-\bar{x})(y-\bar{y})}{\sum(x-\bar{x})^2}$$
+                        </div>
+                    </div>
+
+                </div>
+        </main>
+    </div>
+
+    <script src="/js/script.js"></script>
+</body>
+
+</html>

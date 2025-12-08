@@ -1,0 +1,218 @@
+/* formulas.css - Formula Sheet Styling */
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: 100vh;
+}
+
+.formulas-screen {
+    min-height: 100vh;
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: radial-gradient(circle at top right, #1e293b, #0f172a);
+    overflow: hidden;
+}
+
+/* Dynamic Background */
+.formulas-screen::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background:
+        radial-gradient(circle at 80% 20%, rgba(26, 188, 156, 0.1), transparent 30%),
+        radial-gradient(circle at 20% 80%, rgba(243, 107, 65, 0.1), transparent 30%);
+    filter: blur(60px);
+    animation: meshPulse 10s ease-in-out infinite alternate;
+}
+
+@keyframes meshPulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(15, 23, 42, 0.8);
+    flex-shrink: 0;
+}
+
+.back-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: rgba(26, 188, 156, 0.15);
+    border: 1px solid rgba(26, 188, 156, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1abc9c;
+    font-size: 18px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.back-btn:hover {
+    background: rgba(26, 188, 156, 0.25);
+    border-color: rgba(26, 188, 156, 0.5);
+    transform: translateX(-3px);
+    box-shadow: 0 4px 12px rgba(26, 188, 156, 0.2);
+}
+
+.page-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+}
+
+.header-spacer {
+    width: 40px;
+}
+
+/* Content */
+.content-wrapper {
+    position: relative;
+    z-index: 5;
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 24px;
+    padding-bottom: 40px;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+.formulas-container {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Formula Sections */
+.formula-section {
+    background: rgba(30, 35, 45, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 24px;
+    backdrop-filter: blur(12px);
+    transition: all 0.3s ease;
+}
+
+.formula-section:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.4);
+    border-color: rgba(26, 188, 156, 0.2);
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1abc9c;
+    margin: 0 0 16px 0;
+    padding-bottom: 12px;
+    border-bottom: 2px solid rgba(26, 188, 156, 0.2);
+}
+
+.formula-card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* MathJax Styling */
+.formula-card mjx-container {
+    margin: 8px 0 !important;
+    color: #fff !important;
+    font-size: 1.1em !important;
+}
+
+.formula-card mjx-math {
+    color: #fff !important;
+}
+
+/* Scrollbar Styling */
+.content-wrapper::-webkit-scrollbar {
+    width: 8px;
+}
+
+.content-wrapper::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+.content-wrapper::-webkit-scrollbar-thumb {
+    background: rgba(26, 188, 156, 0.3);
+    border-radius: 4px;
+}
+
+.content-wrapper::-webkit-scrollbar-thumb:hover {
+    background: rgba(26, 188, 156, 0.5);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .page-title {
+        font-size: 18px;
+    }
+
+    .formula-section {
+        padding: 20px;
+    }
+
+    .section-title {
+        font-size: 16px;
+    }
+
+    .formula-card mjx-container {
+        font-size: 1em !important;
+    }
+}
+
+@media (max-width: 375px) {
+    .content-wrapper {
+        padding: 16px;
+    }
+
+    .formulas-container {
+        gap: 16px;
+    }
+
+    .formula-section {
+        padding: 16px;
+    }
+
+    .section-title {
+        font-size: 15px;
+        margin-bottom: 12px;
+    }
+
+    .formula-card mjx-container {
+        font-size: 0.9em !important;
+    }
+}

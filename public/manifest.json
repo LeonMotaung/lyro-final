@@ -1,0 +1,55 @@
+{
+    "name": "Lyro",
+    "short_name": "Lyro",
+    "description": "Master Grade 12 Maths. Achieve Your Potential.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#222a3a",
+    "theme_color": "#1abc9c",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+            "src": "/images/lyro.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/images/lyro.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "categories": [
+        "education",
+        "productivity"
+    ],
+    "screenshots": [],
+    "shortcuts": [
+        {
+            "name": "Learn",
+            "short_name": "Learn",
+            "description": "Start learning mathematics",
+            "url": "/learn",
+            "icons": [
+                {
+                    "src": "/images/lyro.png",
+                    "sizes": "192x192"
+                }
+            ]
+        },
+        {
+            "name": "Onboarding",
+            "short_name": "Start",
+            "description": "Get started with Lyro Maths",
+            "url": "/onboarding",
+            "icons": [
+                {
+                    "src": "/images/lyro.png",
+                    "sizes": "192x192"
+                }
+            ]
+        }
+    ]
+}
