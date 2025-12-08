@@ -6,6 +6,13 @@
   <img src="https://raw.githubusercontent.com/LeonMotaung/lyro-final/refs/heads/main/public/images/top1.png" alt="Top 1 in Maths" height="60"/>
   &nbsp;&nbsp;&nbsp;
   <img src="https://raw.githubusercontent.com/LeonMotaung/lyro-final/refs/heads/main/public/images/months.png" alt="App of the Month" height="60"/>
+  <br />
+  <br />
+  <a href="https://github.com/LeonMotaung/lyro-final/stargazers"><img src="https://img.shields.io/github/stars/LeonMotaung/lyro-final?color=ffcb47&labelColor=black&style=flat-square&logo=github&label=Stars" /></a>
+  <a href="https://github.com/LeonMotaung/lyro-final/graphs/contributors"><img src="https://img.shields.io/github/contributors/LeonMotaung/lyro-final?style=flat-square&logo=github&label=Contributors&labelColor=black" /></a>
+  <a href="https://github.com/LeonMotaung/lyro-final/releases"><img src="https://img.shields.io/badge/Downloads-5-369eff?labelColor=black&logo=github&style=flat-square" /></a>
+  <br />
+  <br />
 
   ### Master Grade 12 Maths. Achieve Your Potential.
 
