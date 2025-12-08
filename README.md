@@ -3,6 +3,10 @@
 
   # Lyro Maths
 
+  <img src="https://raw.githubusercontent.com/LeonMotaung/lyro-final/refs/heads/main/public/images/top1.png" alt="Top 1 in Maths" height="60"/>
+  &nbsp;&nbsp;&nbsp;
+  <img src="https://raw.githubusercontent.com/LeonMotaung/lyro-final/refs/heads/main/public/images/months.png" alt="App of the Month" height="60"/>
+
   ### Master Grade 12 Maths. Achieve Your Potential.
 
   [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
