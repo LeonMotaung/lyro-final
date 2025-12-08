@@ -22,6 +22,14 @@
   [![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-green.svg)](https://www.mongodb.com/)
 
   [Live Demo](#) • [Features](#features) • [Installation](#installation) • [Tech Stack](#tech-stack)
+  
+  <br />
+  
+  <a href="https://github.com/LeonMotaung/lyro-final" target="_blank"><img src="https://raw.githubusercontent.com/LeonMotaung/lyro-final/refs/heads/main/public/images/content.png" alt="Lyro Content" width="46%"/></a>
+  <a href="https://github.com/LeonMotaung/lyro-final" target="_blank"><img src="https://raw.githubusercontent.com/LeonMotaung/lyro-final/refs/heads/main/public/images/hub.jpg" alt="Lyro Hub" width="46%"/></a>
+  
+  <br />
+  <br />
 </div>
 
 ---
