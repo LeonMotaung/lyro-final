@@ -1,15 +1,15 @@
 <div align="center">
   <img src="https://raw.githubusercontent.com/LeonMotaung/lyro-final/refs/heads/main/public/images/lyro.png" alt="Lyro Maths Logo" width="200"/>
-  
+
   # Lyro Maths
-  
+
   ### Master Grade 12 Maths. Achieve Your Potential.
-  
+
   [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
   [![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
   [![Express.js](https://img.shields.io/badge/Express.js-5.1.0-lightgrey.svg)](https://expressjs.com/)
   [![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-green.svg)](https://www.mongodb.com/)
-  
+
   [Live Demo](#) • [Features](#features) • [Installation](#installation) • [Tech Stack](#tech-stack)
 </div>
 
