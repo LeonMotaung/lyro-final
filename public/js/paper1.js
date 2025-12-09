@@ -1,6 +1,13 @@
 // paper1.js - Interactive functionality for Paper 1 Topics Page
 
 document.addEventListener('DOMContentLoaded', function () {
+    // Ensure content starts at top (important for iPhone)
+    const contentArea = document.querySelector('.content-area');
+    if (contentArea) {
+        contentArea.scrollTop = 0;
+    }
+    window.scrollTo(0, 0);
+
     // Initialize the page
     initPaper1Page();
 });

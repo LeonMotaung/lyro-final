@@ -13,16 +13,17 @@
 
 <body>
     <div class="paper2-screen">
-        <!-- Header -->
-        <div class="header">
-            <div class="header-top">
-                <a href="/learn" class="back-btn">
-                    <i class="fas fa-arrow-left"></i>
-                </a>
-                <div class="header-title">Paper 2</div>
-                <div class="header-spacer"></div>
-            </div>
+        <!-- Floating Header -->
+        <div class="floating-header">
+            <a href="/learn" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <div class="header-title">Paper 2</div>
+            <div class="header-spacer"></div>
+        </div>
 
+        <!-- Scrollable Content -->
+        <div class="content-area">
             <!-- Hero Section -->
             <div class="hero-section">
                 <div class="hero-icon">
@@ -39,90 +40,88 @@
                         <div class="progress-fill" style="width: 0%"></div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Topics List -->
-                <div class="topics-container">
-                    <div class="topics-header">
-                        <h2>Topics</h2>
-                        <span class="topics-count">4 Topics</span>
-                    </div>
+            <!-- Topics List -->
+            <div class="topics-container">
+                <div class="topics-header">
+                    <h2>Topics</h2>
+                    <span class="topics-count">4 Topics</span>
+                </div>
 
-                    <div class="topics-list">
-                        <!-- Topic 1: Statistics -->
-                        <a href="#" class="topic-card">
-                            <div class="topic-icon orange">
-                                <i class="fas fa-chart-bar"></i>
+                <div class="topics-list">
+                    <!-- Topic 1: Statistics -->
+                    <a href="#" class="topic-card">
+                        <div class="topic-icon orange">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <div class="topic-content">
+                            <h3 class="topic-title">Statistics</h3>
+                            <p class="topic-description">Analyze data, measures of central tendency, and dispersion</p>
+                            <div class="topic-meta">
+                                <span class="topic-lessons"><i class="fas fa-book-open"></i> 14 Lessons</span>
+                                <span class="topic-progress">0%</span>
                             </div>
-                            <div class="topic-content">
-                                <h3 class="topic-title">Statistics</h3>
-                                <p class="topic-description">Analyze data, measures of central tendency, and dispersion
-                                </p>
-                                <div class="topic-meta">
-                                    <span class="topic-lessons"><i class="fas fa-book-open"></i> 14 Lessons</span>
-                                    <span class="topic-progress">0%</span>
-                                </div>
-                            </div>
-                            <div class="topic-chevron">
-                                <i class="fas fa-chevron-right"></i>
-                            </div>
-                        </a>
+                        </div>
+                        <div class="topic-chevron">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </a>
 
-                        <!-- Topic 2: Analytical Geometry -->
-                        <a href="#" class="topic-card">
-                            <div class="topic-icon purple">
-                                <i class="fas fa-vector-square"></i>
+                    <!-- Topic 2: Analytical Geometry -->
+                    <a href="#" class="topic-card">
+                        <div class="topic-icon purple">
+                            <i class="fas fa-vector-square"></i>
+                        </div>
+                        <div class="topic-content">
+                            <h3 class="topic-title">Analytical Geometry</h3>
+                            <p class="topic-description">Master coordinate geometry, lines, circles, and conic sections
+                            </p>
+                            <div class="topic-meta">
+                                <span class="topic-lessons"><i class="fas fa-book-open"></i> 16 Lessons</span>
+                                <span class="topic-progress">0%</span>
                             </div>
-                            <div class="topic-content">
-                                <h3 class="topic-title">Analytical Geometry</h3>
-                                <p class="topic-description">Master coordinate geometry, lines, circles, and conic
-                                    sections</p>
-                                <div class="topic-meta">
-                                    <span class="topic-lessons"><i class="fas fa-book-open"></i> 16 Lessons</span>
-                                    <span class="topic-progress">0%</span>
-                                </div>
-                            </div>
-                            <div class="topic-chevron">
-                                <i class="fas fa-chevron-right"></i>
-                            </div>
-                        </a>
+                        </div>
+                        <div class="topic-chevron">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </a>
 
-                        <!-- Topic 3: Trigonometry -->
-                        <a href="#" class="topic-card">
-                            <div class="topic-icon teal">
-                                <i class="fas fa-wave-square"></i>
+                    <!-- Topic 3: Trigonometry -->
+                    <a href="#" class="topic-card">
+                        <div class="topic-icon teal">
+                            <i class="fas fa-wave-square"></i>
+                        </div>
+                        <div class="topic-content">
+                            <h3 class="topic-title">Trigonometry</h3>
+                            <p class="topic-description">Explore trigonometric functions, identities, and equations</p>
+                            <div class="topic-meta">
+                                <span class="topic-lessons"><i class="fas fa-book-open"></i> 18 Lessons</span>
+                                <span class="topic-progress">0%</span>
                             </div>
-                            <div class="topic-content">
-                                <h3 class="topic-title">Trigonometry</h3>
-                                <p class="topic-description">Explore trigonometric functions, identities, and equations
-                                </p>
-                                <div class="topic-meta">
-                                    <span class="topic-lessons"><i class="fas fa-book-open"></i> 18 Lessons</span>
-                                    <span class="topic-progress">0%</span>
-                                </div>
-                            </div>
-                            <div class="topic-chevron">
-                                <i class="fas fa-chevron-right"></i>
-                            </div>
-                        </a>
+                        </div>
+                        <div class="topic-chevron">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </a>
 
-                        <!-- Topic 4: Euclidean Geometry -->
-                        <a href="#" class="topic-card">
-                            <div class="topic-icon green">
-                                <i class="fas fa-draw-polygon"></i>
+                    <!-- Topic 4: Euclidean Geometry -->
+                    <a href="#" class="topic-card">
+                        <div class="topic-icon green">
+                            <i class="fas fa-draw-polygon"></i>
+                        </div>
+                        <div class="topic-content">
+                            <h3 class="topic-title">Euclidean Geometry</h3>
+                            <p class="topic-description">Study geometric proofs, theorems, and spatial reasoning</p>
+                            <div class="topic-meta">
+                                <span class="topic-lessons"><i class="fas fa-book-open"></i> 12 Lessons</span>
+                                <span class="topic-progress">0%</span>
                             </div>
-                            <div class="topic-content">
-                                <h3 class="topic-title">Euclidean Geometry</h3>
-                                <p class="topic-description">Study geometric proofs, theorems, and spatial reasoning</p>
-                                <div class="topic-meta">
-                                    <span class="topic-lessons"><i class="fas fa-book-open"></i> 12 Lessons</span>
-                                    <span class="topic-progress">0%</span>
-                                </div>
-                            </div>
-                            <div class="topic-chevron">
-                                <i class="fas fa-chevron-right"></i>
-                            </div>
-                        </a>
-                    </div>
+                        </div>
+                        <div class="topic-chevron">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>
