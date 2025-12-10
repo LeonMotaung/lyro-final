@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
 const crypto = require('crypto');
+const cookieParser = require('cookie-parser');
 
 // Models
 const User = require('./models/User');
@@ -16,6 +17,7 @@ require('dotenv').config();
 // Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cookieParser('lyro-secure-secret-key-change-this')); // Use a secret for signed cookies
 app.use(express.static(path.join(__dirname, 'public')));
 
 // View Engine
@@ -75,8 +77,50 @@ app.get('/terms', (req, res) => {
 
 // --- Admin Routes ---
 
-// Admin Dashboard
-app.get('/admin', async (req, res) => {
+// Auth Middleware
+const isAdmin = (req, res, next) => {
+    // Check for signed cookie to allow access
+    if (req.signedCookies.adminAuth === 'true') {
+        next();
+    } else {
+        res.redirect('/admin/login');
+    }
+};
+
+// Admin Login (Unprotected)
+app.get('/admin/login', (req, res) => {
+    if (req.signedCookies.adminAuth === 'true') {
+        return res.redirect('/admin');
+    }
+    res.render('admin/login', { error: null });
+});
+
+app.post('/admin/login', (req, res) => {
+    const { username, password } = req.body;
+    // Use environment variables or default fallback (Note: Change these in production!)
+    const validUser = process.env.ADMIN_USERNAME || 'admin';
+    const validPass = process.env.ADMIN_PASSWORD || 'password123';
+
+    if (username === validUser && password === validPass) {
+        // Set signed cookie valid for 24 hours
+        res.cookie('adminAuth', 'true', {
+            signed: true,
+            httpOnly: true,
+            maxAge: 24 * 60 * 60 * 1000
+        });
+        res.redirect('/admin');
+    } else {
+        res.render('admin/login', { error: 'Invalid credentials' });
+    }
+});
+
+app.get('/admin/logout', (req, res) => {
+    res.clearCookie('adminAuth');
+    res.redirect('/admin/login');
+});
+
+// Admin Dashboard (Protected)
+app.get('/admin', isAdmin, async (req, res) => {
     try {
         const userCount = await User.countDocuments();
         const questionCount = await Question.countDocuments();
@@ -92,8 +136,8 @@ app.get('/admin', async (req, res) => {
     }
 });
 
-// Admin Users
-app.get('/admin/users', async (req, res) => {
+// Admin Users (Protected)
+app.get('/admin/users', isAdmin, async (req, res) => {
     try {
         const users = await User.find().sort({ createdAt: -1 });
         res.render('admin/users', { page: 'users', users });
@@ -103,8 +147,8 @@ app.get('/admin/users', async (req, res) => {
     }
 });
 
-// Admin Content
-app.get('/admin/content', async (req, res) => {
+// Admin Content (Protected)
+app.get('/admin/content', isAdmin, async (req, res) => {
     try {
         // You might want to list recent questions here too
         res.render('admin/content', { page: 'content' });
@@ -114,7 +158,7 @@ app.get('/admin/content', async (req, res) => {
     }
 });
 
-app.post('/admin/content/create', async (req, res) => {
+app.post('/admin/content/create', isAdmin, async (req, res) => {
     try {
         const { questionNumber, difficulty, imageUrl, questionText, answer, timer, additionalFields } = req.body;
 
@@ -140,8 +184,8 @@ app.post('/admin/content/create', async (req, res) => {
     }
 });
 
-// Admin Vouchers
-app.get('/admin/vouchers', async (req, res) => {
+// Admin Vouchers (Protected)
+app.get('/admin/vouchers', isAdmin, async (req, res) => {
     try {
         const vouchers = await Voucher.find().sort({ createdAt: -1 }).limit(50);
         res.render('admin/vouchers', { page: 'vouchers', vouchers, newVouchers: [] });
@@ -151,7 +195,7 @@ app.get('/admin/vouchers', async (req, res) => {
     }
 });
 
-app.post('/admin/vouchers/create', async (req, res) => {
+app.post('/admin/vouchers/create', isAdmin, async (req, res) => {
     try {
         const { durationMonths, quantity } = req.body;
         const qty = parseInt(quantity) || 1;
