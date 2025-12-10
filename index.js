@@ -172,13 +172,75 @@ app.get('/admin/users', isAdmin, async (req, res) => {
 });
 
 // Admin Content (Protected)
+// Admin Content (Protected) - List and Create
 app.get('/admin/content', isAdmin, async (req, res) => {
     try {
-        // You might want to list recent questions here too
-        res.render('admin/content', { page: 'content', success: req.query.success });
+        const questions = await Question.find().sort({ createdAt: -1 });
+        res.render('admin/content', { page: 'content', success: req.query.success, questions: questions || [] });
     } catch (err) {
         console.error(err);
         res.status(500).send('Server Error');
+    }
+});
+
+// Delete Question
+app.post('/admin/content/delete/:id', isAdmin, async (req, res) => {
+    try {
+        await Question.findByIdAndDelete(req.params.id);
+        res.redirect('/admin/content');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error deleting question');
+    }
+});
+
+// Edit Question Form
+app.get('/admin/content/edit/:id', isAdmin, async (req, res) => {
+    try {
+        const question = await Question.findById(req.params.id);
+        if (!question) return res.status(404).send('Question not found');
+        res.render('admin/edit_content', { page: 'content', question });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+});
+
+// Update Question
+app.post('/admin/content/update/:id', isAdmin, upload.single('imageFile'), async (req, res) => {
+    try {
+        const { paper, topic, questionNumber, difficulty, imageUrl, imgSourceType, questionText, answer, timer, additionalFields } = req.body;
+
+        const question = await Question.findById(req.params.id);
+        if (!question) return res.status(404).send('Question not found');
+
+        // Handle Image Logic
+        let finalImageUrl = imageUrl || '';
+        if (req.file) {
+            const b64 = Buffer.from(req.file.buffer).toString('base64');
+            const mimeType = req.file.mimetype;
+            finalImageUrl = `data:${mimeType};base64,${b64}`;
+        } else if (imgSourceType === 'keep') {
+            finalImageUrl = question.imageUrl;
+        }
+
+        const fields = additionalFields || [];
+
+        question.paper = paper;
+        question.topic = topic;
+        question.questionNumber = questionNumber;
+        question.difficulty = difficulty;
+        question.imageUrl = finalImageUrl;
+        question.questionText = questionText;
+        question.answer = answer;
+        question.timer = timer;
+        question.additionalFields = fields; // This might need robust handling if partial updates, but replace is fine
+
+        await question.save();
+        res.redirect('/admin/content?success=true');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error updating question');
     }
 });
 
