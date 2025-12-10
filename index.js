@@ -55,6 +55,14 @@ app.get('/paper2', (req, res) => {
     res.render('paper2');
 });
 
+app.get('/about', (req, res) => {
+    res.render('about');
+});
+
+app.get('/instructions', (req, res) => {
+    res.render('instructions');
+});
+
 // Start Server
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running on http://0.0.0.0:${PORT}`);

@@ -89,4 +89,28 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Modal Theme Toggle Removed
+
+    // --- Share Functionality ---
+    const shareApp = async () => {
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: 'Lyro Maths',
+                    text: 'Master Grade 12 Maths with Lyro Maths!',
+                    url: window.location.origin
+                });
+                console.log('App shared successfully');
+            } catch (err) {
+                console.log('Error sharing:', err);
+            }
+        } else {
+            alert('Share feature is not supported on this browser.');
+        }
+    };
+
+    const shareBtn = document.getElementById('share-app-btn');
+    const inviteBtn = document.getElementById('invite-friends-btn');
+
+    if (shareBtn) shareBtn.addEventListener('click', shareApp);
+    if (inviteBtn) inviteBtn.addEventListener('click', shareApp);
 });
