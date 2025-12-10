@@ -108,17 +108,40 @@
                                     <% } %>
 
                                         <!-- Action Bar -->
-                                        <div class="flex items-center justify-between mt-4 md:mt-0">
-                                            <button onclick="toggleAnswer('<%= question._id %>')"
-                                                class="bg-accent-teal/10 hover:bg-accent-teal/20 text-accent-teal border border-accent-teal/20 px-6 py-2 rounded-xl transition-all font-semibold flex items-center gap-2 text-sm z-10 relative cursor-pointer">
-                                                <i class="fas fa-eye"></i> Show Answer
-                                            </button>
-                                            <% if (question.timer> 0) { %>
-                                                <div class="text-gray-500 text-sm flex items-center gap-2">
-                                                    <i class="fas fa-clock"></i>
-                                                    <%= Math.floor(question.timer / 60) %>m <%= question.timer % 60 %>s
+                                        <div class="flex flex-wrap items-center justify-between mt-4 gap-4">
+
+                                            <% if (question.timer && question.timer> 0) { %>
+                                                <!-- Timer Controls -->
+                                                <div class="flex items-center gap-4">
+                                                    <button id="btn-start-<%= question._id %>"
+                                                        onclick="startQuestion('<%= question._id %>', <%= question.timer %>)"
+                                                        class="bg-accent-purple/20 hover:bg-accent-purple/30 text-accent-purple border border-accent-purple/30 px-6 py-2 rounded-xl transition-all font-bold text-sm flex items-center gap-2">
+                                                        <i class="fas fa-play"></i> Start Timer
+                                                    </button>
+                                                    <div id="timer-badge-<%= question._id %>"
+                                                        class="hidden bg-black/40 border border-white/10 rounded-lg px-3 py-1.5 text-white font-mono font-medium text-sm flex items-center gap-2">
+                                                        <i class="fas fa-clock text-accent-purple text-xs"></i>
+                                                        <span id="timer-display-<%= question._id %>">
+                                                            <%= Math.floor(question.timer / 60) %>:<%= (question.timer %
+                                                                    60).toString().padStart(2, '0' ) %>
+                                                        </span>
+                                                    </div>
                                                 </div>
-                                                <% } %>
+
+                                                <!-- Done / Show Answer Button (Disabled Initially) -->
+                                                <button id="btn-done-<%= question._id %>"
+                                                    onclick="toggleAnswer('<%= question._id %>')" disabled
+                                                    class="opacity-50 cursor-not-allowed bg-accent-teal/10 text-accent-teal border border-accent-teal/20 px-6 py-2 rounded-xl transition-all font-semibold flex items-center gap-2 text-sm z-10 relative"
+                                                    title="Available after <%= Math.floor(question.timer / 2) %> seconds">
+                                                    <i class="fas fa-check"></i> Done (Show Answer)
+                                                </button>
+                                                <% } else { %>
+                                                    <!-- No Timer - Default Behavior -->
+                                                    <button onclick="toggleAnswer('<%= question._id %>')"
+                                                        class="bg-accent-teal/10 hover:bg-accent-teal/20 text-accent-teal border border-accent-teal/20 px-6 py-2 rounded-xl transition-all font-semibold flex items-center gap-2 text-sm z-10 relative cursor-pointer">
+                                                        <i class="fas fa-eye"></i> Show Answer
+                                                    </button>
+                                                    <% } %>
                                         </div>
 
                                         <!-- Hidden Answer -->
@@ -154,11 +177,63 @@
     </div>
 
     <script>
+
+        const timers = {};
+
+        function startQuestion(id, duration) {
+            const startBtn = document.getElementById(`btn-start-${id}`);
+            const timerBadge = document.getElementById(`timer-badge-${id}`);
+            const timerDisplay = document.getElementById(`timer-display-${id}`);
+            const doneBtn = document.getElementById(`btn-done-${id}`);
+
+            // UI Updates
+            startBtn.classList.add('hidden');
+            timerBadge.classList.remove('hidden');
+
+            let timeLeft = duration;
+            const halfTime = duration / 2;
+
+            // Update immediately
+            updateTimerUI(timerDisplay, timeLeft);
+
+            // Start Interval
+            timers[id] = setInterval(() => {
+                timeLeft--;
+                updateTimerUI(timerDisplay, timeLeft);
+
+                // Enable Done button after half time
+                // Or if time is up
+                if ((duration - timeLeft) >= halfTime || timeLeft <= 0) {
+                    if (doneBtn.disabled) {
+                        doneBtn.disabled = false;
+                        doneBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                        doneBtn.classList.add('hover:bg-accent-teal/20', 'cursor-pointer');
+                        doneBtn.title = "Click to reveal answer";
+                    }
+                }
+
+                if (timeLeft <= 0) {
+                    clearInterval(timers[id]);
+                    timerDisplay.parentElement.classList.add('text-red-400');
+                }
+            }, 1000);
+        }
+
+        function updateTimerUI(el, seconds) {
+            if (seconds < 0) seconds = 0;
+            const m = Math.floor(seconds / 60);
+            const s = seconds % 60;
+            el.innerText = `${m}:${s.toString().padStart(2, '0')}`;
+        }
+
         function toggleAnswer(id) {
             const el = document.getElementById(`answer-${id}`);
+            const btn = document.getElementById(`btn-done-${id}`); // Might be null if no timer, but that's fine for toggle
+
             if (el.classList.contains('hidden')) {
                 el.classList.remove('hidden');
-                // Retrigger MathJax reflow if needed, though usually initial pass covers it
+                // Optional: Scroll to answer
+                // el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             } else {
                 el.classList.add('hidden');
             }
