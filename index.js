@@ -175,7 +175,7 @@ app.get('/admin/users', isAdmin, async (req, res) => {
 app.get('/admin/content', isAdmin, async (req, res) => {
     try {
         // You might want to list recent questions here too
-        res.render('admin/content', { page: 'content' });
+        res.render('admin/content', { page: 'content', success: req.query.success });
     } catch (err) {
         console.error(err);
         res.status(500).send('Server Error');
@@ -211,7 +211,7 @@ app.post('/admin/content/create', isAdmin, upload.single('imageFile'), async (re
         });
 
         await newQuestion.save();
-        res.redirect('/admin/content');
+        res.redirect('/admin/content?success=true');
     } catch (err) {
         console.error(err);
         res.status(500).send('Error creating question');
