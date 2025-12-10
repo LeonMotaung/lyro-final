@@ -1,20 +1,25 @@
-<div class="sidebar">
-    <div class="sidebar-title">Lyro Admin</div>
-    <nav>
-        <a href="/admin" class="nav-link <%= page === 'dashboard' ? 'active' : '' %>">
-            <i class="fas fa-home"></i> Dashboard
+<div class="w-64 bg-bg-secondary border-r border-white/5 flex flex-col p-6 gap-4 hidden md:flex shrink-0">
+    <div class="text-2xl font-bold text-accent-teal mb-6 text-center tracking-tight">Lyro Admin</div>
+    <nav class="flex flex-col gap-2">
+        <a href="/admin"
+            class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all <%= page === 'dashboard' ? 'bg-accent-teal/10 text-accent-teal border border-accent-teal/20' : 'text-gray-400 hover:bg-white/5 hover:text-white' %>">
+            <i class="fas fa-home w-5"></i> Dashboard
         </a>
-        <a href="/admin/content" class="nav-link <%= page === 'content' ? 'active' : '' %>">
-            <i class="fas fa-book"></i> Content Management
+        <a href="/admin/content"
+            class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all <%= page === 'content' ? 'bg-accent-teal/10 text-accent-teal border border-accent-teal/20' : 'text-gray-400 hover:bg-white/5 hover:text-white' %>">
+            <i class="fas fa-book w-5"></i> Content
         </a>
-        <a href="/admin/users" class="nav-link <%= page === 'users' ? 'active' : '' %>">
-            <i class="fas fa-users"></i> Users
+        <a href="/admin/users"
+            class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all <%= page === 'users' ? 'bg-accent-teal/10 text-accent-teal border border-accent-teal/20' : 'text-gray-400 hover:bg-white/5 hover:text-white' %>">
+            <i class="fas fa-users w-5"></i> Users
         </a>
-        <a href="/admin/vouchers" class="nav-link <%= page === 'vouchers' ? 'active' : '' %>">
-            <i class="fas fa-ticket-alt"></i> Vouchers
+        <a href="/admin/vouchers"
+            class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all <%= page === 'vouchers' ? 'bg-accent-teal/10 text-accent-teal border border-accent-teal/20' : 'text-gray-400 hover:bg-white/5 hover:text-white' %>">
+            <i class="fas fa-ticket-alt w-5"></i> Vouchers
         </a>
-        <a href="/" class="nav-link" style="margin-top: 2rem; border: 1px solid rgba(255,255,255,0.2);">
-            <i class="fas fa-sign-out-alt"></i> Back to Site
+        <a href="/"
+            class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-400 hover:bg-white/5 hover:text-white transition-all mt-auto border border-white/10">
+            <i class="fas fa-sign-out-alt w-5"></i> Back to Site
         </a>
     </nav>
 </div>

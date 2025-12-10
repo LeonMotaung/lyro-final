@@ -5,93 +5,153 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lyro Admin | Vouchers</title>
-    <link rel="stylesheet" href="/css/admin.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bg: {
+                            primary: '#0a0e17',
+                            secondary: '#141824',
+                            tertiary: '#1d2230',
+                        },
+                        accent: {
+                            teal: '#1ab69d',
+                            orange: '#ff6b35',
+                            purple: '#8b5cf6',
+                            green: '#10b981',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
-<body>
-    <div class="admin-container">
-        <%- include('sidebar', { page: 'vouchers' }) %>
+<body class="bg-bg-primary text-gray-200 font-sans min-h-screen flex">
+    <%- include('sidebar', { page: 'vouchers' }) %>
 
-            <div class="main-content">
-                <div class="page-header">
-                    <h1>Voucher Generation</h1>
+        <div class="flex-1 p-8 overflow-y-auto">
+            <div class="max-w-6xl mx-auto">
+                <div class="flex justify-between items-center mb-8">
+                    <h1 class="text-3xl font-bold text-white tracking-tight">Voucher Management</h1>
                 </div>
 
-                <div class="grid-cols-2">
-                    <div class="card">
-                        <h2>Generate New Vouchers</h2>
-                        <form action="/admin/vouchers/create" method="POST">
-                            <div class="form-group">
-                                <label>Duration</label>
-                                <select name="durationMonths" required>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                    <!-- Generator Card -->
+                    <div
+                        class="lg:col-span-1 bg-bg-secondary/50 backdrop-blur-sm border border-white/5 rounded-2xl p-6 shadow-xl h-fit">
+                        <h2 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                            <i class="fas fa-magic text-accent-orange"></i> Generate
+                        </h2>
+                        <form action="/admin/vouchers/create" method="POST" class="space-y-4">
+                            <div class="space-y-2">
+                                <label class="text-sm font-medium text-gray-400">Duration</label>
+                                <select name="durationMonths" required
+                                    class="w-full bg-bg-tertiary border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent-orange/50 transition-all appearance-none">
                                     <option value="1">1 Month</option>
                                     <option value="3">3 Months</option>
                                     <option value="6">6 Months</option>
                                     <option value="12">12 Months (1 Year)</option>
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <label>Quantity</label>
-                                <input type="number" name="quantity" value="1" min="1" max="50">
+                            <div class="space-y-2">
+                                <label class="text-sm font-medium text-gray-400">Quantity</label>
+                                <input type="number" name="quantity" value="1" min="1" max="50"
+                                    class="w-full bg-bg-tertiary border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent-orange/50 transition-all">
                             </div>
-                            <button type="submit" class="btn btn-primary">Generate Codes</button>
+                            <button type="submit"
+                                class="w-full bg-gradient-to-r from-accent-orange to-orange-600 hover:from-orange-500 hover:to-orange-700 text-white font-bold py-3 rounded-xl shadow-lg shadow-accent-orange/20 transition-all transform hover:-translate-y-0.5">
+                                Generate Codes <i class="fas fa-arrow-right ml-2"></i>
+                            </button>
                         </form>
                     </div>
 
-                    <div class="card">
-                        <h2>Recent Output</h2>
-                        <% if (newVouchers && newVouchers.length> 0) { %>
-                            <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px;">
-                                <p>Copy these codes:</p>
-                                <ul style="list-style: none; padding: 0;">
+                    <!-- Recent Output Card -->
+                    <div
+                        class="lg:col-span-2 bg-bg-secondary/50 backdrop-blur-sm border border-white/5 rounded-2xl p-6 shadow-xl flex flex-col">
+                        <h2 class="text-xl font-bold text-white mb-6">Recent Output</h2>
+                        <div
+                            class="bg-black/30 rounded-xl p-4 flex-1 overflow-y-auto max-h-[300px] border border-white/5">
+                            <% if (newVouchers && newVouchers.length> 0) { %>
+                                <div class="mb-2 text-sm text-accent-green font-medium"><i
+                                        class="fas fa-check-circle mr-1"></i> Generated Successfully! Copy below:</div>
+                                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
                                     <% newVouchers.forEach(v=> { %>
-                                        <li
-                                            style="font-family: monospace; font-size: 1.2rem; margin: 0.5rem 0; color: var(--admin-accent);">
-                                            <%= v.code %>
-                                        </li>
+                                        <div class="bg-white/5 rounded-lg p-2 text-center border border-white/5 hover:bg-white/10 hover:border-accent-teal/50 transition-all group cursor-pointer relative"
+                                            onclick="navigator.clipboard.writeText('<%= v.code %>')">
+                                            <code
+                                                class="text-accent-teal font-bold text-lg tracking-wider"><%= v.code %></code>
+                                            <div class="text-[10px] text-gray-500">
+                                                <%= v.durationMonths %> Mo
+                                            </div>
+                                            <div
+                                                class="absolute inset-0 bg-accent-teal text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity font-bold rounded-lg pointer-events-none">
+                                                Copy</div>
+                                        </div>
                                         <% }) %>
-                                </ul>
-                            </div>
-                            <% } else { %>
-                                <p style="opacity: 0.5;">Generated codes will appear here.</p>
-                                <% } %>
+                                </div>
+                                <% } else { %>
+                                    <div class="flex flex-col items-center justify-center h-full text-gray-500 py-10">
+                                        <i class="fas fa-ticket-alt text-4xl mb-3 opacity-20"></i>
+                                        <p>No codes generated yet.</p>
+                                    </div>
+                                    <% } %>
+                        </div>
                     </div>
                 </div>
 
-                <div class="card">
-                    <h2>All Active Vouchers</h2>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Code</th>
-                                <th>Duration</th>
-                                <th>Status</th>
-                                <th>Created</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% vouchers.forEach(v=> { %>
-                                <tr>
-                                    <td style="font-family: monospace;">
-                                        <%= v.code %>
-                                    </td>
-                                    <td>
-                                        <%= v.durationMonths %> Months
-                                    </td>
-                                    <td><span class="badge badge-<%= v.status %>">
-                                            <%= v.status %>
-                                        </span></td>
-                                    <td>
-                                        <%= new Date(v.createdAt).toLocaleDateString() %>
-                                    </td>
+                <!-- List Table -->
+                <div
+                    class="bg-bg-secondary/50 backdrop-blur-sm border border-white/5 rounded-2xl overflow-hidden shadow-xl">
+                    <div class="p-6 border-b border-white/5">
+                        <h2 class="text-xl font-bold text-white">All Active Vouchers</h2>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-white/5">
+                                    <th class="p-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Code</th>
+                                    <th class="p-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Duration
+                                    </th>
+                                    <th class="p-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Status</th>
+                                    <th class="p-4 text-xs font-bold text-gray-400 uppercase tracking-wider text-right">
+                                        Created</th>
                                 </tr>
-                                <% }) %>
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody class="divide-y divide-white/5">
+                                <% vouchers.forEach(v=> { %>
+                                    <tr class="hover:bg-white/5 transition-colors">
+                                        <td
+                                            class="p-4 font-mono text-accent-teal font-medium tracking-wide border-l-2 border-transparent hover:border-accent-teal">
+                                            <%= v.code %>
+                                        </td>
+                                        <td class="p-4 text-gray-300 text-sm">
+                                            <%= v.durationMonths %> Months
+                                        </td>
+                                        <td class="p-4">
+                                            <span
+                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <%= v.status === 'active' ? 'bg-accent-green/10 text-accent-green' : 'bg-white/10 text-gray-400' %>">
+                                                <%= v.status.charAt(0).toUpperCase() + v.status.slice(1) %>
+                                            </span>
+                                        </td>
+                                        <td class="p-4 text-right text-gray-500 text-xs text-right">
+                                            <%= new Date(v.createdAt).toLocaleDateString() %>
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-    </div>
+        </div>
 </body>
 
 </html>

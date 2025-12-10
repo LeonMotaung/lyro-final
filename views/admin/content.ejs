@@ -38,257 +38,232 @@
 
 <body class="bg-bg-primary text-gray-200 font-sans min-h-screen flex">
 
-    <!-- Sidebar (You might want to refactor sidebar.ejs to Tailwind too, but for now we keep the layout structure) -->
-    <div class="w-64 bg-bg-secondary border-r border-white/5 flex flex-col p-6 gap-4 hidden md:flex shrink-0">
-        <div class="text-2xl font-bold text-accent-teal mb-6 text-center tracking-tight">Lyro Admin</div>
-        <nav class="flex flex-col gap-2">
-            <a href="/admin"
-                class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-400 hover:bg-white/5 hover:text-white transition-all">
-                <i class="fas fa-home w-5"></i> Dashboard
-            </a>
-            <a href="/admin/content"
-                class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium bg-accent-teal/10 text-accent-teal border border-accent-teal/20 transition-all">
-                <i class="fas fa-book w-5"></i> Content
-            </a>
-            <a href="/admin/users"
-                class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-400 hover:bg-white/5 hover:text-white transition-all">
-                <i class="fas fa-users w-5"></i> Users
-            </a>
-            <a href="/admin/vouchers"
-                class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-400 hover:bg-white/5 hover:text-white transition-all">
-                <i class="fas fa-ticket-alt w-5"></i> Vouchers
-            </a>
-            <a href="/"
-                class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-400 hover:bg-white/5 hover:text-white transition-all mt-auto border border-white/10">
-                <i class="fas fa-sign-out-alt w-5"></i> Back to Site
-            </a>
-        </nav>
-    </div>
+    <%- include('sidebar', { page: 'content' }) %>
 
-    <!-- Main Content -->
-    <div class="flex-1 p-8 overflow-y-auto">
-        <div class="max-w-4xl mx-auto">
-            <div class="flex justify-between items-center mb-8">
-                <h1 class="text-3xl font-bold text-white tracking-tight">Content Management</h1>
-            </div>
+        <!-- Main Content -->
+        <div class="flex-1 p-8 overflow-y-auto">
+            <div class="max-w-4xl mx-auto">
+                <div class="flex justify-between items-center mb-8">
+                    <h1 class="text-3xl font-bold text-white tracking-tight">Content Management</h1>
+                </div>
 
-            <div class="bg-bg-secondary/50 backdrop-blur-sm border border-white/5 rounded-2xl p-8 shadow-xl">
-                <h2 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                    <i class="fas fa-plus-circle text-accent-teal"></i> Add New Question
-                </h2>
+                <div class="bg-bg-secondary/50 backdrop-blur-sm border border-white/5 rounded-2xl p-8 shadow-xl">
+                    <h2 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                        <i class="fas fa-plus-circle text-accent-teal"></i> Add New Question
+                    </h2>
 
-                <form action="/admin/content/create" method="POST" enctype="multipart/form-data" class="space-y-6">
+                    <form action="/admin/content/create" method="POST" enctype="multipart/form-data" class="space-y-6">
 
-                    <!-- Paper & Topic Selection -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="space-y-2">
-                            <label class="text-sm font-medium text-gray-400">Paper</label>
-                            <select name="paper" id="paperSelect" required onchange="updateTopics()"
-                                class="w-full bg-bg-tertiary border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent-teal/50 focus:ring-1 focus:ring-accent-teal/50 transition-all appearance-none cursor-pointer">
-                                <option value="" disabled selected>Select Paper</option>
-                                <option value="Paper 1">Paper 1</option>
-                                <option value="Paper 2">Paper 2</option>
-                            </select>
-                        </div>
-                        <div class="space-y-2">
-                            <label class="text-sm font-medium text-gray-400">Topic</label>
-                            <select name="topic" id="topicSelect" required
-                                class="w-full bg-bg-tertiary border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent-teal/50 focus:ring-1 focus:ring-accent-teal/50 transition-all appearance-none cursor-pointer">
-                                <option value="" disabled selected>Select Paper First</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Question Number & Difficulty -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="space-y-2">
-                            <label class="text-sm font-medium text-gray-400">Question Number</label>
-                            <input type="text" name="questionNumber" placeholder="e.g. 1.1, 1a" required
-                                class="w-full bg-bg-tertiary border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-accent-teal/50 focus:ring-1 focus:ring-accent-teal/50 transition-all">
-                        </div>
-                        <div class="space-y-2">
-                            <label class="text-sm font-medium text-gray-400">Difficulty</label>
-                            <select name="difficulty"
-                                class="w-full bg-bg-tertiary border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent-teal/50 focus:ring-1 focus:ring-accent-teal/50 transition-all appearance-none cursor-pointer">
-                                <option value="easy">Easy</option>
-                                <option value="medium" selected>Medium</option>
-                                <option value="hard">Hard</option>
-                                <option value="expert">Expert</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Image Upload -->
-                    <div class="space-y-3 bg-white/5 rounded-xl p-4 border border-white/5">
-                        <label class="text-sm font-bold text-gray-300 block mb-2">Image Source</label>
-                        <div class="flex gap-6 mb-4">
-                            <label class="flex items-center gap-2 cursor-pointer group">
-                                <div
-                                    class="relative flex items-center justify-center w-5 h-5 rounded-full border border-gray-500 group-hover:border-accent-teal transition-all">
-                                    <input type="radio" name="imgSourceType" value="url" checked
-                                        onchange="toggleImageSource(this.value)" class="peer opacity-0 absolute">
-                                    <div
-                                        class="w-2.5 h-2.5 rounded-full bg-accent-teal opacity-0 peer-checked:opacity-100 transition-opacity">
-                                    </div>
-                                </div>
-                                <span class="text-sm text-gray-400 group-hover:text-white transition-colors">Paste
-                                    URL</span>
-                            </label>
-                            <label class="flex items-center gap-2 cursor-pointer group">
-                                <div
-                                    class="relative flex items-center justify-center w-5 h-5 rounded-full border border-gray-500 group-hover:border-accent-teal transition-all">
-                                    <input type="radio" name="imgSourceType" value="upload"
-                                        onchange="toggleImageSource(this.value)" class="peer opacity-0 absolute">
-                                    <div
-                                        class="w-2.5 h-2.5 rounded-full bg-accent-teal opacity-0 peer-checked:opacity-100 transition-opacity">
-                                    </div>
-                                </div>
-                                <span class="text-sm text-gray-400 group-hover:text-white transition-colors">Upload
-                                    File</span>
-                            </label>
-                        </div>
-
-                        <div id="img-url-input">
-                            <input type="url" name="imageUrl" placeholder="https://example.com/image.png"
-                                class="w-full bg-bg-primary border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-accent-teal/50 focus:ring-1 focus:ring-accent-teal/50 transition-all">
-                        </div>
-
-                        <div id="img-upload-input" class="hidden">
-                            <input type="file" name="imageFile" accept="image/*"
-                                class="w-full bg-bg-primary border border-white/10 rounded-xl px-4 py-3 text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-accent-teal/10 file:text-accent-teal hover:file:bg-accent-teal/20 transition-all">
-                            <p class="text-xs text-gray-500 mt-2">Image will be optimized and stored securely.</p>
-                        </div>
-                    </div>
-
-                    <!-- Question Text -->
-                    <div class="space-y-2">
-                        <label class="text-sm font-medium text-gray-400 flex justify-between">
-                            <span>Question Text</span>
-                            <span class="text-xs text-gray-600">LaTeX Supported: \(...\) or $$...$$</span>
-                        </label>
-                        <textarea name="questionText" id="questionText" rows="4" required
-                            oninput="updatePreview('questionText', 'questionPreview')"
-                            class="w-full bg-bg-tertiary border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-accent-teal/50 focus:ring-1 focus:ring-accent-teal/50 transition-all font-mono text-sm"></textarea>
-                        <div id="questionPreview"
-                            class="min-h-[60px] p-4 rounded-xl bg-white/5 border border-white/10 text-gray-300 text-sm">
-                            Preview will appear here...
-                        </div>
-                    </div>
-
-                    <!-- Dynamic Fields -->
-                    <div class="space-y-4">
-                        <label class="text-sm font-medium text-gray-400">Additional Options</label>
-                        <div id="dynamic-fields-container" class="space-y-3">
-                            <!-- JS will append here -->
-                        </div>
-                        <button type="button" onclick="addDynamicField()"
-                            class="text-xs font-semibold text-accent-teal bg-accent-teal/10 hover:bg-accent-teal/20 px-4 py-2 rounded-lg transition-all border border-accent-teal/20">
-                            <i class="fas fa-plus mr-1"></i> Add Option Field
-                        </button>
-                    </div>
-
-                    <!-- Answer & Timer -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="space-y-2">
-                            <label class="text-sm font-medium text-gray-400">Correct Answer</label>
-                            <textarea name="answer" id="answer" required
-                                oninput="updatePreview('answer', 'answerPreview')"
-                                class="w-full bg-bg-tertiary border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-accent-teal/50 focus:ring-1 focus:ring-accent-teal/50 transition-all font-mono text-sm h-32"></textarea>
-                            <div id="answerPreview"
-                                class="min-h-[60px] p-4 rounded-xl bg-white/5 border border-white/10 text-gray-300 text-sm">
-                                Preview...
+                        <!-- Paper & Topic Selection -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-sm font-medium text-gray-400">Paper</label>
+                                <select name="paper" id="paperSelect" required onchange="updateTopics()"
+                                    class="w-full bg-bg-tertiary border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent-teal/50 focus:ring-1 focus:ring-accent-teal/50 transition-all appearance-none cursor-pointer">
+                                    <option value="" disabled selected>Select Paper</option>
+                                    <option value="Paper 1">Paper 1</option>
+                                    <option value="Paper 2">Paper 2</option>
+                                </select>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-sm font-medium text-gray-400">Topic</label>
+                                <select name="topic" id="topicSelect" required
+                                    class="w-full bg-bg-tertiary border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent-teal/50 focus:ring-1 focus:ring-accent-teal/50 transition-all appearance-none cursor-pointer">
+                                    <option value="" disabled selected>Select Paper First</option>
+                                </select>
                             </div>
                         </div>
-                        <div class="space-y-2">
-                            <label class="text-sm font-medium text-gray-400">Timer (seconds)</label>
-                            <input type="number" name="timer" value="60"
-                                class="w-full bg-bg-tertiary border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-accent-teal/50 focus:ring-1 focus:ring-accent-teal/50 transition-all">
-                        </div>
-                    </div>
 
-                    <button type="submit"
-                        class="w-full bg-gradient-to-r from-accent-teal to-teal-600 hover:from-teal-400 hover:to-teal-500 text-white font-bold py-4 rounded-xl shadow-lg shadow-accent-teal/20 hover:shadow-accent-teal/40 transform hover:-translate-y-0.5 transition-all duration-200">
-                        Sanve Question
-                    </button>
-                </form>
+                        <!-- Question Number & Difficulty -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-sm font-medium text-gray-400">Question Number</label>
+                                <input type="text" name="questionNumber" placeholder="e.g. 1.1, 1a" required
+                                    class="w-full bg-bg-tertiary border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-accent-teal/50 focus:ring-1 focus:ring-accent-teal/50 transition-all">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-sm font-medium text-gray-400">Difficulty</label>
+                                <select name="difficulty"
+                                    class="w-full bg-bg-tertiary border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent-teal/50 focus:ring-1 focus:ring-accent-teal/50 transition-all appearance-none cursor-pointer">
+                                    <option value="easy">Easy</option>
+                                    <option value="medium" selected>Medium</option>
+                                    <option value="hard">Hard</option>
+                                    <option value="expert">Expert</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Image Upload -->
+                        <div class="space-y-3 bg-white/5 rounded-xl p-4 border border-white/5">
+                            <label class="text-sm font-bold text-gray-300 block mb-2">Image Source</label>
+                            <div class="flex gap-6 mb-4">
+                                <label class="flex items-center gap-2 cursor-pointer group">
+                                    <div
+                                        class="relative flex items-center justify-center w-5 h-5 rounded-full border border-gray-500 group-hover:border-accent-teal transition-all">
+                                        <input type="radio" name="imgSourceType" value="url" checked
+                                            onchange="toggleImageSource(this.value)" class="peer opacity-0 absolute">
+                                        <div
+                                            class="w-2.5 h-2.5 rounded-full bg-accent-teal opacity-0 peer-checked:opacity-100 transition-opacity">
+                                        </div>
+                                    </div>
+                                    <span class="text-sm text-gray-400 group-hover:text-white transition-colors">Paste
+                                        URL</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer group">
+                                    <div
+                                        class="relative flex items-center justify-center w-5 h-5 rounded-full border border-gray-500 group-hover:border-accent-teal transition-all">
+                                        <input type="radio" name="imgSourceType" value="upload"
+                                            onchange="toggleImageSource(this.value)" class="peer opacity-0 absolute">
+                                        <div
+                                            class="w-2.5 h-2.5 rounded-full bg-accent-teal opacity-0 peer-checked:opacity-100 transition-opacity">
+                                        </div>
+                                    </div>
+                                    <span class="text-sm text-gray-400 group-hover:text-white transition-colors">Upload
+                                        File</span>
+                                </label>
+                            </div>
+
+                            <div id="img-url-input">
+                                <input type="url" name="imageUrl" placeholder="https://example.com/image.png"
+                                    class="w-full bg-bg-primary border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-accent-teal/50 focus:ring-1 focus:ring-accent-teal/50 transition-all">
+                            </div>
+
+                            <div id="img-upload-input" class="hidden">
+                                <input type="file" name="imageFile" accept="image/*"
+                                    class="w-full bg-bg-primary border border-white/10 rounded-xl px-4 py-3 text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-accent-teal/10 file:text-accent-teal hover:file:bg-accent-teal/20 transition-all">
+                                <p class="text-xs text-gray-500 mt-2">Image will be optimized and stored securely.</p>
+                            </div>
+                        </div>
+
+                        <!-- Question Text -->
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium text-gray-400 flex justify-between">
+                                <span>Question Text</span>
+                                <span class="text-xs text-gray-600">LaTeX Supported: \(...\) or $$...$$</span>
+                            </label>
+                            <textarea name="questionText" id="questionText" rows="4" required
+                                oninput="updatePreview('questionText', 'questionPreview')"
+                                class="w-full bg-bg-tertiary border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-accent-teal/50 focus:ring-1 focus:ring-accent-teal/50 transition-all font-mono text-sm"></textarea>
+                            <div id="questionPreview"
+                                class="min-h-[60px] p-4 rounded-xl bg-white/5 border border-white/10 text-gray-300 text-sm">
+                                Preview will appear here...
+                            </div>
+                        </div>
+
+                        <!-- Dynamic Fields -->
+                        <div class="space-y-4">
+                            <label class="text-sm font-medium text-gray-400">Additional Options</label>
+                            <div id="dynamic-fields-container" class="space-y-3">
+                                <!-- JS will append here -->
+                            </div>
+                            <button type="button" onclick="addDynamicField()"
+                                class="text-xs font-semibold text-accent-teal bg-accent-teal/10 hover:bg-accent-teal/20 px-4 py-2 rounded-lg transition-all border border-accent-teal/20">
+                                <i class="fas fa-plus mr-1"></i> Add Option Field
+                            </button>
+                        </div>
+
+                        <!-- Answer & Timer -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-sm font-medium text-gray-400">Correct Answer</label>
+                                <textarea name="answer" id="answer" required
+                                    oninput="updatePreview('answer', 'answerPreview')"
+                                    class="w-full bg-bg-tertiary border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-accent-teal/50 focus:ring-1 focus:ring-accent-teal/50 transition-all font-mono text-sm h-32"></textarea>
+                                <div id="answerPreview"
+                                    class="min-h-[60px] p-4 rounded-xl bg-white/5 border border-white/10 text-gray-300 text-sm">
+                                    Preview...
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-sm font-medium text-gray-400">Timer (seconds)</label>
+                                <input type="number" name="timer" value="60"
+                                    class="w-full bg-bg-tertiary border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-accent-teal/50 focus:ring-1 focus:ring-accent-teal/50 transition-all">
+                            </div>
+                        </div>
+
+                        <button type="submit"
+                            class="w-full bg-gradient-to-r from-accent-teal to-teal-600 hover:from-teal-400 hover:to-teal-500 text-white font-bold py-4 rounded-xl shadow-lg shadow-accent-teal/20 hover:shadow-accent-teal/40 transform hover:-translate-y-0.5 transition-all duration-200">
+                            Sanve Question
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
 
-    <script>
-        const topics = {
-            'Paper 1': [
-                'Algebra, Equations, and Inequalities',
-                'Patterns & Geometric Series',
-                'Functions and Graphs',
-                'Financial Mathematics',
-                'Calculus',
-                'Probability',
-                'Counting Principles',
-                'Advanced Functions'
-            ],
-            'Paper 2': [
-                'Statistics',
-                'Analytical Geometry',
-                'Trigonometry',
-                'Euclidean Geometry'
-            ]
-        };
+        <script>
+            const topics = {
+                'Paper 1': [
+                    'Algebra, Equations, and Inequalities',
+                    'Patterns & Geometric Series',
+                    'Functions and Graphs',
+                    'Financial Mathematics',
+                    'Calculus',
+                    'Probability',
+                    'Counting Principles',
+                    'Advanced Functions'
+                ],
+                'Paper 2': [
+                    'Statistics',
+                    'Analytical Geometry',
+                    'Trigonometry',
+                    'Euclidean Geometry'
+                ]
+            };
 
-        function updateTopics() {
-            const paperSelect = document.getElementById('paperSelect');
-            const topicSelect = document.getElementById('topicSelect');
-            const selectedPaper = paperSelect.value;
+            function updateTopics() {
+                const paperSelect = document.getElementById('paperSelect');
+                const topicSelect = document.getElementById('topicSelect');
+                const selectedPaper = paperSelect.value;
 
-            topicSelect.innerHTML = '<option value="" disabled selected>Select Topic</option>';
+                topicSelect.innerHTML = '<option value="" disabled selected>Select Topic</option>';
 
-            if (topics[selectedPaper]) {
-                topics[selectedPaper].forEach(topic => {
-                    const option = document.createElement('option');
-                    option.value = topic;
-                    option.textContent = topic;
-                    topicSelect.appendChild(option);
-                });
+                if (topics[selectedPaper]) {
+                    topics[selectedPaper].forEach(topic => {
+                        const option = document.createElement('option');
+                        option.value = topic;
+                        option.textContent = topic;
+                        topicSelect.appendChild(option);
+                    });
+                }
             }
-        }
 
-        function addDynamicField() {
-            const container = document.getElementById('dynamic-fields-container');
-            const index = container.children.length;
-            const div = document.createElement('div');
-            div.className = 'flex gap-3 items-center animate-fade-in';
-            div.innerHTML = `
+            function addDynamicField() {
+                const container = document.getElementById('dynamic-fields-container');
+                const index = container.children.length;
+                const div = document.createElement('div');
+                div.className = 'flex gap-3 items-center animate-fade-in';
+                div.innerHTML = `
                 <input type="text" name="additionalFields[${index}][label]" placeholder="Label" class="w-1/3 bg-bg-primary border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-accent-teal/50">
                 <input type="text" name="additionalFields[${index}][value]" placeholder="Value" class="w-full bg-bg-primary border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-accent-teal/50">
                 <button type="button" onclick="this.parentElement.remove()" class="text-red-400 hover:text-red-300 p-2 transition-colors"><i class="fas fa-times"></i></button>
             `;
-            container.appendChild(div);
-        }
-
-        function toggleImageSource(type) {
-            const urlInput = document.getElementById('img-url-input');
-            const uploadInput = document.getElementById('img-upload-input');
-            if (type === 'upload') {
-                urlInput.classList.add('hidden');
-                uploadInput.classList.remove('hidden');
-            } else {
-                urlInput.classList.remove('hidden');
-                uploadInput.classList.add('hidden');
+                container.appendChild(div);
             }
-        }
 
-        function updatePreview(inputId, previewId) {
-            const input = document.getElementById(inputId).value;
-            const preview = document.getElementById(previewId);
-
-            // Allow basic spacing rendering
-            preview.innerHTML = input.replace(/\n/g, '<br>');
-
-            if (window.MathJax) {
-                MathJax.typesetPromise([preview]).catch((err) => console.log(err));
+            function toggleImageSource(type) {
+                const urlInput = document.getElementById('img-url-input');
+                const uploadInput = document.getElementById('img-upload-input');
+                if (type === 'upload') {
+                    urlInput.classList.add('hidden');
+                    uploadInput.classList.remove('hidden');
+                } else {
+                    urlInput.classList.remove('hidden');
+                    uploadInput.classList.add('hidden');
+                }
             }
-        }
-    </script>
+
+            function updatePreview(inputId, previewId) {
+                const input = document.getElementById(inputId).value;
+                const preview = document.getElementById(previewId);
+
+                // Allow basic spacing rendering
+                preview.innerHTML = input.replace(/\n/g, '<br>');
+
+                if (window.MathJax) {
+                    MathJax.typesetPromise([preview]).catch((err) => console.log(err));
+                }
+            }
+        </script>
 </body>
 
 </html>
