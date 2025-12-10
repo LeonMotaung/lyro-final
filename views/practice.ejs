@@ -34,6 +34,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 </head>
 
 <body class="bg-bg-primary text-white font-sans min-h-screen">
@@ -142,6 +143,13 @@
                                                         <i class="fas fa-eye"></i> Show Answer
                                                     </button>
                                                     <% } %>
+                                                        <!-- Share Button -->
+                                                        <button
+                                                            onclick="shareQuestion('<%= question.questionNumber %>', '<%= topic %>')"
+                                                            class="bg-white/5 hover:bg-white/10 text-gray-400 border border-white/10 px-4 py-2 rounded-xl transition-all font-semibold flex items-center gap-2 text-sm z-10 relative cursor-pointer"
+                                                            title="Share this question">
+                                                            <i class="fas fa-share-alt"></i>
+                                                        </button>
                                         </div>
 
                                         <!-- Hidden Answer -->
@@ -214,9 +222,43 @@
 
                 if (timeLeft <= 0) {
                     clearInterval(timers[id]);
-                    timerDisplay.parentElement.classList.add('text-red-400');
+                    timerDisplay.parentElement.classList.add('text-accent-teal', 'font-bold');
+                    timerDisplay.innerText = "0:00";
+
+                    // Trigger Achievement Animation
+                    triggerConfetti();
+
+                    // Visual cue on the button
+                    if (doneBtn) {
+                        doneBtn.innerHTML = '<i class="fas fa-trophy"></i> Time Up! View Answer';
+                        doneBtn.classList.remove('bg-accent-teal/10');
+                        doneBtn.classList.add('bg-accent-teal', 'text-white', 'shadow-lg', 'shadow-accent-teal/40', 'animate-pulse');
+                    }
                 }
             }, 1000);
+        }
+
+        function triggerConfetti() {
+            var duration = 3 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            var random = function (min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            var interval = setInterval(function () {
+                var timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                var particleCount = 50 * (timeLeft / duration);
+                // since particles fall down, start a bit higher than random
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: random(0.1, 0.3), y: Math.random() - 0.2 } }));
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: random(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
         }
 
         function updateTimerUI(el, seconds) {
@@ -232,10 +274,28 @@
 
             if (el.classList.contains('hidden')) {
                 el.classList.remove('hidden');
-                // Optional: Scroll to answer
-                // el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             } else {
                 el.classList.add('hidden');
+            }
+        }
+
+        async function shareQuestion(qNum, topic) {
+            const shareData = {
+                title: 'Lyro Maths Challenge',
+                text: `Check out Question ${qNum} on ${topic}!`,
+                url: window.location.href
+            };
+
+            try {
+                if (navigator.share) {
+                    await navigator.share(shareData);
+                } else {
+                    // Fallback to clipboard
+                    await navigator.clipboard.writeText(`${shareData.text}\n${shareData.url}`);
+                    alert('Link copied to clipboard!');
+                }
+            } catch (err) {
+                console.error('Error sharing:', err);
             }
         }
     </script>
