@@ -3,6 +3,14 @@ const mongoose = require('mongoose');
 const path = require('path');
 const crypto = require('crypto');
 const cookieParser = require('cookie-parser');
+const multer = require('multer');
+
+// Configure Multer (Memory Storage for Serverless/Base64 conversion)
+const storage = multer.memoryStorage();
+const upload = multer({
+    storage: storage,
+    limits: { fileSize: 5 * 1024 * 1024 } // 5MB limit
+});
 
 // Models
 const User = require('./models/User');
@@ -158,18 +166,28 @@ app.get('/admin/content', isAdmin, async (req, res) => {
     }
 });
 
-app.post('/admin/content/create', isAdmin, async (req, res) => {
+app.post('/admin/content/create', isAdmin, upload.single('imageFile'), async (req, res) => {
     try {
-        const { questionNumber, difficulty, imageUrl, questionText, answer, timer, additionalFields } = req.body;
+        const { paper, topic, questionNumber, difficulty, imageUrl, questionText, answer, timer, additionalFields } = req.body;
 
-        // Handle additionalFields if it comes in as array or undefined
-        // If from form, it might be an array of objects or undefined if empty
+        // Handle Image Logic
+        let finalImageUrl = imageUrl || '';
+        if (req.file) {
+            // Convert buffer to Data URI
+            const b64 = Buffer.from(req.file.buffer).toString('base64');
+            const mimeType = req.file.mimetype;
+            finalImageUrl = `data:${mimeType};base64,${b64}`;
+        }
+
+        // Handle additionalFields
         const fields = additionalFields || [];
 
         const newQuestion = new Question({
+            paper,
+            topic,
             questionNumber,
             difficulty,
-            imageUrl,
+            imageUrl: finalImageUrl,
             questionText,
             additionalFields: fields,
             answer,
@@ -177,7 +195,7 @@ app.post('/admin/content/create', isAdmin, async (req, res) => {
         });
 
         await newQuestion.save();
-        res.redirect('/admin/content'); // Redirect back to refresh/showing success
+        res.redirect('/admin/content');
     } catch (err) {
         console.error(err);
         res.status(500).send('Error creating question');

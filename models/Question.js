@@ -13,6 +13,15 @@ const questionSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    paper: {
+        type: String,
+        enum: ['Paper 1', 'Paper 2'],
+        required: true
+    },
+    topic: {
+        type: String,
+        required: true
+    },
     // For "more fields", we can store arbitrary key-value pairs or an array of additional content
     additionalFields: [{
         label: String,
