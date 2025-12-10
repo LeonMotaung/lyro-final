@@ -80,10 +80,6 @@ body {
     flex-direction: column;
     background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
     overflow: hidden;
-    max-width: 1200px;
-    margin: 0 auto;
-    border-left: 1px solid var(--glass-border);
-    border-right: 1px solid var(--glass-border);
 }
 
 /* Animated Background */
@@ -675,12 +671,91 @@ body {
     background: rgba(255, 255, 255, 0.1);
     border-radius: var(--radius-full);
 }
+
+/* Responsive Design */
+@media (max-width: 380px) {
+    .hero-title {
+        font-size: 28px;
+    }
+
+    .hero-icon {
+        width: 72px;
+        height: 72px;
+        font-size: 32px;
+    }
+
+    .topic-card {
+        padding: var(--space-md);
+    }
+
+    .topic-icon {
+        width: 48px;
+        height: 48px;
+        min-width: 48px;
+        font-size: 20px;
+    }
+
+    .topic-title {
+        font-size: 15px;
+    }
+
+    .topic-description {
+        font-size: 12px;
+    }
 }
 
-to {
-    opacity: 1;
-    transform: translateY(0);
+@media (min-width: 768px) {
+    .paper1-screen {
+        max-width: 100%;
+        padding: 0 var(--space-lg);
+    }
+
+    .topics-list {
+        gap: var(--space-md);
+    }
+
+    .topic-card {
+        padding: 20px;
+    }
 }
+
+@media (min-width: 1024px) {
+    .paper1-screen {
+        max-width: 1200px;
+        margin: 0 auto;
+        border-right: 1px solid var(--glass-border);
+        border-left: 1px solid var(--glass-border);
+    }
+
+    .topics-list {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: var(--space-md);
+    }
+
+    .topic-card {
+        flex: 1 1 calc(33% - var(--space-md));
+        max-width: calc(33% - var(--space-md));
+    }
+
+    .hero-section {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+}
+
+/* Loading Animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Utility Classes */

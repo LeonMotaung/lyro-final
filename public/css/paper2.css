@@ -698,10 +698,8 @@ body {
 
 @media (min-width: 768px) {
     .paper2-screen {
-        max-width: 480px;
-        margin: 0 auto;
-        border-left: 1px solid var(--glass-border);
-        border-right: 1px solid var(--glass-border);
+        max-width: 100%;
+        padding: 0 var(--space-lg);
     }
 
     .topics-list {
@@ -710,6 +708,32 @@ body {
 
     .topic-card {
         padding: 20px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .paper2-screen {
+        max-width: 1200px;
+        margin: 0 auto;
+        border-right: 1px solid var(--glass-border);
+        border-left: 1px solid var(--glass-border);
+    }
+
+    .topics-list {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: var(--space-md);
+    }
+
+    .topic-card {
+        flex: 1 1 calc(33% - var(--space-md));
+        max-width: calc(33% - var(--space-md));
+    }
+
+    .hero-section {
+        max-width: 800px;
+        margin: 0 auto;
     }
 }
 

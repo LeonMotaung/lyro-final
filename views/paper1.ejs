@@ -5,191 +5,371 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lyro Maths | Paper 1</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bg: {
+                            primary: '#0a0e17',
+                            secondary: '#141824',
+                            tertiary: '#1d2230',
+                        },
+                        accent: {
+                            teal: '#1ab69d',
+                            orange: '#ff6b35',
+                            purple: '#8b5cf6',
+                            green: '#10b981',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 3s ease-in-out infinite',
+                        'shimmer': 'shimmer 2s infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-8px) rotate(5deg)' },
+                        },
+                        shimmer: {
+                            '0%': { transform: 'translateX(-100%)' },
+                            '100%': { transform: 'translateX(100%)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <link rel="stylesheet" href="/css/styles.css">
-    <link rel="stylesheet" href="/css/paper1.css">
     <link rel="manifest" href="/manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 9999px;
+        }
+    </style>
 </head>
 
-<body>
-    <div class="paper1-screen">
+<body class="bg-bg-primary text-white font-sans overflow-hidden h-screen selection:bg-accent-teal selection:text-white">
+    <div class="h-full w-full flex flex-col relative bg-gradient-to-br from-bg-primary to-bg-secondary">
+
+        <!-- Ambient Background Effects -->
+        <div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
+            <div class="absolute top-[10%] left-[10%] w-96 h-96 bg-accent-teal/5 rounded-full blur-3xl animate-pulse">
+            </div>
+            <div class="absolute bottom-[20%] right-[10%] w-96 h-96 bg-accent-purple/5 rounded-full blur-3xl animate-pulse"
+                style="animation-delay: 1s;"></div>
+        </div>
+
         <!-- Floating Header -->
-        <div class="floating-header">
-            <a href="/learn" class="back-btn">
-                <i class="fas fa-arrow-left"></i>
+        <div
+            class="floating-header flex-none sticky top-0 z-50 backdrop-blur-xl bg-[#0a0e17]/85 border-b border-white/10 px-6 py-4 flex items-center gap-4 transition-all duration-300">
+            <a href="/learn"
+                class="back-btn w-10 h-10 rounded-full bg-[#1e232d]/75 border border-white/10 flex items-center justify-center text-white hover:border-accent-teal hover:-translate-x-0.5 transition-all duration-200 group relative overflow-hidden">
+                <div
+                    class="absolute inset-0 bg-gradient-to-br from-accent-teal/50 to-transparent opacity-0 group-hover:opacity-20 transition-opacity">
+                </div>
+                <i class="fas fa-arrow-left relative z-10 text-base"></i>
             </a>
-            <div class="header-title">Paper 1</div>
-            <div class="header-spacer"></div>
+            <div class="header-title flex-1 text-xl font-bold tracking-tight">Paper 1</div>
+            <div class="w-10 opacity-0"></div>
         </div>
 
         <!-- Scrollable Content -->
-        <div class="content-area">
+        <div
+            class="content-area flex-1 overflow-y-auto overflow-x-hidden relative z-10 custom-scrollbar pb-32 pt-6 scroll-smooth">
+
             <!-- Hero Section -->
-            <div class="hero-section">
-                <div class="hero-icon">
-                    <i class="fas fa-square-root-alt"></i>
-                </div>
-                <h1 class="hero-title">Paper 1 Topics</h1>
-                <p class="hero-subtitle">Master the fundamentals of Grade 12 Mathematics</p>
-                <div class="progress-card">
-                    <div class="progress-info">
-                        <span class="progress-label">Overall Progress</span>
-                        <span class="progress-value">0%</span>
+            <div class="hero-section px-6 py-8 text-center relative max-w-3xl mx-auto">
+                <div
+                    class="hero-icon w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-accent-teal to-[#2dd4bf] rounded-2xl flex items-center justify-center text-4xl text-white shadow-lg shadow-accent-teal/30 relative group animate-float ring-1 ring-white/10">
+                    <i class="fas fa-square-root-alt drop-shadow-md"></i>
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-accent-teal to-accent-purple rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10">
                     </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 0%"></div>
+                </div>
+                <h1
+                    class="hero-title text-3xl font-extrabold mb-1 bg-gradient-to-br from-white to-white/80 bg-clip-text text-transparent tracking-tight">
+                    Paper 1 Topics</h1>
+                <p class="hero-subtitle text-white/60 text-[15px] font-medium mb-6 max-w-[280px] mx-auto">Master the
+                    fundamentals of Grade 12 Mathematics</p>
+
+                <!-- Progress Card -->
+                <div
+                    class="progress-card bg-[#1e232d]/75 backdrop-blur-xl border border-white/10 rounded-2xl p-6 mx-auto max-w-md shadow-lg relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-gradient-to-br from-accent-teal/5 to-accent-purple/5 opacity-50">
+                    </div>
+                    <div class="relative z-10">
+                        <div class="progress-info flex justify-between items-center mb-2">
+                            <span class="progress-label text-sm font-semibold text-white/80">Overall Progress</span>
+                            <span
+                                class="progress-value text-xl font-extrabold text-accent-teal drop-shadow-sm">0%</span>
+                        </div>
+                        <div class="progress-bar w-full h-2 bg-white/10 rounded-full overflow-hidden">
+                            <div class="progress-fill h-full bg-gradient-to-r from-accent-teal to-[#2dd4bf] rounded-full shadow-[0_0_20px_rgba(26,182,157,0.4)] relative overflow-hidden"
+                                style="width: 0%">
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent w-full animate-shimmer">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- Topics List -->
-            <div class="topics-container">
-                <div class="topics-header">
-                    <h2>Topics</h2>
-                    <span class="topics-count">8 Topics</span>
+            <div class="topics-container px-6 pb-6 max-w-[1200px] mx-auto relative">
+                <div class="topics-header flex justify-between items-center mb-6 px-1">
+                    <h2 class="text-2xl font-extrabold text-white tracking-tight">Topics</h2>
+                    <span
+                        class="topics-count text-sm font-semibold text-white/80 bg-[#1e232d]/80 px-3 py-1 rounded-full border border-white/10">8
+                        Topics</span>
                 </div>
 
-                <div class="topics-list">
+                <div class="topics-list flex flex-col gap-4 lg:grid lg:grid-cols-3 lg:gap-6">
                     <!-- Topic 1 -->
-                    <a href="#" class="topic-card">
-                        <div class="topic-icon teal">
+                    <a href="#"
+                        class="topic-card group relative bg-[#1e232d]/75 backdrop-blur-xl border border-white/10 rounded-2xl p-5 flex items-center gap-4 hover:-translate-y-0.5 hover:border-white/15 hover:shadow-xl transition-all duration-300 overflow-hidden">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        </div>
+                        <div
+                            class="topic-icon w-14 h-14 min-w-[56px] rounded-xl flex items-center justify-center text-2xl relative z-10 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6 bg-gradient-to-br from-accent-teal to-[#2dd4bf] text-white shadow-lg shadow-accent-teal/30">
                             <i class="fas fa-function"></i>
                         </div>
-                        <div class="topic-content">
-                            <h3 class="topic-title">Algebra, Equations, and Inequalities</h3>
-                            <p class="topic-description">Solve equations, inequalities, and algebraic expressions</p>
-                            <div class="topic-meta">
-                                <span class="topic-lessons"><i class="fas fa-book-open"></i> 12 Lessons</span>
-                                <span class="topic-progress">0%</span>
+                        <div class="topic-content flex-1 min-w-0 flex flex-col gap-1 z-10">
+                            <h3 class="topic-title text-base font-bold text-white leading-snug">Algebra, Equations, and
+                                Inequalities</h3>
+                            <p class="topic-description text-[13px] text-white/60 leading-snug line-clamp-2">Solve
+                                equations, inequalities, and algebraic expressions</p>
+                            <div class="topic-meta flex items-center gap-4 mt-1">
+                                <span
+                                    class="topic-lessons text-xs font-medium text-white/40 flex items-center gap-1.5"><i
+                                        class="fas fa-book-open text-[11px] opacity-80"></i> 12 Lessons</span>
+                                <span
+                                    class="topic-progress text-xs font-bold text-accent-teal bg-accent-teal/10 px-2.5 py-1 rounded-full">0%</span>
                             </div>
                         </div>
-                        <div class="topic-chevron">
+                        <div
+                            class="topic-chevron w-8 h-8 min-w-[32px] rounded-full bg-white/5 flex items-center justify-center text-sm text-white/60 transition-all duration-200 group-hover:bg-white/10 group-hover:translate-x-0.5 group-hover:text-white z-10">
                             <i class="fas fa-chevron-right"></i>
                         </div>
                     </a>
 
                     <!-- Topic 2 -->
-                    <a href="#" class="topic-card">
-                        <div class="topic-icon orange">
+                    <a href="#"
+                        class="topic-card group relative bg-[#1e232d]/75 backdrop-blur-xl border border-white/10 rounded-2xl p-5 flex items-center gap-4 hover:-translate-y-0.5 hover:border-white/15 hover:shadow-xl transition-all duration-300 overflow-hidden">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        </div>
+                        <div
+                            class="topic-icon w-14 h-14 min-w-[56px] rounded-xl flex items-center justify-center text-2xl relative z-10 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6 bg-gradient-to-br from-accent-orange to-[#ff8c42] text-white shadow-lg shadow-accent-orange/30">
                             <i class="fas fa-chart-line"></i>
                         </div>
-                        <div class="topic-content">
-                            <h3 class="topic-title">Patterns & Geometric Series</h3>
-                            <p class="topic-description">Explore sequences, series, and pattern recognition</p>
-                            <div class="topic-meta">
-                                <span class="topic-lessons"><i class="fas fa-book-open"></i> 10 Lessons</span>
-                                <span class="topic-progress">0%</span>
+                        <div class="topic-content flex-1 min-w-0 flex flex-col gap-1 z-10">
+                            <h3 class="topic-title text-base font-bold text-white leading-snug">Patterns & Geometric
+                                Series</h3>
+                            <p class="topic-description text-[13px] text-white/60 leading-snug line-clamp-2">Explore
+                                sequences, series, and pattern recognition</p>
+                            <div class="topic-meta flex items-center gap-4 mt-1">
+                                <span
+                                    class="topic-lessons text-xs font-medium text-white/40 flex items-center gap-1.5"><i
+                                        class="fas fa-book-open text-[11px] opacity-80"></i> 10 Lessons</span>
+                                <span
+                                    class="topic-progress text-xs font-bold text-accent-teal bg-accent-teal/10 px-2.5 py-1 rounded-full">0%</span>
                             </div>
                         </div>
-                        <div class="topic-chevron">
+                        <div
+                            class="topic-chevron w-8 h-8 min-w-[32px] rounded-full bg-white/5 flex items-center justify-center text-sm text-white/60 transition-all duration-200 group-hover:bg-white/10 group-hover:translate-x-0.5 group-hover:text-white z-10">
                             <i class="fas fa-chevron-right"></i>
                         </div>
                     </a>
 
                     <!-- Topic 3 -->
-                    <a href="#" class="topic-card">
-                        <div class="topic-icon purple">
+                    <a href="#"
+                        class="topic-card group relative bg-[#1e232d]/75 backdrop-blur-xl border border-white/10 rounded-2xl p-5 flex items-center gap-4 hover:-translate-y-0.5 hover:border-white/15 hover:shadow-xl transition-all duration-300 overflow-hidden">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        </div>
+                        <div
+                            class="topic-icon w-14 h-14 min-w-[56px] rounded-xl flex items-center justify-center text-2xl relative z-10 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6 bg-gradient-to-br from-accent-purple to-[#a78bfa] text-white shadow-lg shadow-accent-purple/30">
                             <i class="fas fa-project-diagram"></i>
                         </div>
-                        <div class="topic-content">
-                            <h3 class="topic-title">Functions and Graphs</h3>
-                            <p class="topic-description">Understand functions, transformations, and graphing</p>
-                            <div class="topic-meta">
-                                <span class="topic-lessons"><i class="fas fa-book-open"></i> 15 Lessons</span>
-                                <span class="topic-progress">0%</span>
+                        <div class="topic-content flex-1 min-w-0 flex flex-col gap-1 z-10">
+                            <h3 class="topic-title text-base font-bold text-white leading-snug">Functions and Graphs
+                            </h3>
+                            <p class="topic-description text-[13px] text-white/60 leading-snug line-clamp-2">Understand
+                                functions, transformations, and graphing</p>
+                            <div class="topic-meta flex items-center gap-4 mt-1">
+                                <span
+                                    class="topic-lessons text-xs font-medium text-white/40 flex items-center gap-1.5"><i
+                                        class="fas fa-book-open text-[11px] opacity-80"></i> 15 Lessons</span>
+                                <span
+                                    class="topic-progress text-xs font-bold text-accent-teal bg-accent-teal/10 px-2.5 py-1 rounded-full">0%</span>
                             </div>
                         </div>
-                        <div class="topic-chevron">
+                        <div
+                            class="topic-chevron w-8 h-8 min-w-[32px] rounded-full bg-white/5 flex items-center justify-center text-sm text-white/60 transition-all duration-200 group-hover:bg-white/10 group-hover:translate-x-0.5 group-hover:text-white z-10">
                             <i class="fas fa-chevron-right"></i>
                         </div>
                     </a>
 
                     <!-- Topic 4 -->
-                    <a href="#" class="topic-card">
-                        <div class="topic-icon green">
+                    <a href="#"
+                        class="topic-card group relative bg-[#1e232d]/75 backdrop-blur-xl border border-white/10 rounded-2xl p-5 flex items-center gap-4 hover:-translate-y-0.5 hover:border-white/15 hover:shadow-xl transition-all duration-300 overflow-hidden">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        </div>
+                        <div
+                            class="topic-icon w-14 h-14 min-w-[56px] rounded-xl flex items-center justify-center text-2xl relative z-10 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6 bg-gradient-to-br from-accent-green to-[#34d399] text-white shadow-lg shadow-accent-green/30">
                             <i class="fas fa-dollar-sign"></i>
                         </div>
-                        <div class="topic-content">
-                            <h3 class="topic-title">Financial Mathematics</h3>
-                            <p class="topic-description">Learn compound interest, annuities, and investments</p>
-                            <div class="topic-meta">
-                                <span class="topic-lessons"><i class="fas fa-book-open"></i> 8 Lessons</span>
-                                <span class="topic-progress">0%</span>
+                        <div class="topic-content flex-1 min-w-0 flex flex-col gap-1 z-10">
+                            <h3 class="topic-title text-base font-bold text-white leading-snug">Financial Mathematics
+                            </h3>
+                            <p class="topic-description text-[13px] text-white/60 leading-snug line-clamp-2">Learn
+                                compound interest, annuities, and investments</p>
+                            <div class="topic-meta flex items-center gap-4 mt-1">
+                                <span
+                                    class="topic-lessons text-xs font-medium text-white/40 flex items-center gap-1.5"><i
+                                        class="fas fa-book-open text-[11px] opacity-80"></i> 8 Lessons</span>
+                                <span
+                                    class="topic-progress text-xs font-bold text-accent-teal bg-accent-teal/10 px-2.5 py-1 rounded-full">0%</span>
                             </div>
                         </div>
-                        <div class="topic-chevron">
+                        <div
+                            class="topic-chevron w-8 h-8 min-w-[32px] rounded-full bg-white/5 flex items-center justify-center text-sm text-white/60 transition-all duration-200 group-hover:bg-white/10 group-hover:translate-x-0.5 group-hover:text-white z-10">
                             <i class="fas fa-chevron-right"></i>
                         </div>
                     </a>
 
                     <!-- Topic 5 -->
-                    <a href="#" class="topic-card">
-                        <div class="topic-icon teal">
+                    <a href="#"
+                        class="topic-card group relative bg-[#1e232d]/75 backdrop-blur-xl border border-white/10 rounded-2xl p-5 flex items-center gap-4 hover:-translate-y-0.5 hover:border-white/15 hover:shadow-xl transition-all duration-300 overflow-hidden">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        </div>
+                        <div
+                            class="topic-icon w-14 h-14 min-w-[56px] rounded-xl flex items-center justify-center text-2xl relative z-10 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6 bg-gradient-to-br from-accent-teal to-[#2dd4bf] text-white shadow-lg shadow-accent-teal/30">
                             <i class="fas fa-infinity"></i>
                         </div>
-                        <div class="topic-content">
-                            <h3 class="topic-title">Calculus</h3>
-                            <p class="topic-description">Master differentiation, integration, and applications</p>
-                            <div class="topic-meta">
-                                <span class="topic-lessons"><i class="fas fa-book-open"></i> 18 Lessons</span>
-                                <span class="topic-progress">0%</span>
+                        <div class="topic-content flex-1 min-w-0 flex flex-col gap-1 z-10">
+                            <h3 class="topic-title text-base font-bold text-white leading-snug">Calculus</h3>
+                            <p class="topic-description text-[13px] text-white/60 leading-snug line-clamp-2">Master
+                                differentiation, integration, and applications</p>
+                            <div class="topic-meta flex items-center gap-4 mt-1">
+                                <span
+                                    class="topic-lessons text-xs font-medium text-white/40 flex items-center gap-1.5"><i
+                                        class="fas fa-book-open text-[11px] opacity-80"></i> 18 Lessons</span>
+                                <span
+                                    class="topic-progress text-xs font-bold text-accent-teal bg-accent-teal/10 px-2.5 py-1 rounded-full">0%</span>
                             </div>
                         </div>
-                        <div class="topic-chevron">
+                        <div
+                            class="topic-chevron w-8 h-8 min-w-[32px] rounded-full bg-white/5 flex items-center justify-center text-sm text-white/60 transition-all duration-200 group-hover:bg-white/10 group-hover:translate-x-0.5 group-hover:text-white z-10">
                             <i class="fas fa-chevron-right"></i>
                         </div>
                     </a>
 
                     <!-- Topic 6 -->
-                    <a href="#" class="topic-card">
-                        <div class="topic-icon orange">
+                    <a href="#"
+                        class="topic-card group relative bg-[#1e232d]/75 backdrop-blur-xl border border-white/10 rounded-2xl p-5 flex items-center gap-4 hover:-translate-y-0.5 hover:border-white/15 hover:shadow-xl transition-all duration-300 overflow-hidden">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        </div>
+                        <div
+                            class="topic-icon w-14 h-14 min-w-[56px] rounded-xl flex items-center justify-center text-2xl relative z-10 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6 bg-gradient-to-br from-accent-orange to-[#ff8c42] text-white shadow-lg shadow-accent-orange/30">
                             <i class="fas fa-dice"></i>
                         </div>
-                        <div class="topic-content">
-                            <h3 class="topic-title">Probability</h3>
-                            <p class="topic-description">Calculate probabilities and understand distributions</p>
-                            <div class="topic-meta">
-                                <span class="topic-lessons"><i class="fas fa-book-open"></i> 9 Lessons</span>
-                                <span class="topic-progress">0%</span>
+                        <div class="topic-content flex-1 min-w-0 flex flex-col gap-1 z-10">
+                            <h3 class="topic-title text-base font-bold text-white leading-snug">Probability</h3>
+                            <p class="topic-description text-[13px] text-white/60 leading-snug line-clamp-2">Calculate
+                                probabilities and understand distributions</p>
+                            <div class="topic-meta flex items-center gap-4 mt-1">
+                                <span
+                                    class="topic-lessons text-xs font-medium text-white/40 flex items-center gap-1.5"><i
+                                        class="fas fa-book-open text-[11px] opacity-80"></i> 9 Lessons</span>
+                                <span
+                                    class="topic-progress text-xs font-bold text-accent-teal bg-accent-teal/10 px-2.5 py-1 rounded-full">0%</span>
                             </div>
                         </div>
-                        <div class="topic-chevron">
+                        <div
+                            class="topic-chevron w-8 h-8 min-w-[32px] rounded-full bg-white/5 flex items-center justify-center text-sm text-white/60 transition-all duration-200 group-hover:bg-white/10 group-hover:translate-x-0.5 group-hover:text-white z-10">
                             <i class="fas fa-chevron-right"></i>
                         </div>
                     </a>
 
                     <!-- Topic 7 -->
-                    <a href="#" class="topic-card">
-                        <div class="topic-icon purple">
+                    <a href="#"
+                        class="topic-card group relative bg-[#1e232d]/75 backdrop-blur-xl border border-white/10 rounded-2xl p-5 flex items-center gap-4 hover:-translate-y-0.5 hover:border-white/15 hover:shadow-xl transition-all duration-300 overflow-hidden">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        </div>
+                        <div
+                            class="topic-icon w-14 h-14 min-w-[56px] rounded-xl flex items-center justify-center text-2xl relative z-10 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6 bg-gradient-to-br from-accent-purple to-[#a78bfa] text-white shadow-lg shadow-accent-purple/30">
                             <i class="fas fa-sort-numeric-up"></i>
                         </div>
-                        <div class="topic-content">
-                            <h3 class="topic-title">Counting Principles</h3>
-                            <p class="topic-description">Explore permutations, combinations, and counting</p>
-                            <div class="topic-meta">
-                                <span class="topic-lessons"><i class="fas fa-book-open"></i> 7 Lessons</span>
-                                <span class="topic-progress">0%</span>
+                        <div class="topic-content flex-1 min-w-0 flex flex-col gap-1 z-10">
+                            <h3 class="topic-title text-base font-bold text-white leading-snug">Counting Principles</h3>
+                            <p class="topic-description text-[13px] text-white/60 leading-snug line-clamp-2">Explore
+                                permutations, combinations, and counting</p>
+                            <div class="topic-meta flex items-center gap-4 mt-1">
+                                <span
+                                    class="topic-lessons text-xs font-medium text-white/40 flex items-center gap-1.5"><i
+                                        class="fas fa-book-open text-[11px] opacity-80"></i> 7 Lessons</span>
+                                <span
+                                    class="topic-progress text-xs font-bold text-accent-teal bg-accent-teal/10 px-2.5 py-1 rounded-full">0%</span>
                             </div>
                         </div>
-                        <div class="topic-chevron">
+                        <div
+                            class="topic-chevron w-8 h-8 min-w-[32px] rounded-full bg-white/5 flex items-center justify-center text-sm text-white/60 transition-all duration-200 group-hover:bg-white/10 group-hover:translate-x-0.5 group-hover:text-white z-10">
                             <i class="fas fa-chevron-right"></i>
                         </div>
                     </a>
 
                     <!-- Topic 8 -->
-                    <a href="#" class="topic-card">
-                        <div class="topic-icon green">
+                    <a href="#"
+                        class="topic-card group relative bg-[#1e232d]/75 backdrop-blur-xl border border-white/10 rounded-2xl p-5 flex items-center gap-4 hover:-translate-y-0.5 hover:border-white/15 hover:shadow-xl transition-all duration-300 overflow-hidden">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        </div>
+                        <div
+                            class="topic-icon w-14 h-14 min-w-[56px] rounded-xl flex items-center justify-center text-2xl relative z-10 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6 bg-gradient-to-br from-accent-green to-[#34d399] text-white shadow-lg shadow-accent-green/30">
                             <i class="fas fa-wave-square"></i>
                         </div>
-                        <div class="topic-content">
-                            <h3 class="topic-title">Advanced Functions</h3>
-                            <p class="topic-description">Deep dive into complex function analysis</p>
-                            <div class="topic-meta">
-                                <span class="topic-lessons"><i class="fas fa-book-open"></i> 11 Lessons</span>
-                                <span class="topic-progress">0%</span>
+                        <div class="topic-content flex-1 min-w-0 flex flex-col gap-1 z-10">
+                            <h3 class="topic-title text-base font-bold text-white leading-snug">Advanced Functions</h3>
+                            <p class="topic-description text-[13px] text-white/60 leading-snug line-clamp-2">Deep dive
+                                into complex function analysis</p>
+                            <div class="topic-meta flex items-center gap-4 mt-1">
+                                <span
+                                    class="topic-lessons text-xs font-medium text-white/40 flex items-center gap-1.5"><i
+                                        class="fas fa-book-open text-[11px] opacity-80"></i> 11 Lessons</span>
+                                <span
+                                    class="topic-progress text-xs font-bold text-accent-teal bg-accent-teal/10 px-2.5 py-1 rounded-full">0%</span>
                             </div>
                         </div>
-                        <div class="topic-chevron">
+                        <div
+                            class="topic-chevron w-8 h-8 min-w-[32px] rounded-full bg-white/5 flex items-center justify-center text-sm text-white/60 transition-all duration-200 group-hover:bg-white/10 group-hover:translate-x-0.5 group-hover:text-white z-10">
                             <i class="fas fa-chevron-right"></i>
                         </div>
                     </a>
@@ -198,21 +378,27 @@
         </div>
 
         <!-- Bottom Navigation -->
-        <div class="bottom-nav">
-            <a href="/learn" class="nav-item">
-                <i class="fas fa-home"></i>
+        <div
+            class="bottom-nav fixed bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-48px)] max-w-[400px] h-16 bg-[#0a0e17]/90 backdrop-blur-xl border border-white/10 rounded-2xl flex justify-around items-center z-50 px-4 shadow-xl">
+            <a href="/learn"
+                class="nav-item flex-1 flex flex-col items-center gap-1 text-[11px] font-semibold text-white/60 hover:text-white hover:bg-white/5 p-2 rounded-xl transition-all [&.active]:text-accent-teal [&.active]:bg-accent-teal/10">
+                <i class="fas fa-home text-xl mb-0.5"></i>
                 <span>Home</span>
             </a>
-            <a href="#" class="nav-item active">
-                <i class="fas fa-book"></i>
+            <a href="#"
+                class="nav-item active flex-1 flex flex-col items-center gap-1 text-[11px] font-semibold text-accent-teal bg-accent-teal/10 p-2 rounded-xl transition-all relative [&.active]:text-accent-teal [&.active]:bg-accent-teal/10">
+                <i class="fas fa-book text-xl mb-0.5"></i>
                 <span>Topics</span>
+                <div class="absolute -bottom-1 w-1 h-1 bg-accent-teal rounded-full"></div>
             </a>
-            <a href="#" class="nav-item">
-                <i class="fas fa-chart-bar"></i>
+            <a href="#"
+                class="nav-item flex-1 flex flex-col items-center gap-1 text-[11px] font-semibold text-white/60 hover:text-white hover:bg-white/5 p-2 rounded-xl transition-all [&.active]:text-accent-teal [&.active]:bg-accent-teal/10">
+                <i class="fas fa-chart-bar text-xl mb-0.5"></i>
                 <span>Progress</span>
             </a>
-            <a href="#" class="nav-item">
-                <i class="fas fa-bookmark"></i>
+            <a href="#"
+                class="nav-item flex-1 flex flex-col items-center gap-1 text-[11px] font-semibold text-white/60 hover:text-white hover:bg-white/5 p-2 rounded-xl transition-all [&.active]:text-accent-teal [&.active]:bg-accent-teal/10">
+                <i class="fas fa-bookmark text-xl mb-0.5"></i>
                 <span>Saved</span>
             </a>
         </div>
