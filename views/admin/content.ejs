@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lyro Admin | Content</title>
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+    <div class="admin-container">
+        <%- include('sidebar', { page: 'content' }) %>
+
+            <div class="main-content">
+                <div class="page-header">
+                    <h1>Content Management</h1>
+                </div>
+
+                <div class="card">
+                    <h2>Add New Question</h2>
+                    <form action="/admin/content/create" method="POST">
+                        <div class="grid-cols-2">
+                            <div class="form-group">
+                                <label>Question Number</label>
+                                <input type="text" name="questionNumber" placeholder="e.g. 1.1, 1a" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Difficulty</label>
+                                <select name="difficulty">
+                                    <option value="easy">Easy</option>
+                                    <option value="medium" selected>Medium</option>
+                                    <option value="hard">Hard</option>
+                                    <option value="expert">Expert</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Image URL (Optional)</label>
+                            <input type="url" name="imageUrl" placeholder="Paste image URL here">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Question Text</label>
+                            <textarea name="questionText" rows="4" required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Dynamic Fields (for options or variables)</label>
+                            <div id="dynamic-fields-container">
+                                <!-- JS will append here -->
+                            </div>
+                            <button type="button" class="btn btn-secondary" onclick="addDynamicField()"
+                                style="margin-top: 0.5rem; background: rgba(255,255,255,0.1); color: white;">+ Add
+                                Field</button>
+                        </div>
+
+                        <div class="grid-cols-2">
+                            <div class="form-group">
+                                <label>Correct Answer</label>
+                                <textarea name="answer" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Timer (seconds)</label>
+                                <input type="number" name="timer" value="60">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Save Question</button>
+                    </form>
+                </div>
+
+                <!-- List of recent questions could go here -->
+            </div>
+    </div>
+
+    <script>
+        function addDynamicField() {
+            const container = document.getElementById('dynamic-fields-container');
+            const index = container.children.length;
+            const div = document.createElement('div');
+            div.className = 'dynamic-field-row';
+            div.innerHTML = `
+                <input type="text" name="additionalFields[${index}][label]" placeholder="Label (e.g. Option A)" style="width: 30%">
+                <input type="text" name="additionalFields[${index}][value]" placeholder="Value" style="width: 70%">
+                <button type="button" onclick="this.parentElement.remove()" style="background:var(--admin-danger); color:white; border:none; border-radius:4px; cursor:pointer; padding: 0 10px;">X</button>
+            `;
+            container.appendChild(div);
+        }
+    </script>
+</body>
+
+</html>

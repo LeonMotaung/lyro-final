@@ -1,0 +1,20 @@
+<div class="sidebar">
+    <div class="sidebar-title">Lyro Admin</div>
+    <nav>
+        <a href="/admin" class="nav-link <%= page === 'dashboard' ? 'active' : '' %>">
+            <i class="fas fa-home"></i> Dashboard
+        </a>
+        <a href="/admin/content" class="nav-link <%= page === 'content' ? 'active' : '' %>">
+            <i class="fas fa-book"></i> Content Management
+        </a>
+        <a href="/admin/users" class="nav-link <%= page === 'users' ? 'active' : '' %>">
+            <i class="fas fa-users"></i> Users
+        </a>
+        <a href="/admin/vouchers" class="nav-link <%= page === 'vouchers' ? 'active' : '' %>">
+            <i class="fas fa-ticket-alt"></i> Vouchers
+        </a>
+        <a href="/" class="nav-link" style="margin-top: 2rem; border: 1px solid rgba(255,255,255,0.2);">
+            <i class="fas fa-sign-out-alt"></i> Back to Site
+        </a>
+    </nav>
+</div>

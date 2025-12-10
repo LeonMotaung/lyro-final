@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lyro Admin | Users</title>
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+    <div class="admin-container">
+        <%- include('sidebar', { page: 'users' }) %>
+
+            <div class="main-content">
+                <div class="page-header">
+                    <h1>User Management</h1>
+                </div>
+
+                <div class="card">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Subscription Ends</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% users.forEach(user=> { %>
+                                <tr>
+                                    <td>
+                                        <%= user.name %>
+                                    </td>
+                                    <td>
+                                        <%= user.email %>
+                                    </td>
+                                    <td>
+                                        <%= user.role %>
+                                    </td>
+                                    <td>
+                                        <%= user.subscriptionExpiry ? new
+                                            Date(user.subscriptionExpiry).toLocaleDateString() : 'None' %>
+                                    </td>
+                                    <td>
+                                        <!-- Add delete/edit actions if needed -->
+                                        <button class="btn"
+                                            style="padding: 0.25rem 0.5rem; background:rgba(255,255,255,0.1); color:white;">Edit</button>
+                                    </td>
+                                </tr>
+                                <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+    </div>
+</body>
+
+</html>

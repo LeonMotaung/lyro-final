@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lyro Admin | Dashboard</title>
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+    <div class="admin-container">
+        <%- include('sidebar', { page: 'dashboard' }) %>
+
+            <div class="main-content">
+                <div class="page-header">
+                    <h1>Dashboard Overview</h1>
+                </div>
+
+                <div class="grid-cols-2">
+                    <div class="card">
+                        <h3><i class="fas fa-users"></i> Total Users</h3>
+                        <p style="font-size: 2rem; margin-top: 0.5rem;">
+                            <%= stats.userCount || 0 %>
+                        </p>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fas fa-question-circle"></i> Total Questions</h3>
+                        <p style="font-size: 2rem; margin-top: 0.5rem;">
+                            <%= stats.questionCount || 0 %>
+                        </p>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fas fa-ticket-alt"></i> Active Vouchers</h3>
+                        <p style="font-size: 2rem; margin-top: 0.5rem;">
+                            <%= stats.voucherCount || 0 %>
+                        </p>
+                    </div>
+                </div>
+            </div>
+    </div>
+</body>
+
+</html>
