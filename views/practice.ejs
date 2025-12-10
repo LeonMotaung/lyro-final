@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lyro Maths | Practice</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bg: {
+                            primary: '#0a0e17',
+                            secondary: '#141824',
+                            tertiary: '#1d2230',
+                        },
+                        accent: {
+                            teal: '#1ab69d',
+                            orange: '#ff6b35',
+                            purple: '#8b5cf6',
+                            green: '#10b981',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body class="bg-bg-primary text-white font-sans min-h-screen">
+
+    <!-- Header -->
+    <div
+        class="fixed top-0 w-full z-50 backdrop-blur-xl bg-[#0a0e17]/85 border-b border-white/10 px-6 py-4 flex items-center gap-4">
+        <a href="javascript:history.back()"
+            class="w-10 h-10 rounded-full bg-[#1e232d]/75 border border-white/10 flex items-center justify-center text-white hover:border-accent-teal hover:-translate-x-0.5 transition-all">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+        <div>
+            <div class="text-xs text-accent-teal font-bold uppercase tracking-wider">
+                <%= paper %>
+            </div>
+            <div class="text-xl font-bold tracking-tight">
+                <%= topic %>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="pt-24 pb-20 px-6 max-w-3xl mx-auto">
+        <% if (questions && questions.length> 0) { %>
+            <div class="space-y-8">
+                <% questions.forEach((question, index)=> { %>
+                    <div
+                        class="bg-bg-secondary/50 backdrop-blur-sm border border-white/5 rounded-2xl p-6 shadow-xl relative overflow-hidden group">
+
+                        <!-- Question Header -->
+                        <div class="flex justify-between items-start mb-4 border-b border-white/5 pb-4">
+                            <span class="bg-white/5 text-gray-300 px-3 py-1 rounded-full text-sm font-semibold">
+                                Q<%= question.questionNumber %>
+                            </span>
+                            <span class="text-xs font-semibold uppercase tracking-wider <%= 
+                                question.difficulty === 'easy' ? 'text-accent-green' : 
+                                question.difficulty === 'medium' ? 'text-accent-orange' : 
+                                'text-accent-purple' 
+                            %>">
+                                <%= question.difficulty %>
+                            </span>
+                        </div>
+
+                        <!-- Image if valid (not empty and not base64 empty) -->
+                        <% if (question.imageUrl && question.imageUrl.length> 50) { %>
+                            <div class="mb-4 rounded-xl overflow-hidden border border-white/10">
+                                <img src="<%= question.imageUrl %>" alt="Question Image"
+                                    class="w-full max-h-[300px] object-contain bg-black/50">
+                            </div>
+                            <% } %>
+
+                                <!-- Question Text with MathJax -->
+                                <div class="text-gray-200 text-lg leading-relaxed font-medium mb-6 math-content">
+                                    <%= question.questionText %>
+                                </div>
+
+                                <!-- Additional Options -->
+                                <% if (question.additionalFields && question.additionalFields.length> 0) { %>
+                                    <div class="space-y-2 mb-6">
+                                        <% question.additionalFields.forEach(field=> { %>
+                                            <div class="flex items-center gap-3">
+                                                <div
+                                                    class="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-xs font-bold text-gray-400">
+                                                    <%= field.label || '•' %>
+                                                </div>
+                                                <div class="text-gray-300">
+                                                    <%= field.value %>
+                                                </div>
+                                            </div>
+                                            <% }) %>
+                                    </div>
+                                    <% } %>
+
+                                        <!-- Action Bar -->
+                                        <div class="flex items-center justify-between mt-4 md:mt-0">
+                                            <button onclick="toggleAnswer('<%= question._id %>')"
+                                                class="bg-accent-teal/10 hover:bg-accent-teal/20 text-accent-teal border border-accent-teal/20 px-6 py-2 rounded-xl transition-all font-semibold flex items-center gap-2 text-sm">
+                                                <i class="fas fa-eye"></i> Show Answer
+                                            </button>
+                                            <% if (question.timer> 0) { %>
+                                                <div class="text-gray-500 text-sm flex items-center gap-2">
+                                                    <i class="fas fa-clock"></i>
+                                                    <%= Math.floor(question.timer / 60) %>m <%= question.timer % 60 %>s
+                                                </div>
+                                                <% } %>
+                                        </div>
+
+                                        <!-- Hidden Answer -->
+                                        <div id="answer-<%= question._id %>"
+                                            class="hidden mt-6 pt-6 border-t border-white/5 animate-fade-in">
+                                            <h4 class="text-accent-green font-bold mb-2 flex items-center gap-2">
+                                                <i class="fas fa-check-circle"></i> Correct Answer
+                                            </h4>
+                                            <div
+                                                class="text-gray-300 font-mono bg-black/30 p-4 rounded-xl border border-white/5 math-content">
+                                                <%= question.answer %>
+                                            </div>
+                                        </div>
+
+                    </div>
+                    <% }) %>
+            </div>
+            <% } else { %>
+                <div class="text-center py-20">
+                    <div
+                        class="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl text-gray-600">
+                        <i class="fas fa-flask"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-white mb-2">No Questions Found</h2>
+                    <p class="text-gray-500 mb-8">We haven't added practice questions for this topic yet.</p>
+                    <a href="/learn"
+                        class="bg-white/10 hover:bg-white/20 text-white px-6 py-3 rounded-xl transition-all">
+                        Browse Other Topics
+                    </a>
+                </div>
+                <% } %>
+    </div>
+
+    <script>
+        function toggleAnswer(id) {
+            const el = document.getElementById(`answer-${id}`);
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+                // Retrigger MathJax reflow if needed, though usually initial pass covers it
+            } else {
+                el.classList.add('hidden');
+            }
+        }
+    </script>
+</body>
+
+</html>

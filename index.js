@@ -127,6 +127,22 @@ app.get('/admin/logout', (req, res) => {
     res.redirect('/admin/login');
 });
 
+// Practice Route (Protected by Auth if needed, or public? Assuming public for now or user protected later)
+app.get('/practice', async (req, res) => {
+    try {
+        const { paper, topic } = req.query;
+        if (!paper || !topic) {
+            return res.redirect('/learn');
+        }
+
+        const questions = await Question.find({ paper, topic }).sort({ questionNumber: 1 });
+        res.render('practice', { paper, topic, questions });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+});
+
 // Admin Dashboard (Protected)
 app.get('/admin', isAdmin, async (req, res) => {
     try {
