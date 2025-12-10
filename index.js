@@ -153,15 +153,35 @@ app.get('/admin/logout', (req, res) => {
     res.redirect('/admin/login');
 });
 
-// Practice Route (Protected by Auth if needed, or public? Assuming public for now or user protected later)
+// Practice Route
 app.get('/practice', async (req, res) => {
     try {
-        const { paper, topic } = req.query;
+        let { paper, topic } = req.query;
         if (!paper || !topic) {
             return res.redirect('/learn');
         }
 
-        const questions = await Question.find({ paper, topic }).sort({ questionNumber: 1 });
+        // Trim whitespace just in case
+        paper = paper.trim();
+        topic = topic.trim();
+
+        // Create case-insensitive regex for topic to handle minor encoding/casing differences
+        // Escape special regex characters in topic string first
+        const escapeRegex = (string) => {
+            return string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+        };
+
+        const topicRegex = new RegExp(`^${escapeRegex(topic)}$`, 'i');
+
+        console.log(`Querying DB - Paper: "${paper}", Topic Regex: "${topicRegex}"`);
+
+        const questions = await Question.find({
+            paper: paper,
+            topic: { $regex: topicRegex }
+        }).sort({ questionNumber: 1 });
+
+        console.log(`Found ${questions.length} questions.`);
+
         res.render('practice', { paper, topic, questions });
     } catch (err) {
         console.error(err);
