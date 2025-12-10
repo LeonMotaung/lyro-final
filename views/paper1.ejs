@@ -9,13 +9,19 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
                         bg: {
-                            primary: '#0a0e17',
-                            secondary: '#141824',
-                            tertiary: '#1d2230',
+                            primary: 'rgb(var(--bg-primary) / <alpha-value>)',
+                            secondary: 'rgb(var(--bg-secondary) / <alpha-value>)',
+                            tertiary: 'rgb(var(--bg-tertiary) / <alpha-value>)',
+                            card: 'rgb(var(--bg-card) / <alpha-value>)',
+                        },
+                        app: {
+                            text: 'rgb(var(--text-primary) / <alpha-value>)',
+                            muted: 'rgb(var(--text-muted) / <alpha-value>)',
                         },
                         accent: {
                             teal: '#1ab69d',
@@ -45,6 +51,38 @@
             }
         }
     </script>
+    <style>
+        :root {
+            /* Dark Theme (Default) */
+            --bg-primary: 10 14 23;
+            /* #0a0e17 */
+            --bg-secondary: 20 24 36;
+            /* #141824 */
+            --bg-tertiary: 29 34 48;
+            /* #1d2230 */
+            --bg-card: 30 35 45;
+            /* #1e232d */
+
+            --text-primary: 255 255 255;
+            --text-muted: 255 255 255;
+            /* Opacity handled by class */
+        }
+
+        [data-theme="light"] {
+            /* Light Theme */
+            --bg-primary: 241 245 249;
+            /* Slate 100 */
+            --bg-secondary: 255 255 255;
+            --bg-tertiary: 226 232 240;
+            /* Slate 200 */
+            --bg-card: 255 255 255;
+
+            --text-primary: 15 23 42;
+            /* Slate 900 */
+            --text-muted: 51 65 85;
+            /* Slate 700 */
+        }
+    </style>
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="manifest" href="/manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -69,7 +107,8 @@
     </style>
 </head>
 
-<body class="bg-bg-primary text-white font-sans overflow-hidden h-screen selection:bg-accent-teal selection:text-white">
+<body
+    class="bg-bg-primary text-app-text font-sans overflow-hidden h-screen selection:bg-accent-teal selection:text-app-text">
     <div class="h-full w-full flex flex-col relative bg-gradient-to-br from-bg-primary to-bg-secondary">
 
         <!-- Ambient Background Effects -->
@@ -82,16 +121,19 @@
 
         <!-- Floating Header -->
         <div
-            class="floating-header flex-none sticky top-0 z-50 backdrop-blur-xl bg-[#0a0e17]/85 border-b border-white/10 px-6 py-4 flex items-center gap-4 transition-all duration-300">
+            class="floating-header flex-none sticky top-0 z-50 backdrop-blur-xl bg-bg-primary/85 border-b border-app-text/10 px-6 py-4 flex items-center gap-4 transition-all duration-300">
             <a href="/learn"
-                class="back-btn w-10 h-10 rounded-full bg-[#1e232d]/75 border border-white/10 flex items-center justify-center text-white hover:border-accent-teal hover:-translate-x-0.5 transition-all duration-200 group relative overflow-hidden">
+                class="back-btn w-10 h-10 rounded-full bg-bg-card/75 border border-app-text/10 flex items-center justify-center text-app-text hover:border-accent-teal hover:-translate-x-0.5 transition-all duration-200 group relative overflow-hidden">
                 <div
                     class="absolute inset-0 bg-gradient-to-br from-accent-teal/50 to-transparent opacity-0 group-hover:opacity-20 transition-opacity">
                 </div>
                 <i class="fas fa-arrow-left relative z-10 text-base"></i>
             </a>
-            <div class="header-title flex-1 text-xl font-bold tracking-tight">Paper 1</div>
-            <div class="w-10 opacity-0"></div>
+            <div class="header-title flex-1 text-xl font-bold tracking-tight text-app-text">Paper 1</div>
+            <button id="theme-toggle" onclick="toggleTheme()"
+                class="w-10 h-10 rounded-full bg-bg-card/75 border border-app-text/10 flex items-center justify-center text-app-text/80 hover:border-accent-teal hover:text-accent-teal transition-all duration-200">
+                <i class="fas fa-sun"></i>
+            </button>
         </div>
 
         <!-- Scrollable Content -->
@@ -101,7 +143,7 @@
             <!-- Hero Section -->
             <div class="hero-section px-6 py-8 text-center relative max-w-3xl mx-auto">
                 <div
-                    class="hero-icon w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-accent-teal to-[#2dd4bf] rounded-2xl flex items-center justify-center text-4xl text-white shadow-lg shadow-accent-teal/30 relative group animate-float ring-1 ring-white/10">
+                    class="hero-icon w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-accent-teal to-[#2dd4bf] rounded-2xl flex items-center justify-center text-4xl text-app-text shadow-lg shadow-accent-teal/30 relative group animate-float ring-1 ring-white/10">
                     <i class="fas fa-square-root-alt drop-shadow-md"></i>
                     <div
                         class="absolute inset-0 bg-gradient-to-br from-accent-teal to-accent-purple rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10">
@@ -110,17 +152,17 @@
                 <h1
                     class="hero-title text-3xl font-extrabold mb-1 bg-gradient-to-br from-white to-white/80 bg-clip-text text-transparent tracking-tight">
                     Paper 1 Topics</h1>
-                <p class="hero-subtitle text-white/60 text-[15px] font-medium mb-6 max-w-[280px] mx-auto">Master the
+                <p class="hero-subtitle text-app-text/60 text-[15px] font-medium mb-6 max-w-[280px] mx-auto">Master the
                     fundamentals of Grade 12 Mathematics</p>
 
                 <!-- Progress Card -->
                 <div
-                    class="progress-card bg-[#1e232d]/75 backdrop-blur-xl border border-white/10 rounded-2xl p-6 mx-auto max-w-md shadow-lg relative overflow-hidden group">
+                    class="progress-card bg-bg-card/75 backdrop-blur-xl border border-app-text/10 rounded-2xl p-6 mx-auto max-w-md shadow-lg relative overflow-hidden group">
                     <div class="absolute inset-0 bg-gradient-to-br from-accent-teal/5 to-accent-purple/5 opacity-50">
                     </div>
                     <div class="relative z-10">
                         <div class="progress-info flex justify-between items-center mb-2">
-                            <span class="progress-label text-sm font-semibold text-white/80">Overall Progress</span>
+                            <span class="progress-label text-sm font-semibold text-app-text/80">Overall Progress</span>
                             <span
                                 class="progress-value text-xl font-extrabold text-accent-teal drop-shadow-sm">0%</span>
                         </div>
@@ -139,31 +181,32 @@
             <!-- Topics List -->
             <div class="topics-container px-6 pb-6 max-w-[1200px] mx-auto relative">
                 <div class="topics-header flex justify-between items-center mb-6 px-1">
-                    <h2 class="text-2xl font-extrabold text-white tracking-tight">Topics</h2>
+                    <h2 class="text-2xl font-extrabold text-app-text tracking-tight">Topics</h2>
                     <span
-                        class="topics-count text-sm font-semibold text-white/80 bg-[#1e232d]/80 px-3 py-1 rounded-full border border-white/10">8
+                        class="topics-count text-sm font-semibold text-app-text/80 bg-bg-card/80 px-3 py-1 rounded-full border border-app-text/10">8
                         Topics</span>
                 </div>
 
                 <div class="topics-list flex flex-col gap-4 lg:grid lg:grid-cols-3 lg:gap-6">
                     <!-- Topic 1 -->
                     <a href="/practice?paper=Paper 1&topic=Algebra, Equations, and Inequalities"
-                        class="topic-card group relative bg-[#1e232d]/75 backdrop-blur-xl border border-white/10 rounded-2xl p-5 flex items-center gap-4 hover:-translate-y-0.5 hover:border-white/15 hover:shadow-xl transition-all duration-300 overflow-hidden">
+                        class="topic-card group relative bg-bg-card/75 backdrop-blur-xl border border-app-text/10 rounded-2xl p-5 flex items-center gap-4 hover:-translate-y-0.5 hover:border-white/15 hover:shadow-xl transition-all duration-300 overflow-hidden">
                         <div
                             class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         </div>
                         <div
-                            class="topic-icon w-14 h-14 min-w-[56px] rounded-xl flex items-center justify-center text-2xl relative z-10 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6 bg-gradient-to-br from-accent-teal to-[#2dd4bf] text-white shadow-lg shadow-accent-teal/30">
+                            class="topic-icon w-14 h-14 min-w-[56px] rounded-xl flex items-center justify-center text-2xl relative z-10 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6 bg-gradient-to-br from-accent-teal to-[#2dd4bf] text-app-text shadow-lg shadow-accent-teal/30">
                             <i class="fas fa-function"></i>
                         </div>
                         <div class="topic-content flex-1 min-w-0 flex flex-col gap-1 z-10">
-                            <h3 class="topic-title text-base font-bold text-white leading-snug">Algebra, Equations, and
+                            <h3 class="topic-title text-base font-bold text-app-text leading-snug">Algebra, Equations,
+                                and
                                 Inequalities</h3>
-                            <p class="topic-description text-[13px] text-white/60 leading-snug line-clamp-2">Solve
+                            <p class="topic-description text-[13px] text-app-text/60 leading-snug line-clamp-2">Solve
                                 equations, inequalities, and algebraic expressions</p>
                             <div class="topic-meta flex items-center gap-4 mt-1">
                                 <span
-                                    class="topic-lessons text-xs font-medium text-white/40 flex items-center gap-1.5"><i
+                                    class="topic-lessons text-xs font-medium text-app-text/40 flex items-center gap-1.5"><i
                                         class="fas fa-question-circle text-[11px] opacity-80"></i>
                                     <%= (counts['Algebra, Equations, and Inequalities'] || 0) %> Questions
                                 </span>
@@ -172,29 +215,29 @@
                             </div>
                         </div>
                         <div
-                            class="topic-chevron w-8 h-8 min-w-[32px] rounded-full bg-white/5 flex items-center justify-center text-sm text-white/60 transition-all duration-200 group-hover:bg-white/10 group-hover:translate-x-0.5 group-hover:text-white z-10">
+                            class="topic-chevron w-8 h-8 min-w-[32px] rounded-full bg-white/5 flex items-center justify-center text-sm text-app-text/60 transition-all duration-200 group-hover:bg-white/10 group-hover:translate-x-0.5 group-hover:text-app-text z-10">
                             <i class="fas fa-chevron-right"></i>
                         </div>
                     </a>
 
                     <!-- Topic 2 -->
                     <a href="/practice?paper=Paper 1&topic=Patterns %26 Geometric Series"
-                        class="topic-card group relative bg-[#1e232d]/75 backdrop-blur-xl border border-white/10 rounded-2xl p-5 flex items-center gap-4 hover:-translate-y-0.5 hover:border-white/15 hover:shadow-xl transition-all duration-300 overflow-hidden">
+                        class="topic-card group relative bg-bg-card/75 backdrop-blur-xl border border-app-text/10 rounded-2xl p-5 flex items-center gap-4 hover:-translate-y-0.5 hover:border-white/15 hover:shadow-xl transition-all duration-300 overflow-hidden">
                         <div
                             class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         </div>
                         <div
-                            class="topic-icon w-14 h-14 min-w-[56px] rounded-xl flex items-center justify-center text-2xl relative z-10 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6 bg-gradient-to-br from-accent-orange to-[#ff8c42] text-white shadow-lg shadow-accent-orange/30">
+                            class="topic-icon w-14 h-14 min-w-[56px] rounded-xl flex items-center justify-center text-2xl relative z-10 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6 bg-gradient-to-br from-accent-orange to-[#ff8c42] text-app-text shadow-lg shadow-accent-orange/30">
                             <i class="fas fa-chart-line"></i>
                         </div>
                         <div class="topic-content flex-1 min-w-0 flex flex-col gap-1 z-10">
-                            <h3 class="topic-title text-base font-bold text-white leading-snug">Patterns & Geometric
+                            <h3 class="topic-title text-base font-bold text-app-text leading-snug">Patterns & Geometric
                                 Series</h3>
-                            <p class="topic-description text-[13px] text-white/60 leading-snug line-clamp-2">Explore
+                            <p class="topic-description text-[13px] text-app-text/60 leading-snug line-clamp-2">Explore
                                 sequences, series, and pattern recognition</p>
                             <div class="topic-meta flex items-center gap-4 mt-1">
                                 <span
-                                    class="topic-lessons text-xs font-medium text-white/40 flex items-center gap-1.5"><i
+                                    class="topic-lessons text-xs font-medium text-app-text/40 flex items-center gap-1.5"><i
                                         class="fas fa-question-circle text-[11px] opacity-80"></i>
                                     <%= (counts['Patterns & Geometric Series'] || 0) %> Questions
                                 </span>
@@ -203,29 +246,30 @@
                             </div>
                         </div>
                         <div
-                            class="topic-chevron w-8 h-8 min-w-[32px] rounded-full bg-white/5 flex items-center justify-center text-sm text-white/60 transition-all duration-200 group-hover:bg-white/10 group-hover:translate-x-0.5 group-hover:text-white z-10">
+                            class="topic-chevron w-8 h-8 min-w-[32px] rounded-full bg-white/5 flex items-center justify-center text-sm text-app-text/60 transition-all duration-200 group-hover:bg-white/10 group-hover:translate-x-0.5 group-hover:text-app-text z-10">
                             <i class="fas fa-chevron-right"></i>
                         </div>
                     </a>
 
                     <!-- Topic 3 -->
                     <a href="/practice?paper=Paper 1&topic=Functions and Graphs"
-                        class="topic-card group relative bg-[#1e232d]/75 backdrop-blur-xl border border-white/10 rounded-2xl p-5 flex items-center gap-4 hover:-translate-y-0.5 hover:border-white/15 hover:shadow-xl transition-all duration-300 overflow-hidden">
+                        class="topic-card group relative bg-bg-card/75 backdrop-blur-xl border border-app-text/10 rounded-2xl p-5 flex items-center gap-4 hover:-translate-y-0.5 hover:border-white/15 hover:shadow-xl transition-all duration-300 overflow-hidden">
                         <div
                             class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         </div>
                         <div
-                            class="topic-icon w-14 h-14 min-w-[56px] rounded-xl flex items-center justify-center text-2xl relative z-10 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6 bg-gradient-to-br from-accent-purple to-[#a78bfa] text-white shadow-lg shadow-accent-purple/30">
+                            class="topic-icon w-14 h-14 min-w-[56px] rounded-xl flex items-center justify-center text-2xl relative z-10 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6 bg-gradient-to-br from-accent-purple to-[#a78bfa] text-app-text shadow-lg shadow-accent-purple/30">
                             <i class="fas fa-project-diagram"></i>
                         </div>
                         <div class="topic-content flex-1 min-w-0 flex flex-col gap-1 z-10">
-                            <h3 class="topic-title text-base font-bold text-white leading-snug">Functions and Graphs
+                            <h3 class="topic-title text-base font-bold text-app-text leading-snug">Functions and Graphs
                             </h3>
-                            <p class="topic-description text-[13px] text-white/60 leading-snug line-clamp-2">Understand
+                            <p class="topic-description text-[13px] text-app-text/60 leading-snug line-clamp-2">
+                                Understand
                                 functions, transformations, and graphing</p>
                             <div class="topic-meta flex items-center gap-4 mt-1">
                                 <span
-                                    class="topic-lessons text-xs font-medium text-white/40 flex items-center gap-1.5"><i
+                                    class="topic-lessons text-xs font-medium text-app-text/40 flex items-center gap-1.5"><i
                                         class="fas fa-question-circle text-[11px] opacity-80"></i>
                                     <%= (counts['Functions and Graphs'] || 0) %> Questions
                                 </span>
@@ -234,29 +278,29 @@
                             </div>
                         </div>
                         <div
-                            class="topic-chevron w-8 h-8 min-w-[32px] rounded-full bg-white/5 flex items-center justify-center text-sm text-white/60 transition-all duration-200 group-hover:bg-white/10 group-hover:translate-x-0.5 group-hover:text-white z-10">
+                            class="topic-chevron w-8 h-8 min-w-[32px] rounded-full bg-white/5 flex items-center justify-center text-sm text-app-text/60 transition-all duration-200 group-hover:bg-white/10 group-hover:translate-x-0.5 group-hover:text-app-text z-10">
                             <i class="fas fa-chevron-right"></i>
                         </div>
                     </a>
 
                     <!-- Topic 4 -->
                     <a href="/practice?paper=Paper 1&topic=Financial Mathematics"
-                        class="topic-card group relative bg-[#1e232d]/75 backdrop-blur-xl border border-white/10 rounded-2xl p-5 flex items-center gap-4 hover:-translate-y-0.5 hover:border-white/15 hover:shadow-xl transition-all duration-300 overflow-hidden">
+                        class="topic-card group relative bg-bg-card/75 backdrop-blur-xl border border-app-text/10 rounded-2xl p-5 flex items-center gap-4 hover:-translate-y-0.5 hover:border-white/15 hover:shadow-xl transition-all duration-300 overflow-hidden">
                         <div
                             class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         </div>
                         <div
-                            class="topic-icon w-14 h-14 min-w-[56px] rounded-xl flex items-center justify-center text-2xl relative z-10 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6 bg-gradient-to-br from-accent-green to-[#34d399] text-white shadow-lg shadow-accent-green/30">
+                            class="topic-icon w-14 h-14 min-w-[56px] rounded-xl flex items-center justify-center text-2xl relative z-10 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6 bg-gradient-to-br from-accent-green to-[#34d399] text-app-text shadow-lg shadow-accent-green/30">
                             <i class="fas fa-dollar-sign"></i>
                         </div>
                         <div class="topic-content flex-1 min-w-0 flex flex-col gap-1 z-10">
-                            <h3 class="topic-title text-base font-bold text-white leading-snug">Financial Mathematics
+                            <h3 class="topic-title text-base font-bold text-app-text leading-snug">Financial Mathematics
                             </h3>
-                            <p class="topic-description text-[13px] text-white/60 leading-snug line-clamp-2">Learn
+                            <p class="topic-description text-[13px] text-app-text/60 leading-snug line-clamp-2">Learn
                                 compound interest, annuities, and investments</p>
                             <div class="topic-meta flex items-center gap-4 mt-1">
                                 <span
-                                    class="topic-lessons text-xs font-medium text-white/40 flex items-center gap-1.5"><i
+                                    class="topic-lessons text-xs font-medium text-app-text/40 flex items-center gap-1.5"><i
                                         class="fas fa-question-circle text-[11px] opacity-80"></i>
                                     <%= (counts['Financial Mathematics'] || 0) %> Questions
                                 </span>
@@ -265,28 +309,28 @@
                             </div>
                         </div>
                         <div
-                            class="topic-chevron w-8 h-8 min-w-[32px] rounded-full bg-white/5 flex items-center justify-center text-sm text-white/60 transition-all duration-200 group-hover:bg-white/10 group-hover:translate-x-0.5 group-hover:text-white z-10">
+                            class="topic-chevron w-8 h-8 min-w-[32px] rounded-full bg-white/5 flex items-center justify-center text-sm text-app-text/60 transition-all duration-200 group-hover:bg-white/10 group-hover:translate-x-0.5 group-hover:text-app-text z-10">
                             <i class="fas fa-chevron-right"></i>
                         </div>
                     </a>
 
                     <!-- Topic 5 -->
                     <a href="/practice?paper=Paper 1&topic=Calculus"
-                        class="topic-card group relative bg-[#1e232d]/75 backdrop-blur-xl border border-white/10 rounded-2xl p-5 flex items-center gap-4 hover:-translate-y-0.5 hover:border-white/15 hover:shadow-xl transition-all duration-300 overflow-hidden">
+                        class="topic-card group relative bg-bg-card/75 backdrop-blur-xl border border-app-text/10 rounded-2xl p-5 flex items-center gap-4 hover:-translate-y-0.5 hover:border-white/15 hover:shadow-xl transition-all duration-300 overflow-hidden">
                         <div
                             class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         </div>
                         <div
-                            class="topic-icon w-14 h-14 min-w-[56px] rounded-xl flex items-center justify-center text-2xl relative z-10 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6 bg-gradient-to-br from-accent-teal to-[#2dd4bf] text-white shadow-lg shadow-accent-teal/30">
+                            class="topic-icon w-14 h-14 min-w-[56px] rounded-xl flex items-center justify-center text-2xl relative z-10 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6 bg-gradient-to-br from-accent-teal to-[#2dd4bf] text-app-text shadow-lg shadow-accent-teal/30">
                             <i class="fas fa-infinity"></i>
                         </div>
                         <div class="topic-content flex-1 min-w-0 flex flex-col gap-1 z-10">
-                            <h3 class="topic-title text-base font-bold text-white leading-snug">Calculus</h3>
-                            <p class="topic-description text-[13px] text-white/60 leading-snug line-clamp-2">Master
+                            <h3 class="topic-title text-base font-bold text-app-text leading-snug">Calculus</h3>
+                            <p class="topic-description text-[13px] text-app-text/60 leading-snug line-clamp-2">Master
                                 differentiation, integration, and applications</p>
                             <div class="topic-meta flex items-center gap-4 mt-1">
                                 <span
-                                    class="topic-lessons text-xs font-medium text-white/40 flex items-center gap-1.5"><i
+                                    class="topic-lessons text-xs font-medium text-app-text/40 flex items-center gap-1.5"><i
                                         class="fas fa-question-circle text-[11px] opacity-80"></i>
                                     <%= (counts['Calculus'] || 0) %> Questions
                                 </span>
@@ -295,28 +339,29 @@
                             </div>
                         </div>
                         <div
-                            class="topic-chevron w-8 h-8 min-w-[32px] rounded-full bg-white/5 flex items-center justify-center text-sm text-white/60 transition-all duration-200 group-hover:bg-white/10 group-hover:translate-x-0.5 group-hover:text-white z-10">
+                            class="topic-chevron w-8 h-8 min-w-[32px] rounded-full bg-white/5 flex items-center justify-center text-sm text-app-text/60 transition-all duration-200 group-hover:bg-white/10 group-hover:translate-x-0.5 group-hover:text-app-text z-10">
                             <i class="fas fa-chevron-right"></i>
                         </div>
                     </a>
 
                     <!-- Topic 6 -->
                     <a href="/practice?paper=Paper 1&topic=Probability"
-                        class="topic-card group relative bg-[#1e232d]/75 backdrop-blur-xl border border-white/10 rounded-2xl p-5 flex items-center gap-4 hover:-translate-y-0.5 hover:border-white/15 hover:shadow-xl transition-all duration-300 overflow-hidden">
+                        class="topic-card group relative bg-bg-card/75 backdrop-blur-xl border border-app-text/10 rounded-2xl p-5 flex items-center gap-4 hover:-translate-y-0.5 hover:border-white/15 hover:shadow-xl transition-all duration-300 overflow-hidden">
                         <div
                             class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         </div>
                         <div
-                            class="topic-icon w-14 h-14 min-w-[56px] rounded-xl flex items-center justify-center text-2xl relative z-10 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6 bg-gradient-to-br from-accent-orange to-[#ff8c42] text-white shadow-lg shadow-accent-orange/30">
+                            class="topic-icon w-14 h-14 min-w-[56px] rounded-xl flex items-center justify-center text-2xl relative z-10 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6 bg-gradient-to-br from-accent-orange to-[#ff8c42] text-app-text shadow-lg shadow-accent-orange/30">
                             <i class="fas fa-dice"></i>
                         </div>
                         <div class="topic-content flex-1 min-w-0 flex flex-col gap-1 z-10">
-                            <h3 class="topic-title text-base font-bold text-white leading-snug">Probability</h3>
-                            <p class="topic-description text-[13px] text-white/60 leading-snug line-clamp-2">Calculate
+                            <h3 class="topic-title text-base font-bold text-app-text leading-snug">Probability</h3>
+                            <p class="topic-description text-[13px] text-app-text/60 leading-snug line-clamp-2">
+                                Calculate
                                 probabilities and understand distributions</p>
                             <div class="topic-meta flex items-center gap-4 mt-1">
                                 <span
-                                    class="topic-lessons text-xs font-medium text-white/40 flex items-center gap-1.5"><i
+                                    class="topic-lessons text-xs font-medium text-app-text/40 flex items-center gap-1.5"><i
                                         class="fas fa-question-circle text-[11px] opacity-80"></i>
                                     <%= (counts['Probability'] || 0) %> Questions
                                 </span>
@@ -325,28 +370,29 @@
                             </div>
                         </div>
                         <div
-                            class="topic-chevron w-8 h-8 min-w-[32px] rounded-full bg-white/5 flex items-center justify-center text-sm text-white/60 transition-all duration-200 group-hover:bg-white/10 group-hover:translate-x-0.5 group-hover:text-white z-10">
+                            class="topic-chevron w-8 h-8 min-w-[32px] rounded-full bg-white/5 flex items-center justify-center text-sm text-app-text/60 transition-all duration-200 group-hover:bg-white/10 group-hover:translate-x-0.5 group-hover:text-app-text z-10">
                             <i class="fas fa-chevron-right"></i>
                         </div>
                     </a>
 
                     <!-- Topic 7 -->
                     <a href="/practice?paper=Paper 1&topic=Counting Principles"
-                        class="topic-card group relative bg-[#1e232d]/75 backdrop-blur-xl border border-white/10 rounded-2xl p-5 flex items-center gap-4 hover:-translate-y-0.5 hover:border-white/15 hover:shadow-xl transition-all duration-300 overflow-hidden">
+                        class="topic-card group relative bg-bg-card/75 backdrop-blur-xl border border-app-text/10 rounded-2xl p-5 flex items-center gap-4 hover:-translate-y-0.5 hover:border-white/15 hover:shadow-xl transition-all duration-300 overflow-hidden">
                         <div
                             class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         </div>
                         <div
-                            class="topic-icon w-14 h-14 min-w-[56px] rounded-xl flex items-center justify-center text-2xl relative z-10 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6 bg-gradient-to-br from-accent-purple to-[#a78bfa] text-white shadow-lg shadow-accent-purple/30">
+                            class="topic-icon w-14 h-14 min-w-[56px] rounded-xl flex items-center justify-center text-2xl relative z-10 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6 bg-gradient-to-br from-accent-purple to-[#a78bfa] text-app-text shadow-lg shadow-accent-purple/30">
                             <i class="fas fa-sort-numeric-up"></i>
                         </div>
                         <div class="topic-content flex-1 min-w-0 flex flex-col gap-1 z-10">
-                            <h3 class="topic-title text-base font-bold text-white leading-snug">Counting Principles</h3>
-                            <p class="topic-description text-[13px] text-white/60 leading-snug line-clamp-2">Explore
+                            <h3 class="topic-title text-base font-bold text-app-text leading-snug">Counting Principles
+                            </h3>
+                            <p class="topic-description text-[13px] text-app-text/60 leading-snug line-clamp-2">Explore
                                 permutations, combinations, and counting</p>
                             <div class="topic-meta flex items-center gap-4 mt-1">
                                 <span
-                                    class="topic-lessons text-xs font-medium text-white/40 flex items-center gap-1.5"><i
+                                    class="topic-lessons text-xs font-medium text-app-text/40 flex items-center gap-1.5"><i
                                         class="fas fa-question-circle text-[11px] opacity-80"></i>
                                     <%= (counts['Counting Principles'] || 0) %> Questions
                                 </span>
@@ -355,28 +401,30 @@
                             </div>
                         </div>
                         <div
-                            class="topic-chevron w-8 h-8 min-w-[32px] rounded-full bg-white/5 flex items-center justify-center text-sm text-white/60 transition-all duration-200 group-hover:bg-white/10 group-hover:translate-x-0.5 group-hover:text-white z-10">
+                            class="topic-chevron w-8 h-8 min-w-[32px] rounded-full bg-white/5 flex items-center justify-center text-sm text-app-text/60 transition-all duration-200 group-hover:bg-white/10 group-hover:translate-x-0.5 group-hover:text-app-text z-10">
                             <i class="fas fa-chevron-right"></i>
                         </div>
                     </a>
 
                     <!-- Topic 8 -->
                     <a href="/practice?paper=Paper 1&topic=Advanced Functions"
-                        class="topic-card group relative bg-[#1e232d]/75 backdrop-blur-xl border border-white/10 rounded-2xl p-5 flex items-center gap-4 hover:-translate-y-0.5 hover:border-white/15 hover:shadow-xl transition-all duration-300 overflow-hidden">
+                        class="topic-card group relative bg-bg-card/75 backdrop-blur-xl border border-app-text/10 rounded-2xl p-5 flex items-center gap-4 hover:-translate-y-0.5 hover:border-white/15 hover:shadow-xl transition-all duration-300 overflow-hidden">
                         <div
                             class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         </div>
                         <div
-                            class="topic-icon w-14 h-14 min-w-[56px] rounded-xl flex items-center justify-center text-2xl relative z-10 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6 bg-gradient-to-br from-accent-green to-[#34d399] text-white shadow-lg shadow-accent-green/30">
+                            class="topic-icon w-14 h-14 min-w-[56px] rounded-xl flex items-center justify-center text-2xl relative z-10 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6 bg-gradient-to-br from-accent-green to-[#34d399] text-app-text shadow-lg shadow-accent-green/30">
                             <i class="fas fa-wave-square"></i>
                         </div>
                         <div class="topic-content flex-1 min-w-0 flex flex-col gap-1 z-10">
-                            <h3 class="topic-title text-base font-bold text-white leading-snug">Advanced Functions</h3>
-                            <p class="topic-description text-[13px] text-white/60 leading-snug line-clamp-2">Deep dive
+                            <h3 class="topic-title text-base font-bold text-app-text leading-snug">Advanced Functions
+                            </h3>
+                            <p class="topic-description text-[13px] text-app-text/60 leading-snug line-clamp-2">Deep
+                                dive
                                 into complex function analysis</p>
                             <div class="topic-meta flex items-center gap-4 mt-1">
                                 <span
-                                    class="topic-lessons text-xs font-medium text-white/40 flex items-center gap-1.5"><i
+                                    class="topic-lessons text-xs font-medium text-app-text/40 flex items-center gap-1.5"><i
                                         class="fas fa-question-circle text-[11px] opacity-80"></i>
                                     <%= (counts['Advanced Functions'] || 0) %> Questions
                                 </span>
@@ -385,7 +433,7 @@
                             </div>
                         </div>
                         <div
-                            class="topic-chevron w-8 h-8 min-w-[32px] rounded-full bg-white/5 flex items-center justify-center text-sm text-white/60 transition-all duration-200 group-hover:bg-white/10 group-hover:translate-x-0.5 group-hover:text-white z-10">
+                            class="topic-chevron w-8 h-8 min-w-[32px] rounded-full bg-white/5 flex items-center justify-center text-sm text-app-text/60 transition-all duration-200 group-hover:bg-white/10 group-hover:translate-x-0.5 group-hover:text-app-text z-10">
                             <i class="fas fa-chevron-right"></i>
                         </div>
                     </a>
@@ -395,9 +443,9 @@
 
         <!-- Bottom Navigation -->
         <div
-            class="bottom-nav fixed bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-48px)] max-w-[400px] h-16 bg-[#0a0e17]/90 backdrop-blur-xl border border-white/10 rounded-2xl flex justify-around items-center z-50 px-4 shadow-xl">
+            class="bottom-nav fixed bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-48px)] max-w-[400px] h-16 bg-bg-card/90 backdrop-blur-xl border border-app-text/10 rounded-2xl flex justify-around items-center z-50 px-4 shadow-xl">
             <a href="/learn"
-                class="nav-item flex-1 flex flex-col items-center gap-1 text-[11px] font-semibold text-white/60 hover:text-white hover:bg-white/5 p-2 rounded-xl transition-all [&.active]:text-accent-teal [&.active]:bg-accent-teal/10">
+                class="nav-item flex-1 flex flex-col items-center gap-1 text-[11px] font-semibold text-app-text/60 hover:text-app-text hover:bg-white/5 p-2 rounded-xl transition-all [&.active]:text-accent-teal [&.active]:bg-accent-teal/10">
                 <i class="fas fa-home text-xl mb-0.5"></i>
                 <span>Home</span>
             </a>
@@ -408,12 +456,12 @@
                 <div class="absolute -bottom-1 w-1 h-1 bg-accent-teal rounded-full"></div>
             </a>
             <a href="#"
-                class="nav-item flex-1 flex flex-col items-center gap-1 text-[11px] font-semibold text-white/60 hover:text-white hover:bg-white/5 p-2 rounded-xl transition-all [&.active]:text-accent-teal [&.active]:bg-accent-teal/10">
+                class="nav-item flex-1 flex flex-col items-center gap-1 text-[11px] font-semibold text-app-text/60 hover:text-app-text hover:bg-white/5 p-2 rounded-xl transition-all [&.active]:text-accent-teal [&.active]:bg-accent-teal/10">
                 <i class="fas fa-chart-bar text-xl mb-0.5"></i>
                 <span>Progress</span>
             </a>
             <a href="#"
-                class="nav-item flex-1 flex flex-col items-center gap-1 text-[11px] font-semibold text-white/60 hover:text-white hover:bg-white/5 p-2 rounded-xl transition-all [&.active]:text-accent-teal [&.active]:bg-accent-teal/10">
+                class="nav-item flex-1 flex flex-col items-center gap-1 text-[11px] font-semibold text-app-text/60 hover:text-app-text hover:bg-white/5 p-2 rounded-xl transition-all [&.active]:text-accent-teal [&.active]:bg-accent-teal/10">
                 <i class="fas fa-bookmark text-xl mb-0.5"></i>
                 <span>Saved</span>
             </a>
@@ -421,6 +469,37 @@
     </div>
 
     <script src="/js/paper1.js"></script>
+    <script>
+        // Theme Toggle Logic
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        }
+
+        function updateThemeIcon(theme) {
+            const btn = document.getElementById('theme-toggle');
+            if (btn) {
+                const icon = btn.querySelector('i');
+                if (theme === 'light') {
+                    icon.className = 'fas fa-moon';
+                } else {
+                    icon.className = 'fas fa-sun';
+                }
+            }
+        }
+
+        // Initialize
+        (function () {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.body.setAttribute('data-theme', savedTheme);
+            updateThemeIcon(savedTheme);
+        })();
+    </script>
 </body>
 
 </html>
