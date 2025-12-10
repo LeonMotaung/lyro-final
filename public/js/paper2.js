@@ -132,19 +132,17 @@ function setupTopicCards() {
             }
         });
 
-        // Add click handler
+        // Click handler REMOVED to allow default anchor tag navigation
+        /*
         card.addEventListener('click', function (e) {
             e.preventDefault();
-
-            // Add click animation
             this.style.transform = 'scale(0.98)';
             setTimeout(() => {
                 this.style.transform = 'scale(1)';
             }, 150);
-
-            // Simulate topic selection
             selectTopic(index);
         });
+        */
 
         // Add touch interactions for mobile
         card.addEventListener('touchstart', function () {
