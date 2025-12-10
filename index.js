@@ -63,12 +63,38 @@ app.get('/formulas', (req, res) => {
     res.render('formulas');
 });
 
-app.get('/paper1', (req, res) => {
-    res.render('paper1');
+app.get('/paper1', async (req, res) => {
+    try {
+        const stats = await Question.aggregate([
+            { $match: { paper: 'Paper 1' } },
+            { $group: { _id: '$topic', count: { $sum: 1 } } }
+        ]);
+
+        const counts = {};
+        stats.forEach(s => counts[s._id] = s.count);
+
+        res.render('paper1', { counts });
+    } catch (err) {
+        console.error(err);
+        res.render('paper1', { counts: {} });
+    }
 });
 
-app.get('/paper2', (req, res) => {
-    res.render('paper2');
+app.get('/paper2', async (req, res) => {
+    try {
+        const stats = await Question.aggregate([
+            { $match: { paper: 'Paper 2' } },
+            { $group: { _id: '$topic', count: { $sum: 1 } } }
+        ]);
+
+        const counts = {};
+        stats.forEach(s => counts[s._id] = s.count);
+
+        res.render('paper2', { counts });
+    } catch (err) {
+        console.error(err);
+        res.render('paper2', { counts: {} });
+    }
 });
 
 app.get('/about', (req, res) => {
