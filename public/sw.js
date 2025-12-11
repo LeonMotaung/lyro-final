@@ -1,19 +1,28 @@
-const CACHE_NAME = 'lyro-maths-v1';
+const CACHE_NAME = 'lyro-maths-v2';
 const urlsToCache = [
     '/',
     '/onboarding',
     '/learn',
+    '/paper1',
+    '/paper2',
     '/css/styles.css',
     '/css/index.css',
     '/css/onboarding.css',
     '/css/learn.css',
     '/js/script.js',
+    '/js/paper1.js',
+    '/js/paper2.js',
     '/images/lyro.png',
     '/images/logo.png',
     'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css',
     'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css',
     'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js',
-    'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js'
+    'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js',
+    'https://cdn.tailwindcss.com',
+    'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap',
+    'https://polyfill.io/v3/polyfill.min.js?features=es6',
+    'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js',
+    'https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js'
 ];
 
 // Install the service worker and cache the static assets
