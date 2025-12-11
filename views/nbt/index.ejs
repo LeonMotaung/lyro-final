@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lyro Maths | NBT Prep</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        bg: {
+                            primary: '#0a0e17',
+                            secondary: '#141824',
+                            card: '#1e232d'
+                        },
+                        accent: {
+                            teal: '#1ab69d',
+                            orange: '#ff6b35',
+                            purple: '#8b5cf6',
+                            green: '#10b981',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --bg-primary: 10 14 23;
+            --text-primary: 255 255 255;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body class="bg-bg-primary text-white font-sans min-h-screen">
+
+    <!-- Header -->
+    <div
+        class="fixed top-0 w-full z-50 backdrop-blur-xl bg-bg-primary/85 border-b border-white/10 px-6 py-4 flex items-center gap-4">
+        <a href="/learn"
+            class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white hover:border-accent-teal hover:-translate-x-0.5 transition-all">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+        <div class="text-xl font-bold tracking-tight">NBT Prep</div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="pt-32 pb-32 px-4 md:px-6 max-w-4xl mx-auto min-h-screen">
+
+        <div class="mb-8">
+            <h1 class="text-2xl font-bold mb-2">Available Tests</h1>
+            <p class="text-gray-400">Practice for your National Benchmark Tests with timed mock exams.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <% if (tests && tests.length> 0) { %>
+                <% tests.forEach(test=> { %>
+                    <% const now=new Date(); const start=new Date(test.availableFrom); const end=new
+                        Date(test.availableUntil); const isAvailable=now>= start && now <= end; const isUpcoming=now <
+                            start; const isExpired=now> end;
+                            %>
+                            <div
+                                class="bg-bg-card/80 backdrop-blur-sm border border-white/10 rounded-2xl p-6 relative group overflow-hidden hover:border-accent-teal/30 hover:shadow-xl hover:shadow-accent-teal/5 transition-all">
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-br from-accent-teal/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                                </div>
+
+                                <div class="relative z-10">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <div
+                                            class="w-12 h-12 rounded-xl bg-accent-teal/10 flex items-center justify-center text-accent-teal text-xl">
+                                            <i class="fas fa-clock"></i>
+                                        </div>
+                                        <% if (isAvailable) { %>
+                                            <span
+                                                class="bg-accent-green/10 text-accent-green text-xs font-bold px-3 py-1 rounded-full border border-accent-green/20">Available
+                                                Now</span>
+                                            <% } else if (isUpcoming) { %>
+                                                <span
+                                                    class="bg-accent-orange/10 text-accent-orange text-xs font-bold px-3 py-1 rounded-full border border-accent-orange/20">Upcoming</span>
+                                                <% } else { %>
+                                                    <span
+                                                        class="bg-white/10 text-gray-400 text-xs font-bold px-3 py-1 rounded-full border border-white/5">Expired</span>
+                                                    <% } %>
+                                    </div>
+
+                                    <h3 class="text-lg font-bold text-white mb-2">
+                                        <%= test.title %>
+                                    </h3>
+                                    <div class="text-sm text-gray-400 mb-4 flex flex-col gap-1">
+                                        <span><i class="fas fa-hourglass-half w-5 text-center"></i>
+                                            <%= test.durationMinutes %> Minutes
+                                        </span>
+                                        <span><i class="fas fa-list-ol w-5 text-center"></i>
+                                            <%= test.questions.length %> Questions
+                                        </span>
+                                        <% if (isUpcoming) { %>
+                                            <span class="text-accent-orange"><i
+                                                    class="fas fa-calendar w-5 text-center"></i> Opens: <%=
+                                                    start.toLocaleString() %></span>
+                                            <% } %>
+                                    </div>
+
+                                    <% if (isAvailable) { %>
+                                        <a href="/nbt/take/<%= test._id %>"
+                                            class="block w-full text-center bg-accent-teal hover:bg-teal-600 text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-accent-teal/20">
+                                            Start Test
+                                        </a>
+                                        <% } else { %>
+                                            <button disabled
+                                                class="w-full bg-white/5 text-gray-500 font-bold py-3 rounded-xl cursor-not-allowed">
+                                                <%= isUpcoming ? 'Available Soon' : 'Test Closed' %>
+                                            </button>
+                                            <% } %>
+                                </div>
+                            </div>
+                            <% }) %>
+                                <% } else { %>
+                                    <div class="col-span-full text-center py-20">
+                                        <div
+                                            class="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl text-gray-500">
+                                            <i class="fas fa-clipboard-list"></i>
+                                        </div>
+                                        <h3 class="text-white font-bold text-lg">No Tests Available</h3>
+                                        <p class="text-gray-400">Check back later for new NBT prep tests.</p>
+                                    </div>
+                                    <% } %>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

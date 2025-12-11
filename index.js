@@ -16,6 +16,7 @@ const upload = multer({
 const User = require('./models/User');
 const Question = require('./models/Question');
 const Voucher = require('./models/Voucher');
+const NBTTest = require('./models/NBTTest');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -369,7 +370,197 @@ app.post('/admin/vouchers/create', isAdmin, async (req, res) => {
     }
 });
 
-// Start Server
+// --- NBT Prep Routes (Admin) ---
+
+// List Tests
+app.get('/admin/nbt', isAdmin, async (req, res) => {
+    try {
+        const tests = await NBTTest.find().sort({ availableFrom: -1 });
+        res.render('admin/nbt_list', { page: 'nbt', tests });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+});
+
+// Create Test Form
+app.get('/admin/nbt/create', isAdmin, (req, res) => {
+    res.render('admin/nbt_create', { page: 'nbt' });
+});
+
+// Create Test Action
+app.post('/admin/nbt/create', isAdmin, async (req, res) => {
+    try {
+        const { title, description, availableFrom, availableUntil, durationMinutes } = req.body;
+
+        const newTest = new NBTTest({
+            title,
+            description,
+            availableFrom,
+            availableUntil,
+            durationMinutes,
+            questions: []
+        });
+
+        await newTest.save();
+        res.redirect(`/admin/nbt/edit/${newTest._id}`); // Redirect to edit to add questions
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error creating test');
+    }
+});
+
+// Edit Test Page
+app.get('/admin/nbt/edit/:id', isAdmin, async (req, res) => {
+    try {
+        const test = await NBTTest.findById(req.params.id);
+        if (!test) return res.status(404).send('Test not found');
+        res.render('admin/nbt_edit', { page: 'nbt', test });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+});
+
+// Update Test Details
+app.post('/admin/nbt/update/:id', isAdmin, async (req, res) => {
+    try {
+        const { title, availableFrom, availableUntil, durationMinutes } = req.body;
+        await NBTTest.findByIdAndUpdate(req.params.id, {
+            title,
+            availableFrom,
+            availableUntil,
+            durationMinutes
+        });
+        res.redirect(`/admin/nbt/edit/${req.params.id}`);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error updating test');
+    }
+});
+
+// Delete Test
+app.post('/admin/nbt/delete/:id', isAdmin, async (req, res) => {
+    try {
+        await NBTTest.findByIdAndDelete(req.params.id);
+        res.redirect('/admin/nbt');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error deleting test');
+    }
+});
+
+// Add Question to Test
+app.post('/admin/nbt/add-question/:id', isAdmin, async (req, res) => {
+    try {
+        const { questionText, options, correctOptionIndex } = req.body;
+
+        const test = await NBTTest.findById(req.params.id);
+        if (!test) return res.status(404).send('Test not found');
+
+        test.questions.push({
+            questionText,
+            options, // Array of strings from form
+            correctOptionIndex
+        });
+
+        await test.save();
+        res.redirect(`/admin/nbt/edit/${req.params.id}`);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error adding question');
+    }
+});
+
+// Delete Question from Test
+// Delete Question from Test
+app.post('/admin/nbt/delete-question/:id/:questionIndex', isAdmin, async (req, res) => {
+    try {
+        const { id, questionIndex } = req.params;
+        const test = await NBTTest.findById(id);
+        if (!test) return res.status(404).send('Test not found');
+
+        test.questions.splice(questionIndex, 1);
+        await test.save();
+
+        res.redirect(`/admin/nbt/edit/${id}`);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error deleting question');
+    }
+});
+
+// Edit Question Form
+app.get('/admin/nbt/edit-question/:id/:questionIndex', isAdmin, async (req, res) => {
+    try {
+        const { id, questionIndex } = req.params;
+        const test = await NBTTest.findById(id);
+        if (!test) return res.status(404).send('Test not found');
+
+        const question = test.questions[questionIndex];
+        if (!question) return res.status(404).send('Question not found');
+
+        res.render('admin/nbt_edit_question', { page: 'nbt', testId: id, question, questionIndex });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+});
+
+// Update Question Action
+app.post('/admin/nbt/update-question/:id/:questionIndex', isAdmin, async (req, res) => {
+    try {
+        const { id, questionIndex } = req.params;
+        const { questionText, options, correctOptionIndex } = req.body;
+
+        const test = await NBTTest.findById(id);
+        if (!test) return res.status(404).send('Test not found');
+
+        test.questions[questionIndex].questionText = questionText;
+        test.questions[questionIndex].options = options;
+        test.questions[questionIndex].correctOptionIndex = correctOptionIndex;
+
+        await test.save();
+        res.redirect(`/admin/nbt/edit/${id}`);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error updating question');
+    }
+});
+
+
+// --- NBT Prep Routes (Student) ---
+
+app.get('/nbt', async (req, res) => {
+    try {
+        // Show all tests, let the view handle "Upcoming/expired" logic visual
+        const tests = await NBTTest.find().sort({ availableFrom: 1 });
+        res.render('nbt/index', { tests });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+});
+
+app.get('/nbt/take/:id', async (req, res) => {
+    try {
+        const test = await NBTTest.findById(req.params.id);
+        if (!test) return res.status(404).send('Test not found');
+
+        // Basic date check logic (optional, but good for enforcement)
+        const now = new Date();
+        const start = new Date(test.availableFrom);
+        const end = new Date(test.availableUntil);
+
+        if (now < start) return res.send("Test not yet available.");
+        if (now > end) return res.send("Test has expired.");
+
+        res.render('nbt/take', { test });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+});
 if (require.main === module) {
     app.listen(PORT, '0.0.0.0', () => {
         console.log(`Server running on http://0.0.0.0:${PORT}`);
