@@ -17,6 +17,7 @@ const User = require('./models/User');
 const Question = require('./models/Question');
 const Voucher = require('./models/Voucher');
 const NBTTest = require('./models/NBTTest');
+const School = require('./models/School');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -196,10 +197,11 @@ app.get('/admin', isAdmin, async (req, res) => {
         const userCount = await User.countDocuments();
         const questionCount = await Question.countDocuments();
         const voucherCount = await Voucher.countDocuments({ status: 'active' });
+        const schoolCount = await School.countDocuments();
 
         res.render('admin/dashboard', {
             page: 'dashboard',
-            stats: { userCount, questionCount, voucherCount }
+            stats: { userCount, questionCount, voucherCount, schoolCount }
         });
     } catch (err) {
         console.error(err);
@@ -561,6 +563,78 @@ app.get('/nbt/take/:id', async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
+
+// List Schools
+app.get('/admin/schools', isAdmin, async (req, res) => {
+    try {
+        const schools = await School.find().sort({ name: 1 });
+        res.render('admin/schools', { page: 'schools', schools });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+});
+
+// Add School
+app.post('/admin/schools/add', isAdmin, async (req, res) => {
+    try {
+        const { name, grades } = req.body;
+        // Ensure grades is an array even if single value
+        const gradesArray = Array.isArray(grades) ? grades : [grades];
+
+        const newSchool = new School({
+            name,
+            grades: gradesArray
+        });
+        await newSchool.save();
+        res.redirect('/admin/schools');
+    } catch (err) {
+        console.error(err);
+        // Simple duplicate error handling or generic
+        res.status(500).send('Error adding school (Name might be duplicate)');
+    }
+});
+
+// Delete School
+app.post('/admin/schools/delete/:id', isAdmin, async (req, res) => {
+    try {
+        await School.findByIdAndDelete(req.params.id);
+        res.redirect('/admin/schools');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error deleting school');
+    }
+});
+
+// Edit School Form
+app.get('/admin/schools/edit/:id', isAdmin, async (req, res) => {
+    try {
+        const school = await School.findById(req.params.id);
+        if (!school) return res.status(404).send('School not found');
+        res.render('admin/school_edit', { page: 'schools', school });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+});
+
+// Update School Action
+app.post('/admin/schools/update/:id', isAdmin, async (req, res) => {
+    try {
+        const { name, grades } = req.body;
+        const gradesArray = Array.isArray(grades) ? grades : [grades];
+
+        await School.findByIdAndUpdate(req.params.id, {
+            name,
+            grades: gradesArray
+        });
+        res.redirect('/admin/schools');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error updating school');
+    }
+});
+
 if (require.main === module) {
     app.listen(PORT, '0.0.0.0', () => {
         console.log(`Server running on http://0.0.0.0:${PORT}`);

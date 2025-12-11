@@ -127,21 +127,23 @@
                                     <label class="text-sm font-medium text-gray-400">Options (Select radio for correct
                                         answer)</label>
 
-                                    <div class="flex gap-3 items-start">
-                                        <input type="radio" name="correctOptionIndex" value="<%= i %>" <%=i===0
-                                            ? 'checked' : '' %> class="accent-accent-teal w-4 h-4 mt-3 cursor-pointer
-                                        shrink-0">
-                                        <div class="flex-1 space-y-2">
-                                            <input type="text" name="options[]" id="newOption<%= i %>"
-                                                placeholder="Option <%= i+1 %> (LaTeX supported)" required
-                                                oninput="updatePreview('newOption<%= i %>', 'newOptionPreview<%= i %>')"
-                                                class="w-full bg-bg-tertiary border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-accent-teal/50 font-mono">
-                                            <div id="newOptionPreview<%= i %>"
-                                                class="px-3 py-2 bg-white/5 rounded-lg text-gray-300 text-sm min-h-[38px] empty:hidden">
+                                    <% for(let i=0; i<4; i++) { %>
+                                        <div class="flex gap-3 items-start">
+                                            <input type="radio" name="correctOptionIndex" value="<%= i %>" <%=i===0
+                                                ? 'checked' : '' %> class="accent-accent-teal w-4 h-4 mt-3
+                                            cursor-pointer
+                                            shrink-0">
+                                            <div class="flex-1 space-y-2">
+                                                <input type="text" name="options[]" id="newOption<%= i %>"
+                                                    placeholder="Option <%= i+1 %> (LaTeX supported)" required
+                                                    oninput="updatePreview('newOption<%= i %>', 'newOptionPreview<%= i %>')"
+                                                    class="w-full bg-bg-tertiary border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-accent-teal/50 font-mono">
+                                                <div id="newOptionPreview<%= i %>"
+                                                    class="px-3 py-2 bg-white/5 rounded-lg text-gray-300 text-sm min-h-[38px] empty:hidden">
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <% } %>
+                                        <% } %>
                                 </div>
                             </div>
 
