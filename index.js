@@ -34,10 +34,36 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Database Connection
-mongoose.connect(MONGO_URI)
-    .then(() => console.log('MongoDB Connected'))
-    .catch(err => console.error('MongoDB connection error:', err));
+// Database Connection with improved settings
+mongoose.connect(MONGO_URI, {
+    serverSelectionTimeoutMS: 30000, // Increase timeout to 30 seconds
+    socketTimeoutMS: 45000, // Socket timeout
+    family: 4 // Use IPv4, skip trying IPv6
+})
+    .then(() => {
+        console.log('✅ MongoDB Connected Successfully');
+    })
+    .catch(err => {
+        console.error('❌ MongoDB connection error:', err.message);
+        console.log('💡 Troubleshooting tips:');
+        console.log('   1. Check your internet connection');
+        console.log('   2. Verify MongoDB Atlas IP whitelist includes your IP');
+        console.log('   3. Ensure your MongoDB cluster is not paused');
+        console.log('   4. Check if your firewall is blocking port 27017');
+    });
+
+// Handle connection events
+mongoose.connection.on('connected', () => {
+    console.log('🔗 Mongoose connected to MongoDB');
+});
+
+mongoose.connection.on('error', (err) => {
+    console.error('⚠️  Mongoose connection error:', err.message);
+});
+
+mongoose.connection.on('disconnected', () => {
+    console.log('🔌 Mongoose disconnected from MongoDB');
+});
 
 // Routes
 app.get('/', (req, res) => {
@@ -513,13 +539,62 @@ app.get('/admin/nbt/edit-question/:id/:questionIndex', isAdmin, async (req, res)
 app.post('/admin/nbt/update-question/:id/:questionIndex', isAdmin, async (req, res) => {
     try {
         const { id, questionIndex } = req.params;
-        const { questionText, options, correctOptionIndex } = req.body;
+        const { questionContent, questionContentType, options, optionsType, correctOptionIndex } = req.body;
 
         const test = await NBTTest.findById(id);
         if (!test) return res.status(404).send('Test not found');
 
-        test.questions[questionIndex].questionText = questionText;
-        test.questions[questionIndex].options = options;
+        // Handle flexible content blocks for question
+        if (questionContent && questionContentType) {
+            const contentArray = Array.isArray(questionContent) ? questionContent : [questionContent];
+            const typeArray = Array.isArray(questionContentType) ? questionContentType : [questionContentType];
+
+            const questionBlocks = contentArray.map((content, idx) => ({
+                type: typeArray[idx] || 'text',
+                content: content
+            }));
+
+            test.questions[questionIndex].questionContent = questionBlocks;
+            // Also set questionText for backward compatibility (combine text blocks)
+            test.questions[questionIndex].questionText = contentArray
+                .filter((_, idx) => typeArray[idx] === 'text')
+                .join('\n\n');
+        }
+
+        // Handle flexible content blocks for options
+        if (options && optionsType) {
+            const optionsContent = [];
+
+            // options is an object like: { 0: ['text1', 'text2'], 1: ['text1'], ... }
+            for (let i = 0; i < 4; i++) {
+                const optionBlocks = [];
+                const optionValues = options[i];
+                const optionTypes = optionsType[i];
+
+                if (optionValues) {
+                    const valuesArray = Array.isArray(optionValues) ? optionValues : [optionValues];
+                    const typesArray = Array.isArray(optionTypes) ? optionTypes : [optionTypes];
+
+                    valuesArray.forEach((value, idx) => {
+                        if (value && value.trim()) {
+                            optionBlocks.push({
+                                type: typesArray[idx] || 'text',
+                                content: value
+                            });
+                        }
+                    });
+                }
+
+                optionsContent.push(optionBlocks);
+            }
+
+            test.questions[questionIndex].optionsContent = optionsContent;
+            // Also set options for backward compatibility (combine text blocks)
+            test.questions[questionIndex].options = optionsContent.map(blocks =>
+                blocks.filter(b => b.type === 'text').map(b => b.content).join(' ')
+            );
+        }
+
         test.questions[questionIndex].correctOptionIndex = correctOptionIndex;
 
         await test.save();

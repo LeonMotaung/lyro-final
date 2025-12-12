@@ -93,7 +93,21 @@
                                 <%= idx + 1 %>.
                             </span>
                             <div class="text-lg leading-relaxed math-content flex-1">
-                                <%= q.questionText %>
+                                <% if (q.questionContent && q.questionContent.length> 0) { %>
+                                    <% q.questionContent.forEach(block=> { %>
+                                        <% if (block.type==='text' ) { %>
+                                            <div class="mb-2"><%- block.content %></div>
+                                            <% } else if (block.type==='image' ) { %>
+                                                <div class="mb-2">
+                                                    <img src="<%= block.content %>"
+                                                        class="max-w-full max-h-64 rounded-lg border border-white/10"
+                                                        alt="Question image">
+                                                </div>
+                                                <% } %>
+                                                    <% }) %>
+                                                        <% } else { %>
+                                                            <%- q.questionText %>
+                                                                <% } %>
                             </div>
                         </div>
 
@@ -110,8 +124,23 @@
                                             class="w-2.5 h-2.5 rounded-full bg-accent-teal opacity-0 peer-checked:opacity-100 transition-opacity">
                                         </div>
                                     </div>
-                                    <span class="text-gray-300 group-hover:text-white math-content text-base">
-                                        <%= opt %>
+                                    <span class="text-gray-300 group-hover:text-white math-content text-base flex-1">
+                                        <% if (q.optionsContent && q.optionsContent[optIdx] &&
+                                            q.optionsContent[optIdx].length> 0) { %>
+                                            <% q.optionsContent[optIdx].forEach(block=> { %>
+                                                <% if (block.type==='text' ) { %>
+                                                    <div class="mb-1"><%- block.content %></div>
+                                                    <% } else if (block.type==='image' ) { %>
+                                                        <div class="mb-1">
+                                                            <img src="<%= block.content %>"
+                                                                class="max-w-full max-h-32 rounded border border-white/10"
+                                                                alt="Option image">
+                                                        </div>
+                                                        <% } %>
+                                                            <% }) %>
+                                                                <% } else { %>
+                                                                    <%- opt %>
+                                                                        <% } %>
                                     </span>
                                 </label>
                                 <% }) %>

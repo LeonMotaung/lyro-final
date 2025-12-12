@@ -1,5 +1,17 @@
 const mongoose = require('mongoose');
 
+const contentBlockSchema = new mongoose.Schema({
+    type: {
+        type: String,
+        enum: ['text', 'image'],
+        required: true
+    },
+    content: {
+        type: String,
+        required: true
+    }
+}, { _id: false });
+
 const nbtTestSchema = new mongoose.Schema({
     title: {
         type: String,
@@ -22,14 +34,20 @@ const nbtTestSchema = new mongoose.Schema({
         default: 60
     },
     questions: [{
+        // Legacy support for simple text questions
         questionText: {
-            type: String, // LaTeX supported
-            required: true
+            type: String
         },
+        // New flexible content blocks
+        questionContent: [contentBlockSchema],
+
+        // Legacy support for simple text options
         options: [{
-            type: String, // LaTeX supported, exactly 4 expected usually
-            required: true
+            type: String
         }],
+        // New flexible content blocks for options
+        optionsContent: [[contentBlockSchema]], // Array of arrays
+
         correctOptionIndex: {
             type: Number, // 0-3
             required: true

@@ -177,7 +177,7 @@
                                 class="w-full bg-bg-tertiary border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-accent-teal/50 focus:ring-1 focus:ring-accent-teal/50 transition-all font-mono text-sm"><%= question.questionText %></textarea>
                             <div id="questionPreview"
                                 class="min-h-[60px] p-4 rounded-xl bg-white/5 border border-white/10 text-gray-300 text-sm">
-                                <%= question.questionText %>
+                                <%- question.questionText %>
                             </div>
                         </div>
 
@@ -216,7 +216,7 @@
                                     class="w-full bg-bg-tertiary border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-accent-teal/50 focus:ring-1 focus:ring-accent-teal/50 transition-all font-mono text-sm h-32"><%= question.answer %></textarea>
                                 <div id="answerPreview"
                                     class="min-h-[60px] p-4 rounded-xl bg-white/5 border border-white/10 text-gray-300 text-sm">
-                                    <%= question.answer %>
+                                    <%- question.answer %>
                                 </div>
                             </div>
                             <div class="space-y-2">

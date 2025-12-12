@@ -125,13 +125,13 @@
                         <% if (question.imageUrl && question.imageUrl.length> 50) { %>
                             <div class="mb-4 rounded-xl overflow-hidden border border-app-text/10">
                                 <img src="<%= question.imageUrl %>" alt="Question Image"
-                                    class="w-full max-h-[300px] object-contain bg-black/50">
+                                    class="w-full max-h-[300px] object-contain bg-white rounded-lg p-2">
                             </div>
                             <% } %>
 
                                 <!-- Question Text with MathJax -->
                                 <div class="text-app-text/90 text-lg leading-relaxed font-medium mb-6 math-content">
-                                    <%= question.questionText %>
+                                    <%- question.questionText %>
                                 </div>
 
                                 <!-- Additional Options -->
@@ -203,7 +203,7 @@
                                             </h4>
                                             <div
                                                 class="text-app-text/80 font-mono bg-bg-tertiary/50 p-4 rounded-xl border border-app-text/10 math-content">
-                                                <%= question.answer %>
+                                                <%- question.answer %>
                                             </div>
                                         </div>
 
