@@ -5,6 +5,22 @@ const questionSchema = new mongoose.Schema({
         type: String, // String to allow "1a", "1b" etc if needed
         required: true
     },
+    grade: {
+        type: Number,
+        required: true,
+        enum: [10, 11, 12],
+        default: 12
+    },
+    subject: {
+        type: String, // Storing Name for now to avoid complex migration, or could be ID. Let's use Name for flexibility/speed unless ID is better.
+        // The user asked for "page for adding subjects". Linking by ID is safer for renames.
+        // Let's use String for now to match 'topic' pattern if we want loose coupling, 
+        // BUT strong coupling (ObjectId) is better for structure. 
+        // However, to keep it simple with the existing "paper" system (which serves as a pseudo-subject),
+        // let's add `subject` as a String first to align with User request: "Mathematics subjects".
+        required: true,
+        default: 'Mathematics'
+    },
     imageUrl: {
         type: String,
         default: ''
@@ -15,7 +31,7 @@ const questionSchema = new mongoose.Schema({
     },
     paper: {
         type: String,
-        enum: ['Paper 1', 'Paper 2'],
+        // enum: ['Paper 1', 'Paper 2'], // Removing enum to allow more flexibility if subjects change
         required: true
     },
     topic: {

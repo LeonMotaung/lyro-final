@@ -95,8 +95,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (navigator.share) {
             try {
                 await navigator.share({
-                    title: 'Lyro Maths',
-                    text: 'Master Grade 12 Maths with Lyro Maths!',
+                    title: 'Lyro Tutor',
+                    text: 'Master Grade 12 Maths with Lyro Tutor!',
                     url: window.location.origin
                 });
                 console.log('App shared successfully');

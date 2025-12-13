@@ -22,6 +22,11 @@ const userSchema = new mongoose.Schema({
     subscriptionExpiry: {
         type: Date
     },
+    surname: { type: String, required: true },
+    age: { type: Number, required: true },
+    school: { type: String, required: true },
+    town: { type: String, required: true },
+    postalCode: { type: String, required: true },
     createdAt: {
         type: Date,
         default: Date.now

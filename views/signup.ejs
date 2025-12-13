@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lyro Maths | Sign Up</title>
+    <title>Lyro Tutor | Sign Up</title>
 
     <!-- PWA Meta Tags -->
-    <meta name="description" content="Sign up for Lyro Maths - Master Grade 12 Mathematics">
+    <meta name="description" content="Sign up for Lyro Tutor - Master Grade 12 Mathematics">
     <meta name="theme-color" content="#1abc9c">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -19,188 +19,285 @@
     <link rel="icon" type="image/png" href="/images/lyro.png">
     <link rel="apple-touch-icon" href="/images/lyro.png">
 
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="/css/signup.css">
+    <!-- Tailwind & Fonts -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bg: {
+                            primary: '#0a0e17',
+                            secondary: '#141824',
+                            tertiary: '#1d2230',
+                        },
+                        accent: {
+                            teal: '#1ab69d',
+                            tealhover: '#159c85',
+                            orange: '#ff6b35',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-out',
+                        'slide-up': 'slideUp 0.5s ease-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Remove custom CSS request unless specific overrides needed -->
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 
-<body>
+<body
+    class="bg-bg-primary text-gray-200 font-sans min-h-screen flex justify-center relative overflow-x-hidden bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-bg-secondary via-bg-primary to-bg-primary pt-24 pb-12">
+
     <!-- Preloader -->
-    <div id="preloader">
-        <img src="/images/logo.png" alt="Lyro Maths Logo" class="preloader-logo">
+    <div id="preloader"
+        class="fixed inset-0 bg-bg-primary z-50 flex items-center justify-center transition-opacity duration-500">
+        <img src="/images/logo.png" alt="Lyro Tutor Logo" class="w-20 h-20 animate-bounce">
     </div>
 
-    <div class="signup-container">
-        <!-- Background Elements -->
-        <div class="bg-mesh"></div>
+    <!-- Background Elements -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute -top-[10%] -left-[10%] w-[50%] h-[50%] bg-accent-teal/10 rounded-full blur-[100px]"></div>
+        <div class="absolute top-[20%] right-[10%] w-[30%] h-[30%] bg-accent-orange/5 rounded-full blur-[80px]"></div>
+        <div class="absolute -bottom-[10%] left-[20%] w-[40%] h-[40%] bg-purple-500/5 rounded-full blur-[100px]"></div>
+    </div>
+
+    <div class="w-full max-w-2xl p-6 relative z-10">
 
         <!-- Signup Card -->
-        <div class="signup-card">
+        <div
+            class="bg-bg-secondary/40 backdrop-blur-xl border border-white/5 rounded-3xl p-8 md:p-10 shadow-2xl animate-slide-up">
+
             <!-- Logo & Brand -->
-            <div class="brand-header">
-                <a href="/" aria-label="Home">
-                    <img src="/images/logo.png" alt="Lyro Maths Logo" class="logo-img">
+            <div class="text-center mb-10">
+                <a href="/" aria-label="Home" class="inline-block hover:scale-105 transition-transform">
+                    <img src="/images/logo.png" alt="Lyro Tutor Logo" class="w-16 h-16 mx-auto mb-4 drop-shadow-lg">
                 </a>
-                <h1 class="brand-title">Create an Account</h1>
-                <p class="brand-subtitle">Join Lyro Maths to start your journey.</p>
+                <h1 class="text-3xl font-bold text-white tracking-tight mb-2">Create an Account</h1>
+                <p class="text-gray-400 text-sm">Join Lyro Tutor to start your journey.</p>
             </div>
 
             <!-- Signup Form -->
-            <form id="signup-form" class="signup-form">
-                <!-- Name -->
-                <div class="form-group">
-                    <label for="name" class="form-label">
-                        <i class="fas fa-user"></i> First Name
-                    </label>
-                    <input type="text" id="name" name="name" class="form-input" placeholder="Enter your first name"
-                        required autocomplete="given-name">
-                    <span class="error-message" aria-live="polite"></span>
+            <form id="signup-form" class="space-y-6">
+
+                <!-- Name & Surname Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-1.5">
+                        <label for="name" class="text-sm font-medium text-gray-300 ml-1">
+                            <i class="fas fa-user mr-1.5 text-accent-teal"></i> First Name
+                        </label>
+                        <input type="text" id="name" name="name" placeholder="Enter your first name" required
+                            autocomplete="given-name"
+                            class="w-full bg-bg-tertiary/50 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-accent-teal/50 focus:ring-1 focus:ring-accent-teal/50 transition-all">
+                        <span class="error-message text-red-400 text-xs hidden pl-1"></span>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label for="surname" class="text-sm font-medium text-gray-300 ml-1">
+                            <i class="fas fa-user mr-1.5 text-accent-teal"></i> Surname
+                        </label>
+                        <input type="text" id="surname" name="surname" placeholder="Enter your surname" required
+                            autocomplete="family-name"
+                            class="w-full bg-bg-tertiary/50 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-accent-teal/50 focus:ring-1 focus:ring-accent-teal/50 transition-all">
+                        <span class="error-message text-red-400 text-xs hidden pl-1"></span>
+                    </div>
                 </div>
 
-                <!-- Surname -->
-                <div class="form-group">
-                    <label for="surname" class="form-label">
-                        <i class="fas fa-user"></i> Surname
-                    </label>
-                    <input type="text" id="surname" name="surname" class="form-input" placeholder="Enter your surname"
-                        required autocomplete="family-name">
-                    <span class="error-message" aria-live="polite"></span>
+                <!-- Age & High School -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-1.5">
+                        <label for="age" class="text-sm font-medium text-gray-300 ml-1">
+                            <i class="fas fa-calendar mr-1.5 text-accent-teal"></i> Age
+                        </label>
+                        <input type="number" id="age" name="age" placeholder="Enter your age" min="13" max="25" required
+                            class="w-full bg-bg-tertiary/50 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-accent-teal/50 focus:ring-1 focus:ring-accent-teal/50 transition-all">
+                        <span class="error-message text-red-400 text-xs hidden pl-1"></span>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label for="school" class="text-sm font-medium text-gray-300 ml-1">
+                            <i class="fas fa-school mr-1.5 text-accent-teal"></i> High School
+                        </label>
+                        <select id="school" name="school" required
+                            class="w-full bg-bg-tertiary/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent-teal/50 focus:ring-1 focus:ring-accent-teal/50 transition-all appearance-none cursor-pointer">
+                            <option value="" disabled selected class="text-gray-500">Select your high school</option>
+                            <option value="Falesizwe Secondary School" class="bg-bg-tertiary text-white">Falesizwe
+                                Secondary School</option>
+                            <option value="Tsebo-Ulwazi Secondary School" class="bg-bg-tertiary text-white">Tsebo-Ulwazi
+                                Secondary School</option>
+                            <option value="Mfundo-Thuto Secondary School" class="bg-bg-tertiary text-white">Mfundo-Thuto
+                                Secondary School</option>
+                            <option value="Qalabotjha Secondary School" class="bg-bg-tertiary text-white">Qalabotjha
+                                Secondary School</option>
+                            <option value="Retsidisitswe Secondary School" class="bg-bg-tertiary text-white">
+                                Retsidisitswe Secondary School</option>
+                            <option value="Wilge Hoër (Wilgerivier High School)" class="bg-bg-tertiary text-white">Wilge
+                                Hoër (Wilgerivier High School)</option>
+                            <option value="Tweeling Hoër School (Tweeling High School)"
+                                class="bg-bg-tertiary text-white">Tweeling Hoër School (Tweeling High School)</option>
+                            <option value="Refeng Thabo Secondary School" class="bg-bg-tertiary text-white">Refeng Thabo
+                                Secondary School</option>
+                            <option value="Bongani-Lebohang Secondary School" class="bg-bg-tertiary text-white">
+                                Bongani-Lebohang Secondary School</option>
+                            <option value="Other" class="bg-bg-tertiary text-white">Other</option>
+                        </select>
+                        <span class="error-message text-red-400 text-xs hidden pl-1"></span>
+                    </div>
                 </div>
 
-                <!-- Age -->
-                <div class="form-group">
-                    <label for="age" class="form-label">
-                        <i class="fas fa-calendar"></i> Age
-                    </label>
-                    <input type="number" id="age" name="age" class="form-input" placeholder="Enter your age" min="13"
-                        max="25" required>
-                    <span class="error-message" aria-live="polite"></span>
+                <!-- Town & Postal Code -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-1.5">
+                        <label for="town" class="text-sm font-medium text-gray-300 ml-1">
+                            <i class="fas fa-map-marker-alt mr-1.5 text-accent-teal"></i> Town/City
+                        </label>
+                        <input type="text" id="town" name="town" placeholder="Enter your town or city" required
+                            autocomplete="address-level2"
+                            class="w-full bg-bg-tertiary/50 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-accent-teal/50 focus:ring-1 focus:ring-accent-teal/50 transition-all">
+                        <span class="error-message text-red-400 text-xs hidden pl-1"></span>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label for="postal-code" class="text-sm font-medium text-gray-300 ml-1">
+                            <i class="fas fa-envelope mr-1.5 text-accent-teal"></i> Postal Code
+                        </label>
+                        <input type="text" id="postal-code" name="postal-code" placeholder="Enter your postal code"
+                            required pattern="[0-9]{4}" maxlength="4" autocomplete="postal-code"
+                            class="w-full bg-bg-tertiary/50 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-accent-teal/50 focus:ring-1 focus:ring-accent-teal/50 transition-all">
+                        <span class="error-message text-red-400 text-xs hidden pl-1"></span>
+                    </div>
                 </div>
 
-                <!-- High School -->
-                <div class="form-group">
-                    <label for="school" class="form-label">
-                        <i class="fas fa-school"></i> High School
-                    </label>
-                    <select id="school" name="school" class="form-select" required>
-                        <option value="" disabled selected>Select your high school</option>
-                        <option value="Falesizwe Secondary School">Falesizwe Secondary School</option>
-                        <option value="Tsebo-Ulwazi Secondary School">Tsebo-Ulwazi Secondary School</option>
-                        <option value="Mfundo-Thuto Secondary School">Mfundo-Thuto Secondary School</option>
-                        <option value="Qalabotjha Secondary School">Qalabotjha Secondary School</option>
-                        <option value="Retsidisitswe Secondary School">Retsidisitswe Secondary School</option>
-                        <option value="Wilge Hoër (Wilgerivier High School)">Wilge Hoër (Wilgerivier High School)
-                        </option>
-                        <option value="Tweeling Hoër School (Tweeling High School)">Tweeling Hoër School (Tweeling High
-                            School)</option>
-                        <option value="Refeng Thabo Secondary School">Refeng Thabo Secondary School</option>
-                        <option value="Bongani-Lebohang Secondary School">Bongani-Lebohang Secondary School</option>
-                        <option value="Other">Other</option>
-                    </select>
-                    <span class="error-message" aria-live="polite"></span>
-                </div>
-
-                <!-- Town -->
-                <div class="form-group">
-                    <label for="town" class="form-label">
-                        <i class="fas fa-map-marker-alt"></i> Town/City
-                    </label>
-                    <input type="text" id="town" name="town" class="form-input" placeholder="Enter your town or city"
-                        required autocomplete="address-level2">
-                    <span class="error-message" aria-live="polite"></span>
-                </div>
-
-                <!-- Postal Code -->
-                <div class="form-group">
-                    <label for="postal-code" class="form-label">
-                        <i class="fas fa-envelope"></i> Postal Code
-                    </label>
-                    <input type="text" id="postal-code" name="postal-code" class="form-input"
-                        placeholder="Enter your postal code" required pattern="[0-9]{4}" maxlength="4"
-                        autocomplete="postal-code">
-                    <span class="error-message" aria-live="polite"></span>
-                </div>
+                <div class="my-2 border-t border-white/10"></div>
 
                 <!-- Email -->
-                <div class="form-group">
-                    <label for="email" class="form-label">
-                        <i class="fas fa-at"></i> Email Address
+                <div class="space-y-1.5">
+                    <label for="email" class="text-sm font-medium text-gray-300 ml-1">
+                        <i class="fas fa-at mr-1.5 text-accent-teal"></i> Email Address
                     </label>
-                    <input type="email" id="email" name="email" class="form-input" placeholder="Enter your email"
-                        required autocomplete="email">
-                    <span class="error-message" aria-live="polite"></span>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required
+                        autocomplete="email"
+                        class="w-full bg-bg-tertiary/50 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-accent-teal/50 focus:ring-1 focus:ring-accent-teal/50 transition-all">
+                    <span class="error-message text-red-400 text-xs hidden pl-1"></span>
                 </div>
 
-                <!-- Password -->
-                <div class="form-group">
-                    <label for="password" class="form-label">
-                        <i class="fas fa-lock"></i> Password
-                    </label>
-                    <div class="password-wrapper">
-                        <input type="password" id="password" name="password" class="form-input"
-                            placeholder="Create a password (min. 6 characters)" required autocomplete="new-password">
-                        <button type="button" class="toggle-password" aria-label="Toggle password visibility">
-                            <i class="fas fa-eye"></i>
-                        </button>
+                <!-- Password & Confirm -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-1.5">
+                        <label for="password" class="text-sm font-medium text-gray-300 ml-1">
+                            <i class="fas fa-lock mr-1.5 text-accent-teal"></i> Password
+                        </label>
+                        <div class="relative">
+                            <input type="password" id="password" name="password" placeholder="Min 6 characters" required
+                                autocomplete="new-password"
+                                class="w-full bg-bg-tertiary/50 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-accent-teal/50 focus:ring-1 focus:ring-accent-teal/50 transition-all pr-10">
+                            <button type="button"
+                                class="toggle-password absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors focus:outline-none"
+                                aria-label="Toggle password visibility">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <span class="error-message text-red-400 text-xs hidden pl-1"></span>
                     </div>
-                    <span class="error-message" aria-live="polite"></span>
-                </div>
 
-                <!-- Confirm Password -->
-                <div class="form-group">
-                    <label for="confirm-password" class="form-label">
-                        <i class="fas fa-lock"></i> Confirm Password
-                    </label>
-                    <div class="password-wrapper">
-                        <input type="password" id="confirm-password" name="confirm-password" class="form-input"
-                            placeholder="Re-enter your password" required autocomplete="new-password">
-                        <button type="button" class="toggle-password-confirm" aria-label="Toggle password visibility">
-                            <i class="fas fa-eye"></i>
-                        </button>
+                    <div class="space-y-1.5">
+                        <label for="confirm-password" class="text-sm font-medium text-gray-300 ml-1">
+                            <i class="fas fa-lock mr-1.5 text-accent-teal"></i> Confirm Password
+                        </label>
+                        <div class="relative">
+                            <input type="password" id="confirm-password" name="confirm-password"
+                                placeholder="Re-enter password" required autocomplete="new-password"
+                                class="w-full bg-bg-tertiary/50 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-accent-teal/50 focus:ring-1 focus:ring-accent-teal/50 transition-all pr-10">
+                            <button type="button"
+                                class="toggle-password-confirm absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors focus:outline-none"
+                                aria-label="Toggle password visibility">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <span class="error-message text-red-400 text-xs hidden pl-1"></span>
                     </div>
-                    <span class="error-message" aria-live="polite"></span>
                 </div>
 
-                <!-- Terms & Conditions -->
-                <div class="form-group">
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="terms" name="terms" required>
-                        <span class="checkbox-custom" aria-hidden="true"></span>
-                        <span class="checkbox-text">I agree to the <a href="#" class="terms-link">Terms &
-                                Conditions</a></span>
+                <!-- Terms -->
+                <div class="flex items-start gap-3 mt-2">
+                    <div
+                        class="relative flex items-center justify-center w-5 h-5 rounded border border-gray-600 hover:border-accent-teal transition-colors bg-bg-tertiary mt-0.5 shrink-0">
+                        <input type="checkbox" id="terms" name="terms" required
+                            class="peer opacity-0 absolute w-full h-full cursor-pointer">
+                        <i
+                            class="fas fa-check text-xs text-accent-teal opacity-0 peer-checked:opacity-100 transition-opacity"></i>
+                    </div>
+                    <label for="terms" class="text-sm text-gray-400 leading-relaxed cursor-pointer select-none">
+                        I agree to the <a href="#" class="text-accent-teal hover:text-accent-tealhover underline">Terms
+                            & Conditions</a>
                     </label>
-                    <span class="error-message" aria-live="polite"></span>
                 </div>
+                <span class="error-message text-red-400 text-xs hidden pl-1"></span>
 
                 <!-- Sign Up Button -->
-                <button type="submit" class="btn btn-primary">
+                <button type="submit"
+                    class="w-full bg-gradient-to-r from-accent-teal to-teal-600 hover:from-teal-400 hover:to-teal-500 text-white font-bold py-4 rounded-xl shadow-lg shadow-accent-teal/20 hover:shadow-accent-teal/40 transform hover:-translate-y-0.5 transition-all duration-200 mt-4 flex items-center justify-center gap-2">
                     <span class="btn-text">Create Account</span>
-                    <span class="btn-loader"></span>
+                    <span
+                        class="btn-loader hidden w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
                 </button>
 
                 <!-- Divider -->
-                <div class="divider">
-                    <span>or</span>
+                <div class="relative flex items-center justify-center py-2">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-white/10"></div>
+                    </div>
+                    <span class="relative bg-bg-secondary px-4 text-xs text-gray-500 uppercase">or</span>
                 </div>
 
                 <!-- Login Link -->
-                <div class="login-section">
-                    <p class="login-text">Already have an account?</p>
-                    <a href="/login" class="btn btn-secondary">
-                        <i class="fas fa-sign-in-alt"></i> Login
+                <div class="text-center space-y-3">
+                    <p class="text-gray-400 text-sm">Already have an account?</p>
+                    <a href="/login"
+                        class="block w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold py-3.5 rounded-xl transition-all flex items-center justify-center gap-2">
+                        <i class="fas fa-sign-in-alt text-sm"></i> Login
                     </a>
                 </div>
             </form>
         </div>
 
         <!-- Footer -->
-        <div class="signup-footer">
-            <p>&copy; 2025 Lyro Maths. All rights reserved.</p>
+        <div class="text-center mt-8 text-xs text-gray-500">
+            <p>&copy; 2025 Lyro Tutor. All rights reserved.</p>
         </div>
     </div>
 
     <script src="/js/script.js"></script>
     <script src="/js/signup.js"></script>
+    <script>
+        // Simple Tailwind Preloader Logic override if needed
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            if (preloader) {
+                preloader.style.opacity = '0';
+                setTimeout(() => preloader.style.display = 'none', 500);
+            }
+        });
+    </script>
 </body>
 
 </html>

@@ -202,36 +202,37 @@ document.addEventListener('DOMContentLoaded', () => {
             submitBtn.classList.add('loading');
             submitBtn.disabled = true;
 
-            // Simulate API call (replace with actual API call)
+            // Real API Call
             try {
-                await new Promise(resolve => setTimeout(resolve, 2000));
+                const response = await fetch('/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
 
-                // Store user data
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.error || 'Signup failed');
+                }
+
+                // Store user data in localStorage (optional, but good for frontend state)
                 localStorage.setItem('lyroUser', JSON.stringify({
                     name: formData.name,
-                    surname: formData.surname,
-                    age: formData.age,
-                    school: formData.school,
-                    town: formData.town,
-                    postalCode: formData.postalCode,
                     email: formData.email
                 }));
-
-                // Mark as logged in
                 localStorage.setItem('isLoggedIn', 'true');
-
-                // Mark onboarding as complete
                 localStorage.setItem('onboardingComplete', 'true');
 
                 // Success message
-                alert('Account created successfully! Welcome to Lyro Maths!');
+                alert('Account created successfully! Welcome to Lyro Tutor!');
 
-                // Redirect to learn page
-                window.location.href = '/learn';
+                // Redirect to login or learn page
+                window.location.href = '/login';
 
             } catch (error) {
                 console.error('Signup error:', error);
-                showError(emailInput, 'An error occurred. Please try again.');
+                showError(emailInput, error.message);
             } finally {
                 submitBtn.classList.remove('loading');
                 submitBtn.disabled = false;

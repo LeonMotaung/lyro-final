@@ -1,8 +1,8 @@
-# Lyro Maths PWA Setup
+# Lyro Tutor PWA Setup
 
 ## Progressive Web App Features
 
-Your Lyro Maths application is now a fully functional PWA with the following features:
+Your Lyro Tutor application is now a fully functional PWA with the following features:
 
 ### ✅ Installed Features
 
@@ -13,7 +13,7 @@ Your Lyro Maths application is now a fully functional PWA with the following fea
    - Auto-updates cache on new versions
 
 2. **Web App Manifest** (`/public/manifest.json`)
-   - App name: "Lyro Maths - Grade 12 Success"
+   - App name: "Lyro Tutor - Grade 12 Success"
    - Theme color: #1abc9c (teal)
    - Background color: #222a3a (dark blue)
    - Display mode: Standalone (fullscreen app experience)

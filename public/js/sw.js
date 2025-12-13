@@ -31,7 +31,7 @@ self.addEventListener('install', event => {
 
 // Listen for push events
 self.addEventListener('push', event => {
-    const data = event.data.json() || { title: 'Lyro Maths', body: 'Time for a study session!' };
+    const data = event.data.json() || { title: 'Lyro Tutor', body: 'Time for a study session!' };
     const options = {
         body: data.body,
         icon: 'images/lyro.png',

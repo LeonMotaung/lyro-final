@@ -1,7 +1,7 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/LeonMotaung/lyro-final/refs/heads/main/public/images/lyro.png" alt="Lyro Maths Logo" width="200"/>
+  <img src="https://raw.githubusercontent.com/LeonMotaung/lyro-final/refs/heads/main/public/images/lyro.png" alt="Lyro Tutor Logo" width="200"/>
 
-  # Lyro Maths
+  # Lyro Tutor
 
   <img src="https://raw.githubusercontent.com/LeonMotaung/lyro-final/refs/heads/main/public/images/top1.png" alt="Top 1 in Maths" height="60"/>
   &nbsp;&nbsp;&nbsp;
@@ -36,7 +36,7 @@
 
 ## 📖 About
 
-**Lyro Maths** is a modern, Progressive Web Application (PWA) designed to help Grade 12 students master mathematics. Built with a focus on user experience and accessibility, Lyro provides interactive lessons, step-by-step solutions, practice quizzes, and progress tracking—all aligned with the Grade 12 curriculum.
+**Lyro Tutor** is a modern, Progressive Web Application (PWA) designed to help Grade 12 students master mathematics. Built with a focus on user experience and accessibility, Lyro provides interactive lessons, step-by-step solutions, practice quizzes, and progress tracking—all aligned with the Grade 12 curriculum.
 
 Whether you're preparing for your final exams, NBT tests, or simply want to improve your mathematical skills, Lyro offers a comprehensive learning platform with a beautiful, intuitive interface.
 
@@ -199,7 +199,7 @@ Lyro can be installed as a Progressive Web App on your device:
 
 ### On Desktop (Chrome/Edge)
 1. Look for the install icon in the address bar
-2. Click "Install Lyro Maths"
+2. Click "Install Lyro Tutor"
 3. Access from your desktop or start menu
 
 ---

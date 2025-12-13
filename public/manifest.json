@@ -42,7 +42,7 @@
         {
             "name": "Onboarding",
             "short_name": "Start",
-            "description": "Get started with Lyro Maths",
+            "description": "Get started with Lyro Tutor",
             "url": "/onboarding",
             "icons": [
                 {
