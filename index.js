@@ -35,7 +35,7 @@ const Topic = require('./models/Topic');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const MONGO_URI = process.env.MONGO_URI;
+const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://smetchappy:Egd8lV7C8J5mcymM@backeddb.pmksk.mongodb.net/lyro?retryWrites=true&w=majority&appName=BackedDB';
 
 // Middleware
 app.use(helmet({
@@ -175,7 +175,16 @@ app.get('/login', (req, res) => {
     if (req.session.userId) {
         return res.redirect('/learn');
     }
-    res.render('login');
+    // Gather Firebase config from environment (ensure you have these in .env)
+    const firebaseConfig = {
+        apiKey: process.env.FIREBASE_API_KEY || '',
+        authDomain: process.env.FIREBASE_AUTH_DOMAIN || '',
+        projectId: process.env.FIREBASE_PROJECT_ID || '',
+        storageBucket: process.env.FIREBASE_STORAGE_BUCKET || '',
+        messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID || '',
+        appId: process.env.FIREBASE_APP_ID || ''
+    };
+    res.render('login', { firebaseConfig });
 });
 
 // User Login API
@@ -204,19 +213,31 @@ app.get('/signup', (req, res) => {
 
 app.post('/signup', async (req, res) => {
     try {
-        const { name, surname, age, school, town, postalCode, email, password } = req.body;
+        const {
+            name,
+            surname,
+            age,
+            school,
+            town,
+            postalCode,
+            email,
+            password,
+        } = req.body;
 
-        // Basic validation
-        if (!email || !password || !name) {
-            return res.status(400).json({ error: 'All fields are required' });
+        // Load User model (you already have one)
+        // const User = require('./models/User'); // already required at top
+
+        // Check for existing email
+        const existing = await User.findOne({ email });
+        if (existing) {
+            return res.render('signup', { error: 'Email already registered' });
         }
 
-        // Check availability
-        const existingUser = await User.findOne({ email });
-        if (existingUser) {
-            return res.status(400).json({ error: 'Email already registered' });
-        }
+        // ---- Hash the password ----
+        const SALT_ROUNDS = 12;
+        const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
 
+        // Create and save the user
         const newUser = new User({
             name,
             surname,
@@ -225,18 +246,44 @@ app.post('/signup', async (req, res) => {
             town,
             postalCode,
             email,
-            password: await bcrypt.hash(password, 10)
+            password: hashedPassword, // store hashed version
         });
-
         await newUser.save();
 
-        // Auto login after signup (optional) or just confirm
-        req.session.userId = newUser._id;
-
-        res.status(201).json({ message: 'User created successfully' });
+        // ---- Success toast ----
+        // Pass a flag to the login view so it can show a toast
+        return res.render('login', { successToast: 'Account created successfully! Please log in.' });
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Server error during signup' });
+        console.error('Signup error:', err);
+        return res.render('signup', { error: 'Something went wrong. Please try again.' });
+    }
+});
+
+// Google login callback
+app.post('/login/google', async (req, res) => {
+    const { idToken } = req.body;
+    try {
+        const admin = require('firebase-admin');
+        if (!admin.apps.length) {
+            admin.initializeApp({
+                credential: admin.credential.applicationDefault(),
+            });
+        }
+        const decoded = await admin.auth().verifyIdToken(idToken);
+        // Find or create a user based on decoded.email
+        let user = await User.findOne({ email: decoded.email });
+        if (!user) {
+            user = await new User({
+                name: decoded.name || '',
+                email: decoded.email,
+                password: '', // No password needed for Google accounts
+            }).save();
+        }
+        req.session.userId = user._id;
+        res.json({ success: true });
+    } catch (err) {
+        console.error('Google login error:', err);
+        res.json({ success: false, error: 'Invalid token' });
     }
 });
 

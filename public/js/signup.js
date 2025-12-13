@@ -50,6 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const showError = (input, message) => {
         const formGroup = input.closest('.form-group');
+        if (!formGroup) return;
         const errorElement = formGroup.querySelector('.error-message');
         if (errorElement) {
             errorElement.textContent = message;
