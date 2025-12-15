@@ -10,7 +10,10 @@ const helmet = require('helmet');
 const compression = require('compression');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
+const NodeCache = require('node-cache'); // For caching image URLs
 require('dotenv').config();
+
+const imageCache = new NodeCache({ stdTTL: 3600 }); // Cache for 1 hour (3600 seconds)
 
 // Configure Multer (Memory Storage for Serverless/Base64 conversion)
 const storage = multer.memoryStorage();
@@ -175,16 +178,7 @@ app.get('/login', (req, res) => {
     if (req.session.userId) {
         return res.redirect('/learn');
     }
-    // Gather Firebase config from environment (ensure you have these in .env)
-    const firebaseConfig = {
-        apiKey: process.env.FIREBASE_API_KEY || '',
-        authDomain: process.env.FIREBASE_AUTH_DOMAIN || '',
-        projectId: process.env.FIREBASE_PROJECT_ID || '',
-        storageBucket: process.env.FIREBASE_STORAGE_BUCKET || '',
-        messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID || '',
-        appId: process.env.FIREBASE_APP_ID || ''
-    };
-    res.render('login', { firebaseConfig });
+    res.render('login');
 });
 
 // User Login API
@@ -213,27 +207,39 @@ app.get('/signup', (req, res) => {
 
 app.post('/signup', async (req, res) => {
     try {
+        console.log('Signup request body:', req.body);
+
         const {
             name,
             surname,
             age,
+            grade,
             school,
             town,
             postalCode,
             email,
             password,
+            confirmPassword
         } = req.body;
 
-        // Load User model (you already have one)
-        // const User = require('./models/User'); // already required at top
+        // Validate password match
+        if (password !== confirmPassword) {
+            if (req.xhr || (req.headers.accept && req.headers.accept.indexOf('json') > -1)) {
+                return res.status(400).json({ error: 'Passwords do not match' });
+            }
+            return res.render('signup', { error: 'Passwords do not match' });
+        }
 
         // Check for existing email
         const existing = await User.findOne({ email });
         if (existing) {
+            if (req.xhr || (req.headers.accept && req.headers.accept.indexOf('json') > -1)) {
+                return res.status(400).json({ error: 'Email already registered' });
+            }
             return res.render('signup', { error: 'Email already registered' });
         }
 
-        // ---- Hash the password ----
+        // Hash the password
         const SALT_ROUNDS = 12;
         const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
 
@@ -242,48 +248,31 @@ app.post('/signup', async (req, res) => {
             name,
             surname,
             age,
+            grade: parseInt(grade),
             school,
             town,
             postalCode,
             email,
-            password: hashedPassword, // store hashed version
+            password: hashedPassword
         });
         await newUser.save();
 
-        // ---- Success toast ----
-        // Pass a flag to the login view so it can show a toast
-        return res.render('login', { successToast: 'Account created successfully! Please log in.' });
+        // Determine redirect URL based on grade
+        const redirectUrl = `/learn${grade}`;
+
+        // For AJAX → return JSON with redirect URL
+        if (req.xhr || (req.headers.accept && req.headers.accept.indexOf('json') > -1)) {
+            return res.json({ success: true, redirect: redirectUrl });
+        }
+
+        // Fallback for non-AJAX (direct navigation)
+        return res.redirect(redirectUrl);
     } catch (err) {
         console.error('Signup error:', err);
+        if (req.xhr || (req.headers.accept && req.headers.accept.indexOf('json') > -1)) {
+            return res.status(500).json({ error: 'Server error. Please try again.' });
+        }
         return res.render('signup', { error: 'Something went wrong. Please try again.' });
-    }
-});
-
-// Google login callback
-app.post('/login/google', async (req, res) => {
-    const { idToken } = req.body;
-    try {
-        const admin = require('firebase-admin');
-        if (!admin.apps.length) {
-            admin.initializeApp({
-                credential: admin.credential.applicationDefault(),
-            });
-        }
-        const decoded = await admin.auth().verifyIdToken(idToken);
-        // Find or create a user based on decoded.email
-        let user = await User.findOne({ email: decoded.email });
-        if (!user) {
-            user = await new User({
-                name: decoded.name || '',
-                email: decoded.email,
-                password: '', // No password needed for Google accounts
-            }).save();
-        }
-        req.session.userId = user._id;
-        res.json({ success: true });
-    } catch (err) {
-        console.error('Google login error:', err);
-        res.json({ success: false, error: 'Invalid token' });
     }
 });
 
@@ -418,6 +407,13 @@ app.get('/practice', async (req, res) => {
 
         const questions = await Question.find(query).sort({ questionNumber: 1 });
 
+        // Cache image URLs
+        questions.forEach(question => {
+            if (question.imageUrl) {
+                imageCache.set(question._id.toString(), question.imageUrl);
+            }
+        });
+
         res.render('practice', { paper: paper || subject, topic, questions });
     } catch (err) {
         console.error(err);
@@ -491,6 +487,17 @@ app.get('/admin/content/edit/:id', isAdmin, async (req, res) => {
     try {
         const question = await Question.findById(req.params.id);
         if (!question) return res.status(404).send('Question not found');
+
+        // Check cache for image URL
+        if (question.imageUrl) {
+            const cachedImageUrl = imageCache.get(question._id.toString());
+            if (cachedImageUrl) {
+                question.imageUrl = cachedImageUrl; // Use cached URL
+            } else {
+                imageCache.set(question._id.toString(), question.imageUrl); // Cache if not found
+            }
+        }
+
         res.render('admin/edit_content', { page: 'content', question });
     } catch (err) {
         console.error(err);
@@ -531,6 +538,12 @@ app.post('/admin/content/update/:id', isAdmin, upload.single('imageFile'), async
         question.additionalFields = fields;
 
         await question.save();
+
+        // Cache the image URL after saving
+        if (finalImageUrl) {
+            imageCache.set(question._id.toString(), finalImageUrl);
+        }
+
         res.redirect('/admin/content?success=true');
     } catch (err) {
         console.error(err);
@@ -568,6 +581,12 @@ app.post('/admin/content/create', isAdmin, upload.single('imageFile'), async (re
         });
 
         await newQuestion.save();
+
+        // Cache the image URL after saving
+        if (finalImageUrl) {
+            imageCache.set(newQuestion._id.toString(), finalImageUrl);
+        }
+
         res.redirect('/admin/content?success=true');
     } catch (err) {
         console.error(err);
