@@ -1,6 +1,7 @@
 // Login Page JavaScript
 
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('Login script loaded');
     const loginForm = document.getElementById('login-form');
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
@@ -84,33 +85,44 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!isValid) return;
 
             // Show loading state
-            const submitBtn = loginForm.querySelector('.btn-primary');
-            submitBtn.classList.add('loading');
+            // Real API Login
+            const submitBtn = loginForm.querySelector('button[type="submit"]');
+            const submitText = submitBtn.querySelector('.btn-text');
+            const loader = submitBtn.querySelector('.btn-loader');
+
+            submitText.classList.add('hidden');
+            loader.classList.remove('hidden');
             submitBtn.disabled = true;
 
-            // Simulate API call (replace with actual API call)
             try {
-                await new Promise(resolve => setTimeout(resolve, 1500));
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
 
-                // Store user data if remember me is checked
-                if (rememberMe) {
-                    localStorage.setItem('lyroUser', JSON.stringify({
-                        email: email,
-                        rememberMe: true
-                    }));
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    // Success
+                    if (rememberMe) {
+                        localStorage.setItem('lyro_email', email);
+                    } else {
+                        localStorage.removeItem('lyro_email');
+                    }
+                    window.location.href = data.redirect || '/learn';
+                } else {
+                    // Error
+                    showError(passwordInput, data.error || 'Invalid email or password');
+                    submitText.classList.remove('hidden');
+                    loader.classList.add('hidden');
+                    submitBtn.disabled = false;
                 }
-
-                // Mark as logged in
-                localStorage.setItem('isLoggedIn', 'true');
-
-                // Redirect to learn page
-                window.location.href = '/learn';
-
             } catch (error) {
                 console.error('Login error:', error);
-                showError(passwordInput, 'Invalid email or password');
-            } finally {
-                submitBtn.classList.remove('loading');
+                showError(passwordInput, 'Server connection failed');
+                submitText.classList.remove('hidden');
+                loader.classList.add('hidden');
                 submitBtn.disabled = false;
             }
         });

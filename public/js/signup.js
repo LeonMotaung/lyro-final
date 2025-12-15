@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const nameInput = document.getElementById('name');
     const surnameInput = document.getElementById('surname');
     const ageInput = document.getElementById('age');
+    const gradeSelect = document.getElementById('grade');
     const schoolSelect = document.getElementById('school');
     const townInput = document.getElementById('town');
     const postalCodeInput = document.getElementById('postal-code');
@@ -85,157 +86,57 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Form Submission ---
     if (signupForm) {
-        signupForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
+        signupForm.addEventListener('submit', async function (e) {
+            e.preventDefault(); // Prevent full page reload
 
-            // Clear all previous errors
-            inputs.forEach(input => clearError(input));
-
-            // Get form values
-            const formData = {
-                name: nameInput.value.trim(),
-                surname: surnameInput.value.trim(),
-                age: ageInput.value.trim(),
-                school: schoolSelect.value,
-                town: townInput.value.trim(),
-                postalCode: postalCodeInput.value.trim(),
-                email: emailInput.value.trim(),
-                password: passwordInput.value.trim(),
-                confirmPassword: confirmPasswordInput.value.trim(),
-                termsAccepted: termsCheckbox.checked
-            };
-
-            let isValid = true;
-
-            // Validate Name
-            if (!formData.name) {
-                showError(nameInput, 'First name is required');
-                isValid = false;
-            } else if (formData.name.length < 2) {
-                showError(nameInput, 'Name must be at least 2 characters');
-                isValid = false;
-            }
-
-            // Validate Surname
-            if (!formData.surname) {
-                showError(surnameInput, 'Surname is required');
-                isValid = false;
-            } else if (formData.surname.length < 2) {
-                showError(surnameInput, 'Surname must be at least 2 characters');
-                isValid = false;
-            }
-
-            // Validate Age
-            if (!formData.age) {
-                showError(ageInput, 'Age is required');
-                isValid = false;
-            } else if (formData.age < 13 || formData.age > 25) {
-                showError(ageInput, 'Age must be between 13 and 25');
-                isValid = false;
-            }
-
-            // Validate School
-            if (!formData.school) {
-                showError(schoolSelect, 'Please select your high school');
-                isValid = false;
-            }
-
-            // Validate Town
-            if (!formData.town) {
-                showError(townInput, 'Town/City is required');
-                isValid = false;
-            } else if (formData.town.length < 2) {
-                showError(townInput, 'Town/City must be at least 2 characters');
-                isValid = false;
-            }
-
-            // Validate Postal Code
-            if (!formData.postalCode) {
-                showError(postalCodeInput, 'Postal code is required');
-                isValid = false;
-            } else if (!validatePostalCode(formData.postalCode)) {
-                showError(postalCodeInput, 'Postal code must be 4 digits');
-                isValid = false;
-            }
-
-            // Validate Email
-            if (!formData.email) {
-                showError(emailInput, 'Email is required');
-                isValid = false;
-            } else if (!validateEmail(formData.email)) {
-                showError(emailInput, 'Please enter a valid email address');
-                isValid = false;
-            }
-
-            // Validate Password
-            if (!formData.password) {
-                showError(passwordInput, 'Password is required');
-                isValid = false;
-            } else if (formData.password.length < 6) {
-                showError(passwordInput, 'Password must be at least 6 characters');
-                isValid = false;
-            }
-
-            // Validate Confirm Password
-            if (!formData.confirmPassword) {
-                showError(confirmPasswordInput, 'Please confirm your password');
-                isValid = false;
-            } else if (formData.password !== formData.confirmPassword) {
-                showError(confirmPasswordInput, 'Passwords do not match');
-                isValid = false;
-            }
-
-            // Validate Terms
-            if (!formData.termsAccepted) {
-                const termsGroup = termsCheckbox.closest('.form-group');
-                const errorElement = termsGroup.querySelector('.error-message');
-                if (errorElement) {
-                    errorElement.textContent = 'You must accept the terms and conditions';
-                    errorElement.classList.add('show');
-                }
-                isValid = false;
-            }
-
-            if (!isValid) return;
+            // Reset previous errors
+            document.querySelectorAll('.error-message').forEach(el => {
+                el.textContent = '';
+                el.classList.remove('show');
+            });
+            document.querySelectorAll('input, select').forEach(el => el.classList.remove('error'));
 
             // Show loading state
-            const submitBtn = signupForm.querySelector('.btn-primary');
-            submitBtn.classList.add('loading');
+            const submitBtn = signupForm.querySelector('button[type="submit"]');
+            const submitText = submitBtn.querySelector('.btn-text');
+            const loader = submitBtn.querySelector('.btn-loader');
+            submitText.classList.add('hidden');
+            loader.classList.remove('hidden');
             submitBtn.disabled = true;
 
-            // Real API Call
             try {
-                const response = await fetch('/signup', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(formData)
+                // Convert FormData to plain object for JSON
+                const formData = new FormData(signupForm);
+                const data = {};
+                formData.forEach((value, key) => {
+                    data[key] = value;
                 });
 
-                const result = await response.json();
+                const response = await fetch('/signup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
 
-                if (!response.ok) {
-                    throw new Error(result.error || 'Signup failed');
+                const result = await response.json().catch(() => ({}));
+
+                if (response.ok && result.success) {
+                    // Success → redirect to grade-specific learn page
+                    window.location.href = result.redirect || '/learn';
+                } else {
+                    // Show error on page
+                    let errorMsg = result.error || 'Something went wrong. Please try again.';
+                    alert(errorMsg);
                 }
-
-                // Store user data in localStorage (optional, but good for frontend state)
-                localStorage.setItem('lyroUser', JSON.stringify({
-                    name: formData.name,
-                    email: formData.email
-                }));
-                localStorage.setItem('isLoggedIn', 'true');
-                localStorage.setItem('onboardingComplete', 'true');
-
-                // Success message
-                alert('Account created successfully! Welcome to Lyro Tutor!');
-
-                // Redirect to login or learn page
-                window.location.href = '/login';
-
-            } catch (error) {
-                console.error('Signup error:', error);
-                showError(emailInput, error.message);
+            } catch (err) {
+                console.error(err);
+                alert('Network error. Please check your connection.');
             } finally {
-                submitBtn.classList.remove('loading');
+                // Reset button
+                submitText.classList.remove('hidden');
+                loader.classList.add('hidden');
                 submitBtn.disabled = false;
             }
         });

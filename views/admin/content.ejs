@@ -254,39 +254,59 @@
                 const subjectSelect = document.getElementById('subjectSelect');
                 const topicSelect = document.getElementById('topicSelect');
 
-                // Reset
-                subjectSelect.innerHTML = '<option value="" disabled selected>Select Subject</option>';
+                // Clear previous options
+                subjectSelect.innerHTML = '<option value="" disabled selected>Loading subjects...</option>';
                 topicSelect.innerHTML = '<option value="" disabled selected>Select Subject First</option>';
 
-                // Filter
-                const filteredSubjects = serverSubjects.filter(s => s.grade === grade);
+                if (!grade) {
+                    subjectSelect.innerHTML = '<option value="" disabled selected>Select Grade First</option>';
+                    return;
+                }
 
-                filteredSubjects.forEach(sub => {
-                    const option = document.createElement('option');
-                    option.value = sub.name;
-                    option.dataset.id = sub._id;
-                    option.textContent = sub.name;
-                    subjectSelect.appendChild(option);
-                });
+                // Filter subjects by selected grade
+                const filteredSubjects = serverSubjects.filter(s => s.grade == grade);
+
+                // Repopulate subject dropdown
+                subjectSelect.innerHTML = '<option value="" disabled selected>Select Subject</option>';
+                if (filteredSubjects.length === 0) {
+                    subjectSelect.innerHTML = '<option value="" disabled>No subjects found for this grade</option>';
+                } else {
+                    filteredSubjects.forEach(sub => {
+                        const option = document.createElement('option');
+                        option.value = sub.name;
+                        option.dataset.subjectId = sub._id;  // Store subject ID
+                        option.textContent = sub.name;
+                        subjectSelect.appendChild(option);
+                    });
+                }
             }
 
             function filterTopics() {
-                const subjectName = document.getElementById('subjectSelect').value;
                 const subjectSelect = document.getElementById('subjectSelect');
-                const selectedOption = subjectSelect.options[subjectSelect.selectedIndex];
-                const subjectId = selectedOption.dataset.id;
-
                 const topicSelect = document.getElementById('topicSelect');
+
+                const selectedOption = subjectSelect.options[subjectSelect.selectedIndex];
+                const subjectId = selectedOption?.dataset.subjectId;
+
+                // Clear topics
+                topicSelect.innerHTML = '<option value="" disabled selected>Loading topics...</option>';
+
+                if (!subjectId) {
+                    topicSelect.innerHTML = '<option value="" disabled selected>Select Subject First</option>';
+                    return;
+                }
+
+                // Filter topics by subject ID (most reliable)
+                const filteredTopics = serverTopics.filter(t =>
+                    t.subject &&
+                    (t.subject._id || t.subject).toString() === subjectId
+                );
+
+                // Repopulate topics
                 topicSelect.innerHTML = '<option value="" disabled selected>Select Topic</option>';
-
-                if (subjectId) {
-                    const filteredTopics = serverTopics.filter(t => {
-                        if (t.subject && typeof t.subject === 'object') {
-                            return t.subject.name === subjectName;
-                        }
-                        return false;
-                    });
-
+                if (filteredTopics.length === 0) {
+                    topicSelect.innerHTML += '<option value="" disabled>No topics found</option>';
+                } else {
                     filteredTopics.forEach(t => {
                         const option = document.createElement('option');
                         option.value = t.name;
@@ -295,6 +315,18 @@
                     });
                 }
             }
+
+            // Optional: Auto-trigger if page loads with pre-selected values (e.g., edit mode)
+            document.addEventListener('DOMContentLoaded', () => {
+                const gradeSelect = document.getElementById('gradeSelect');
+                if (gradeSelect.value) {
+                    filterSubjects();
+                    setTimeout(() => {
+                        const subjectSelect = document.getElementById('subjectSelect');
+                        if (subjectSelect.value) filterTopics();
+                    }, 100);
+                }
+            });
         </script>
 </body>
 

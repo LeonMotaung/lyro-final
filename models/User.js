@@ -24,6 +24,7 @@ const userSchema = new mongoose.Schema({
     },
     surname: { type: String, required: true },
     age: { type: Number, required: true },
+    grade: { type: Number, required: true, enum: [10, 11, 12] },
     school: { type: String, required: true },
     town: { type: String, required: true },
     postalCode: { type: String, required: true },

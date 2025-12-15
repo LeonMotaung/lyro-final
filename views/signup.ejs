@@ -97,7 +97,7 @@
             </div>
 
             <!-- Signup Form -->
-            <form id="signup-form" class="space-y-6">
+            <form id="signup-form" class="space-y-6" action="/signup" method="POST">
 
                 <!-- Name & Surname Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -122,9 +122,9 @@
                     </div>
                 </div>
 
-                <!-- Age & High School -->
+                <!-- Age, Grade & High School -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="space-y-1.5">
+                    <div class="form-group space-y-1.5">
                         <label for="age" class="text-sm font-medium text-gray-300 ml-1">
                             <i class="fas fa-calendar mr-1.5 text-accent-teal"></i> Age
                         </label>
@@ -133,35 +133,50 @@
                         <span class="error-message text-red-400 text-xs hidden pl-1"></span>
                     </div>
 
-                    <div class="space-y-1.5">
-                        <label for="school" class="text-sm font-medium text-gray-300 ml-1">
-                            <i class="fas fa-school mr-1.5 text-accent-teal"></i> High School
+                    <div class="form-group space-y-1.5">
+                        <label for="grade" class="text-sm font-medium text-gray-300 ml-1">
+                            <i class="fas fa-graduation-cap mr-1.5 text-accent-teal"></i> Grade
                         </label>
-                        <select id="school" name="school" required
+                        <select id="grade" name="grade" required
                             class="w-full bg-bg-tertiary/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent-teal/50 focus:ring-1 focus:ring-accent-teal/50 transition-all appearance-none cursor-pointer">
-                            <option value="" disabled selected class="text-gray-500">Select your high school</option>
-                            <option value="Falesizwe Secondary School" class="bg-bg-tertiary text-white">Falesizwe
-                                Secondary School</option>
-                            <option value="Tsebo-Ulwazi Secondary School" class="bg-bg-tertiary text-white">Tsebo-Ulwazi
-                                Secondary School</option>
-                            <option value="Mfundo-Thuto Secondary School" class="bg-bg-tertiary text-white">Mfundo-Thuto
-                                Secondary School</option>
-                            <option value="Qalabotjha Secondary School" class="bg-bg-tertiary text-white">Qalabotjha
-                                Secondary School</option>
-                            <option value="Retsidisitswe Secondary School" class="bg-bg-tertiary text-white">
-                                Retsidisitswe Secondary School</option>
-                            <option value="Wilge Hoër (Wilgerivier High School)" class="bg-bg-tertiary text-white">Wilge
-                                Hoër (Wilgerivier High School)</option>
-                            <option value="Tweeling Hoër School (Tweeling High School)"
-                                class="bg-bg-tertiary text-white">Tweeling Hoër School (Tweeling High School)</option>
-                            <option value="Refeng Thabo Secondary School" class="bg-bg-tertiary text-white">Refeng Thabo
-                                Secondary School</option>
-                            <option value="Bongani-Lebohang Secondary School" class="bg-bg-tertiary text-white">
-                                Bongani-Lebohang Secondary School</option>
-                            <option value="Other" class="bg-bg-tertiary text-white">Other</option>
+                            <option value="" disabled selected class="text-gray-500">Select your grade</option>
+                            <option value="10" class="bg-bg-tertiary text-white">Grade 10</option>
+                            <option value="11" class="bg-bg-tertiary text-white">Grade 11</option>
+                            <option value="12" class="bg-bg-tertiary text-white">Grade 12</option>
                         </select>
                         <span class="error-message text-red-400 text-xs hidden pl-1"></span>
                     </div>
+                </div>
+
+                <!-- High School -->
+                <div class="form-group space-y-1.5">
+                    <label for="school" class="text-sm font-medium text-gray-300 ml-1">
+                        <i class="fas fa-school mr-1.5 text-accent-teal"></i> High School
+                    </label>
+                    <select id="school" name="school" required
+                        class="w-full bg-bg-tertiary/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent-teal/50 focus:ring-1 focus:ring-accent-teal/50 transition-all appearance-none cursor-pointer">
+                        <option value="" disabled selected class="text-gray-500">Select your high school</option>
+                        <option value="Falesizwe Secondary School" class="bg-bg-tertiary text-white">Falesizwe
+                            Secondary School</option>
+                        <option value="Tsebo-Ulwazi Secondary School" class="bg-bg-tertiary text-white">Tsebo-Ulwazi
+                            Secondary School</option>
+                        <option value="Mfundo-Thuto Secondary School" class="bg-bg-tertiary text-white">Mfundo-Thuto
+                            Secondary School</option>
+                        <option value="Qalabotjha Secondary School" class="bg-bg-tertiary text-white">Qalabotjha
+                            Secondary School</option>
+                        <option value="Retsidisitswe Secondary School" class="bg-bg-tertiary text-white">
+                            Retsidisitswe Secondary School</option>
+                        <option value="Wilge Hoër (Wilgerivier High School)" class="bg-bg-tertiary text-white">Wilge
+                            Hoër (Wilgerivier High School)</option>
+                        <option value="Tweeling Hoër School (Tweeling High School)" class="bg-bg-tertiary text-white">
+                            Tweeling Hoër School (Tweeling High School)</option>
+                        <option value="Refeng Thabo Secondary School" class="bg-bg-tertiary text-white">Refeng Thabo
+                            Secondary School</option>
+                        <option value="Bongani-Lebohang Secondary School" class="bg-bg-tertiary text-white">
+                            Bongani-Lebohang Secondary School</option>
+                        <option value="Other" class="bg-bg-tertiary text-white">Other</option>
+                    </select>
+                    <span class="error-message text-red-400 text-xs hidden pl-1"></span>
                 </div>
 
                 <!-- Town & Postal Code -->
@@ -180,7 +195,7 @@
                         <label for="postal-code" class="text-sm font-medium text-gray-300 ml-1">
                             <i class="fas fa-envelope mr-1.5 text-accent-teal"></i> Postal Code
                         </label>
-                        <input type="text" id="postal-code" name="postal-code" placeholder="Enter your postal code"
+                        <input type="text" id="postal-code" name="postalCode" placeholder="Enter your postal code"
                             required pattern="[0-9]{4}" maxlength="4" autocomplete="postal-code"
                             class="w-full bg-bg-tertiary/50 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-accent-teal/50 focus:ring-1 focus:ring-accent-teal/50 transition-all">
                         <span class="error-message text-red-400 text-xs hidden pl-1"></span>
@@ -224,7 +239,7 @@
                             <i class="fas fa-lock mr-1.5 text-accent-teal"></i> Confirm Password
                         </label>
                         <div class="relative">
-                            <input type="password" id="confirm-password" name="confirm-password"
+                            <input type="password" id="confirm-password" name="confirmPassword"
                                 placeholder="Re-enter password" required autocomplete="new-password"
                                 class="w-full bg-bg-tertiary/50 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-accent-teal/50 focus:ring-1 focus:ring-accent-teal/50 transition-all pr-10">
                             <button type="button"

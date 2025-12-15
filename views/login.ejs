@@ -63,10 +63,35 @@
 
     <!-- Remove custom CSS request unless specific overrides needed, keeping styles.css for global resets if any -->
     <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        @media print {
+            body {
+                display: none !important;
+            }
+        }
+
+        #screenshot-protector {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 99999;
+        }
+    </style>
 </head>
 
 <body
     class="bg-bg-primary text-gray-200 font-sans min-h-screen flex items-center justify-center relative overflow-hidden bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-bg-secondary via-bg-primary to-bg-primary">
+
+    <!-- Success Toast for Signup -->
+    <div id="success-toast"
+        class="fixed top-4 right-4 bg-green-600 text-white px-6 py-3 rounded-xl shadow-lg z-50 hidden animate-fade-in">
+        <i class="fas fa-check-circle mr-2"></i>
+        <span>Account created successfully! Please log in.</span>
+    </div>
 
     <!-- Preloader -->
     <div id="preloader"
@@ -150,56 +175,6 @@
                         class="btn-loader hidden w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
                 </button>
 
-                <!-- Divider -->
-                <div class="relative flex items-center justify-center py-2">
-                    <div class="absolute inset-0 flex items-center">
-                        <div class="w-full border-t border-white/10"></div>
-                    </div>
-                    <span class="relative bg-bg-secondary px-4 text-xs text-gray-500 uppercase">or</span>
-                </div>
-
-                <!-- Google Login Button -->
-                <div class="text-center mt-4">
-                    <button id="google-login" type="button"
-                        class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3.5 rounded-xl shadow-lg flex items-center justify-center gap-2">
-                        <i class="fab fa-google"></i>
-                        <span>Sign in with Google</span>
-                    </button>
-                </div>
-
-                <!-- Firebase SDKs for Google Auth -->
-                <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-                <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-                <script>
-                    // Initialize Firebase (config injected from server)
-                    const firebaseConfig = <% - JSON.stringify(firebaseConfig) %>;
-                    firebase.initializeApp(firebaseConfig);
-                    const auth = firebase.auth();
-
-                    document.getElementById('google-login').addEventListener('click', async () => {
-                        const provider = new firebase.auth.GoogleAuthProvider();
-                        try {
-                            const result = await auth.signInWithPopup(provider);
-                            const idToken = await result.user.getIdToken();
-                            // Send token to server to create session
-                            const response = await fetch('/login/google', {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ idToken })
-                            });
-                            const data = await response.json();
-                            if (data.success) {
-                                window.location.href = '/learn';
-                            } else {
-                                alert(data.error || 'Google login failed');
-                            }
-                        } catch (err) {
-                            console.error(err);
-                            alert(err.message);
-                        }
-                    });
-                </script>
-
                 <!-- Sign Up Link -->
                 <div class="text-center space-y-3">
                     <p class="text-gray-400 text-sm">Don't have an account?</p>
@@ -219,6 +194,7 @@
 
     <script src="/js/script.js"></script>
     <script src="/js/login.js"></script>
+    <div id="screenshot-protector"></div>
     <script>
         // Simple Tailwind Preloader Logic override if needed, or rely on existing script.js
         window.addEventListener('load', () => {
@@ -226,6 +202,45 @@
             if (preloader) {
                 preloader.style.opacity = '0';
                 setTimeout(() => preloader.style.display = 'none', 500);
+            }
+
+            // Check for success parameter and show toast
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('success') === '1') {
+                const toast = document.getElementById('success-toast');
+                if (toast) {
+                    toast.classList.remove('hidden');
+                    setTimeout(() => {
+                        toast.style.opacity = '0';
+                        toast.style.transition = 'opacity 0.5s';
+                        setTimeout(() => toast.remove(), 500);
+                    }, 3000);
+                }
+            }
+        });
+
+        // Screenshot Prevention Logic
+        document.addEventListener('keyup', (e) => {
+            if (e.key == 'PrintScreen') {
+                navigator.clipboard.writeText('');
+                alert('Screenshots are disabled on this page.');
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key == 'p') {
+                e.cancelBubble = true;
+                e.preventDefault();
+                e.stopImmediatePropagation();
+            }
+        });
+
+        // Detect visibility change (switching tabs/apps often happens during screenshots on mobile)
+        document.addEventListener("visibilitychange", () => {
+            if (document.hidden) {
+                document.getElementById('screenshot-protector').style.display = 'block';
+            } else {
+                document.getElementById('screenshot-protector').style.display = 'none';
             }
         });
     </script>
